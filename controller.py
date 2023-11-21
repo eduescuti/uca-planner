@@ -395,7 +395,7 @@ def paginaNoEncontrada(name):
 
 def agregarMateria(param, miRequest):
     """ Agrega una materia a la base de datos.
-    Recibe 
+    Recibe el request del form de la página.
     """
     obtenerMenuBottom(param)
     res=render_template('Materias.html',param=param)
@@ -408,7 +408,7 @@ def agregarMateria(param, miRequest):
 
 def agregarComision(param, miRequest):
     """ Agrega una comision a la base de datos.
-    Recibe 
+    Recibe el request del form de la página.
        """
 
     obtenerMenuBottom(param)
