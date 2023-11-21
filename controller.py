@@ -231,7 +231,10 @@ def cronograma_pagina(param):
     return res
 
 def perfil_pagina(param):
-
+    """Dependiendo de si hay sesión iniciada o no, devuelve la página
+    del usuario o administrador (en caso de estar iniciado sesión) o devuelve
+    una página no encontrada como mensaje.
+    """
     obtenerMenuBottom(param)
 
     if haySesion():
