@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCA Planner | Materias</title>
+    <link rel="stylesheet" href="../static/css/Materias.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <img src="../static/img/logo-uca.jfif" class="imagen1">
+        <h2 class="titulo">Gestión de Materias</h2>
+    </div>
+
+
+    <div class="row">
+        <div class="leftcolumn">
+            <div class="card">
+                <h4 class="titulo">Materias Cargadas</h4>
+                <label for="materia" class="materia">Materias:</label>
+                <select name="materia" class="materiaSelect">
+                    <option>Filosofía</option>
+                    <option>Complementos de Matemática</option>
+                    <option>Introducción a Ingeniería</option>
+                    <option>Representación Gráfica</option>
+                </select>
+                <form action="/url?">
+                    <!-- Acá irían las materias, y NO sería el select de arriba -->
+                </form>
+            </div>
+            <div class="card">
+                <a href="/materias" class="boton">Agregar Materia</a>
+                <a href="/home" class="boton">Volver</a>
+            </div>
+        </div>
+        <div class="rightcolumn">
+            <div class="card" id="contenedor">
+                <h2>Agregar una Materia</h2>
+                <form onsubmit="return validarDatos()" method="POST">
+
+                    <label for="nombre">Nombre de Materia:</label>
+                    <input type="text" name="nombre" id="nombre" placeholder="Ingrese un nombre.."
+                        onfocusout="validarNombre()">
+                    <p class="error" id="error nombre"></p>
+
+                    <label for="codigo">Ingrese un Código para la materia:</label>
+                    <input type="number" name="codigo" id="codigo" min="1" placeholder="Ingrese un código.."
+                        onfocusout="validarCodigo()">
+                    <p class="error" id="error codigo"></p>
+
+                    <p class="error" id="error incompleto"></p>
+
+                    <input type="submit" value="Agregar Materia">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% block script %}
+    <script language="javascript" type="text/javascript"
+        src="{{ url_for('static', filename='js/Materias.js')}}"></script>
+    {% endblock %}
+
+
+</body>
+
+</html>

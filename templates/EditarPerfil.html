@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Para que se active el modo responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Relaciona o enlaza este archivo html con el 03.css-->
+    <link rel="stylesheet" href="../static/css/EditarPerfil.css">
+    <title>UCA Planner | Usuario</title>
+</head>
+
+<body>
+    <div class="header">
+        <h1>UCA Planner</h1>
+    </div>
+
+    <div class="topnav">
+        <a href="/home">Información</a>
+        <a href="/cronograma">Organizador de Horarios</a>
+        <div class="topnav_right">
+            <a href="/perfil">Usuario</a>
+        </div>
+    </div>
+
+    <div class="contenedor">
+        <h1>Editar Perfil</h1>
+
+        <form onsubmit="return validarDatos()" action="/action_page.php" method="get">
+
+            <label for="usuario">Cambiar Usuario:</label>
+            <input type="text" name="usuario" id="usuario" placeholder="Usuario.." onfocusout="validarUsuario()">
+            <p class="error" id="error usuario"></p>
+
+            <label for="mail">Cambiar Mail</label>
+            <input type="email" id="mail" name="mail" placeholder="Ingrese otro mail.." onfocusout="validarMail()">
+            <p class="error" id="error mail"></p>
+
+            <label for="contrasena">Cambiar Contraseña</label>
+            <input type="password" id="contra" name="contra" placeholder="Ingrese contraseña.."
+                onfocusout="validarContra()">
+            <p class="error" id="error contra"></p>
+
+            <p class="error" id="error incompleto"></p>
+
+            <input type="submit" value="Guardar Cambios">
+
+        </form>
+    </div>
+
+    <div class="footer">
+        <h2>Contactanos</h2>
+        <p> uca_planner@uca.edu.com | Teléfono: 15-4627-9873</p>
+    </div>
+
+    <script language="javascript" type="text/javascript" src="../static/js/EditarPerfil.js"></script>
+
+</body>
+
+</html>

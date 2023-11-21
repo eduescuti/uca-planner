@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Para que se active el modo responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Relaciona o enlaza este archivo html con el 03.css-->
+    <link rel="stylesheet" href="../static/css/Usuario.css">
+    <title>UCA Planner | Usuario</title>
+</head>
+
+<body>
+    <div class="header">
+        <h1>UCA Planner</h1>
+    </div>
+
+    <div class="topnav">
+        <a href="/home">Información</a>
+        <a href="/cronograma">Organizador de Horarios</a>
+        <div class="topnav_right">
+            <a href="/usuario">Usuario</a>
+        </div>
+    </div>
+
+    <div class="contenedor">
+
+        <form action="/logout" method="get">
+            <div class="perfil">
+                <h1>Perfil</h1>
+                <p>Nombre... Apellido... </p>
+            </div>
+
+            <button onclick="irAEditarPerfil()" class="editarPerfil">Editar Perfil</button>
+
+            <input type="submit" value="Cerrar Sesión">
+        </form>
+
+        <!-- <button onclick="irAEditarPerfil()" class="editarPerfil">Editar Perfil</button>
+
+        <input type="submit" value="Cerrar Sesión"> -->
+        <!-- Tiene que ser un input o un button y que me direccione al menú principal (sin estar logueado)?-->
+
+    </div>
+
+    <div class="footer">
+        <h2>Contactanos</h2>
+        <p> uca_planner@uca.edu.com | Teléfono: 15-4627-9873</p>
+    </div>
+
+    <script language="javascript" type="text/javascript" src="../static/js/Usuario.js"></script>
+
+</body>
+
+</html>

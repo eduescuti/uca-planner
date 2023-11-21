@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCA Planner | Gestión</title>
+    <link rel="stylesheet" href="../static/css/Cursos.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <img src="../static/img/logo-uca.jfif" class="imagen1">
+        <h2 class="titulo">Gestión de Cursos</h2>
+    </div>
+
+
+    <div class="row">
+        <div class="leftcolumn">
+            <div class="card">
+                <h4 class="titulo">Comisiones Cargadas</h4>
+                <label>Comisiones:</label>
+                <select>
+                    <option>AM</option>
+                    <option>BM</option>
+                    <option>WS</option>
+                    <option>OP</option>
+                </select>
+
+                <h4 class="titulo">Materias Cargadas</h4>
+                <label>Materias:</label>
+                <select>
+                    <option>Filosofía</option>
+                    <option>Complementos de Matemática</option>
+                    <option>Introducción a Ingeniería</option>
+                    <option>Representación Gráfica</option>
+                </select>
+
+                <form action="/action_page.php">
+                    <!-- Acá irían las materias, y NO sería el select de arriba -->
+                </form>
+            </div>
+            <div class="card">
+                <a href="Cursos.html" class="boton">Agregar Curso</a>
+                <a href="MenuPrincipalAdmin.html" class="boton">Volver</a>
+            </div>
+        </div>
+        <div class="rightcolumn">
+            <div class="card" id="contenedor">
+                <h2>Asociar una Materia con una Comisión</h2>
+                <form onsubmit="return validarDatos()" action="action_page.php" method="get">
+
+                    <!-- Me falta saber cómo recolecto los datos de la base de datos.
+                        Ejemplo: las materias, las comisiones...
+                    -->
+
+                    <label for="materia" class="materia">Seleccione la Materia:</label>
+                    <select name="materia" class="materiaSelect">
+                        <option disabled selected>Seleccionar..</option>
+                        <option>Filosofía</option>
+                        <option>Complementos de Matemática</option>
+                        <option>Introducción a Ingeniería</option>
+                        <option>Representación Gráfica</option>
+                    </select>
+
+                    <label for="com" class="com">Seleccione la Comision de la materia:</label>
+                    <select name="com" class="comisionSelect">
+                        <option disabled selected>Seleccionar..</option>
+                        <option>AM</option>
+                        <option>BM</option>
+                        <option>WS</option>
+                        <option>OP</option>
+                    </select>
+
+                    <label for="cupo">Ingrese un cupo máximo para el Curso:</label>
+                    <input type="number" name="cupo" id="cupo" min=1 placeholder="Ingrese un cupo.."
+                        onfocusout="validarCupo()">
+                    <p class="error" id="error cupo"></p>
+
+                    <h3>Seleccione las horas del Curso:</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hora</th>
+                                <th>Lunes</th>
+                                <th>Martes</th>
+                                <th>Miércoles</th>
+                                <th>Jueves</th>
+                                <th>Viernes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aquí se mostrará la tabla de horarios -->
+                            <tr id="horas">
+                                <th id="hora">Definir Horas:</th>
+                                <th id="hora">
+                                    <select id="horas-lun" name="horas-lun" title="Seleccione..."
+                                        onclick="eliminarError('horas-lun')">
+                                        <option value="0">Sin horario</option>
+                                        <option value="1">07:45hs - 10:15hs</option>
+                                        <option value="2">10:15hs - 12:15hs</option>
+                                        <option value="3">11:30hs - 15:15hs</option>
+                                        <option value="4">13:00hs - 15:15hs</option>
+                                        <option value="5">14:00hs - 16:00hs</option>
+                                        <option value="6">15:15hs - 17:15hs</option>
+                                        <option value="7">17:15hs - 19:00hs</option>
+                                        <option value="8">19:00hs - 21:00hs</option>
+                                    </select>
+                                </th>
+                                <th id="hora">
+                                    <select id="horas-mar" name="horas-mar" title="Seleccione..."
+                                        onclick="eliminarError('horas-mar')">
+                                        <option value="0">Sin horario</option>
+                                        <option value="1">07:45hs - 10:15hs</option>
+                                        <option value="2">10:15hs - 12:15hs</option>
+                                        <option value="3">11:30hs - 15:15hs</option>
+                                        <option value="4">13:00hs - 15:15hs</option>
+                                        <option value="5">14:00hs - 16:00hs</option>
+                                        <option value="6">15:15hs - 17:15hs</option>
+                                        <option value="7">17:15hs - 19:00hs</option>
+                                        <option value="8">19:00hs - 21:00hs</option>
+                                    </select>
+                                </th>
+                                <th id="hora">
+                                    <select id="horas-mie" name="horas-mie" title="Seleccione..."
+                                        onclick="eliminarError('horas-mie')">
+                                        <option value="0">Sin horario</option>
+                                        <option value="1">07:45hs - 10:15hs</option>
+                                        <option value="2">10:15hs - 12:15hs</option>
+                                        <option value="3">11:30hs - 15:15hs</option>
+                                        <option value="4">13:00hs - 15:15hs</option>
+                                        <option value="5">14:00hs - 16:00hs</option>
+                                        <option value="6">15:15hs - 17:15hs</option>
+                                        <option value="7">17:15hs - 19:00hs</option>
+                                        <option value="8">19:00hs - 21:00hs</option>
+                                    </select>
+                                </th>
+                                <th id="hora">
+                                    <select id="horas-jue" name="horas-jue" title="Seleccione..."
+                                        onclick="eliminarError('horas-jue')">
+                                        <option value="0">Sin horario</option>
+                                        <option value="1">07:45hs - 10:15hs</option>
+                                        <option value="2">10:15hs - 12:15hs</option>
+                                        <option value="3">11:30hs - 15:15hs</option>
+                                        <option value="4">13:00hs - 15:15hs</option>
+                                        <option value="5">14:00hs - 16:00hs</option>
+                                        <option value="6">15:15hs - 17:15hs</option>
+                                        <option value="7">17:15hs - 19:00hs</option>
+                                        <option value="8">19:00hs - 21:00hs</option>
+                                    </select>
+                                </th>
+                                <th id="hora">
+                                    <select id="horas-vie" name="horas-vie" title="Seleccione..."
+                                        onclick="eliminarError('horas-vie')">
+                                        <option value="0">Sin horario</option>
+                                        <option value="1">07:45hs - 10:15hs</option>
+                                        <option value="2">10:15hs - 12:15hs</option>
+                                        <option value="3">11:30hs - 15:15hs</option>
+                                        <option value="4">13:00hs - 15:15hs</option>
+                                        <option value="5">14:00hs - 16:00hs</option>
+                                        <option value="6">15:15hs - 17:15hs</option>
+                                        <option value="7">17:15hs - 19:00hs</option>
+                                        <option value="8">19:00hs - 21:00hs</option>
+                                    </select>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="error" id="error horas">*Recuerde que debe ingresar un rango de horas de al menos un día
+                    </p>
+
+                    <p class="error" id="error incompleto"></p>
+
+                    <input type="submit" value="Agregar Curso">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script language="javascript" type="text/javascript" src="../static/js/Cursos.js"></script>
+
+</body>
+
+</html>

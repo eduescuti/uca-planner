@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Para que se active el modo responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Relaciona o enlaza este archivo html con el 03.css-->
+    <link rel="stylesheet" href="../static/css/IniciarSesion.css">
+    <title>UCA Planner | Iniciar Sesión</title>
+</head>
+
+<body>
+    <div class="header">
+        <h1>UCA Planner</h1>
+    </div>
+    <div class="topnav">
+        <a href="/home">Información</a>
+        <a href="/cronograma">Organizador de Horarios</a>
+        <div class="topnav_right">
+            <a href="/register">Registrarse</a>
+            <a href="/login">Iniciar Sesión</a>
+        </div>
+    </div>
+    <article>
+        <div class="contenedor">
+            <form action="/signin" method="post">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" name="usuario" placeholder="Usuario.." required>
+
+                <label for="contraseña">Contraseña</label>
+                <input type="password" id="contrasenia" name="contraseña" placeholder="Contraseña.." required>
+
+                <p>¿No tiene una cuenta? Regístrese <a href="/register">aquí</a>.</p>
+
+                <div class="sub1">
+                    <input type="submit" value="Iniciar Sesión">
+                </div>
+            </form>
+        </div>
+    </article>
+
+    <div class="footer">
+        <h2>Contactanos</h2>
+        <p> uca_planner@uca.edu.com | Teléfono: 15-4627-9873</p>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial;
+    padding: 10px;
+    background: white;
+}
+
+.titulo {
+    width: auto;
+}
+
+
+.leftcolumn {
+    float: left;
+    width: 24%;
+    margin-top: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Columna derecha */
+.rightcolumn {
+    float: right;
+    width: 75%;
+    margin-top: 20px;
+    background-color: #f1f1f1;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+    /*
+    La propiedad CSS clear especifica si un elemento puede estar al lado 
+    de elementos flotantes que lo preceden o si debe ser movido (cleared) 
+    debajo de ellos.
+    
+    */
+}
+
+.boton {
+    display: block;
+    width: 80%;
+    margin-top: 10px;
+    background-color: #152087;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    padding: 14px 20px;
+    margin: 20px;
+    text-decoration: none;
+    text-align: center;
+
+}
+
+/* TABLA */
+table {
+    width: 100%;
+}
+
+
+
+thead {
+    background-color: rgb(23, 0, 90);
+    color: #ffffff;
+    padding: 8px;
+}
+
+th,
+tr {
+    padding: 8px 15px;
+    border-bottom: 1px solid #b2b2b2;
+}
+
+#hora {
+    width: 150px;
+}
+
+/* Responsive - scrolleo horizontal */
+@media screen and (max-width: 800px) {
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+#contenedor {
+    line-height: 3;
+    /* background-color: #c7e3fd; */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+input[type=text],
+input[type=number],
+#cuatrimestre {
+    width: 40%;
+    padding: 10px;
+    display: block;
+    font-size: large;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 50%;
+    background-color: #152087;
+    color: white;
+    padding: 14px 20px;
+    margin: 50px 0;
+    font-size: large;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #3d77aa;
+
+}
+
+.error {
+    color: #dd0000;
+}
+
+/* Responsive layout - cuando la pantalla tiene menos de 800 px de ancho, hace que las dos columnas se apilen una encima de la otra en lugar de una al lado de la otra */
+@media screen and (max-width: 500px) {
+
+    .leftcolumn,
+    .rightcolumn {
+        width: 100%;
+        padding: 0;
+    }
+}

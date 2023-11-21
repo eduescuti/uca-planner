@@ -1,0 +1,133 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial;
+    padding: 10px;
+    background: white;
+}
+
+/* HEADER */
+.header {
+    padding: 10px;
+    text-align: center;
+    background: rgb(5, 17, 82);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.header h1 {
+    font-size: 60px;
+    font-family: 'Lucida Sans';
+    color: rgb(255, 255, 255);
+}
+
+/* NAVEGADOR */
+/* Aplicar estilo a la barra de navegación superior */
+/* Cambiar de color al pasar el mouse */
+.topnav a:hover {
+    background-color: rgb(13, 1, 50);
+    color: rgb(255, 255, 255);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #1a228e;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.topnav_right {
+    float: right;
+}
+
+/* Aplicar estilo a los enlaces de topnav */
+.topnav a {
+    float: left;
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive layout - cuando la pantalla tiene menos de 400 px de ancho, hace que los enlaces de navegación se apilen uno encima del otro en lugar de uno al lado del otro */
+@media screen and (max-width: 446px) {
+
+    .topnav a,
+    .topnav_right {
+        float: none;
+        width: 100%;
+    }
+}
+
+/* ARTICLE */
+.contenedor {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 20px;
+    line-height: 3;
+    font-size: large;
+    text-align: center;
+    border-radius: 40px;
+    background-color: #c7e3fd;
+    padding: 40px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.perfil {
+    text-align: left;
+    font-family: 'Lucida Sans';
+    color: rgb(22, 0, 56);
+}
+
+
+
+input[type=submit],
+.editarPerfil {
+    margin-top: 20px;
+    width: 50%;
+    background-color: #152087;
+    color: white;
+    padding: 14px 20px;
+    margin: 40px 0;
+    border: none;
+    cursor: pointer;
+    font-size: large;
+    border-radius: 15px;
+}
+
+input[type=submit]:hover,
+.editarPerfil:hover {
+    background-color: #3d77aa;
+}
+
+@media screen and (max-width: 400px) {
+    input[type=submit] {
+        width: 90%;
+        font-size: medium;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 400px) {
+
+    input[type=password],
+    input[type=text] {
+        width: 90%;
+        font-size: medium;
+        text-align: left;
+    }
+}
+
+/* FOOTER */
+.footer {
+    margin-top: 20px;
+    padding: 20px;
+    color: #ffffff;
+    text-align: center;
+    background: #a9a9a9;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}

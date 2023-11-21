@@ -1,0 +1,168 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial;
+    padding: 10px;
+    background: white;
+}
+
+/* HEADER */
+.header {
+    padding: 10px;
+    text-align: center;
+    background: rgb(5, 17, 82);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.header h1 {
+    font-size: 60px;
+    font-family: 'Lucida Sans';
+    color: rgb(255, 255, 255);
+}
+
+/* NAVEGADOR */
+/* Aplicar estilo a la barra de navegación superior */
+/* Cambiar de color al pasar el mouse */
+.topnav a:hover {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #1a228e;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.topnav_right {
+    float: right;
+}
+
+/* Aplicar estilo a los enlaces de topnav */
+.topnav a {
+    float: left;
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive layout - cuando la pantalla tiene menos de 400 px de ancho, hace que los enlaces de navegación se apilen uno encima del otro en lugar de uno al lado del otro */
+@media screen and (max-width: 446px) {
+
+    .topnav a,
+    .topnav_right {
+        float: none;
+        width: 100%;
+    }
+}
+
+/* TABLA */
+table {
+    width: 100%;
+}
+
+thead {
+    background-color: rgb(13, 1, 50);
+    color: #ffffff;
+    padding: 8px;
+}
+
+th {
+    padding: 8px 15px;
+}
+
+@media screen and (max-width: 894px) {
+
+    #hora {
+        display: block;
+    }
+}
+
+#hora {
+    width: 150px;
+}
+
+
+#materia,
+button {
+    font-size: medium;
+    margin-top: 10px;
+    display: block;
+}
+
+.titulo1 {
+    color: rgb(5, 17, 82);
+}
+
+/* Responsive - scrolleo horizontal */
+@media screen and (max-width: 800px) {
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+    /*
+    La propiedad CSS clear especifica si un elemento puede estar al lado 
+    de elementos flotantes que lo preceden o si debe ser movido (cleared) 
+    debajo de ellos.
+    
+    */
+}
+
+.leftcolumn {
+    float: left;
+    width: 75%;
+    margin-top: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Columna derecha */
+.rightcolumn {
+    float: right;
+    width: 24%;
+    margin-top: 20px;
+    background-color: #f1f1f1;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive layout - cuando la pantalla tiene menos de 800 px de ancho, hace que las dos columnas se apilen una encima de la otra en lugar de una al lado de la otra */
+@media screen and (max-width: 900px) {
+
+    .leftcolumn,
+    .rightcolumn {
+        width: 100%;
+        padding: 0;
+    }
+}
+
+select {
+    width: 100%;
+}
+
+/* FOOTER */
+.footer {
+    margin-top: 150px;
+    padding: 20px;
+    color: #ffffff;
+    text-align: center;
+    background: #a9a9a9;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}

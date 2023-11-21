@@ -1,0 +1,131 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial;
+    padding: 10px;
+    background: white;
+}
+
+/* HEADER */
+.header {
+    padding: 10px;
+    text-align: center;
+    background: rgb(5, 17, 82);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.header h1 {
+    font-size: 60px;
+    font-family: 'Lucida Sans';
+    color: rgb(255, 255, 255);
+}
+
+/* NAVEGADOR */
+.topnav a:hover {
+    background-color: rgb(13, 1, 50);
+    color: rgb(255, 255, 255);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #1a228e;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.topnav_right {
+    float: right;
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive layout - cuando la pantalla tiene menos de 400 px de ancho, hace que los enlaces de navegación se apilen uno encima del otro en lugar de uno al lado del otro */
+@media screen and (max-width: 600px) {
+
+    .topnav a,
+    .topnav_right {
+        float: none;
+        width: 100%;
+    }
+}
+
+.titulo {
+    background-color: rgb(242, 242, 242);
+    color: #003375;
+    width: 900px;
+    text-align: center;
+    margin: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* TABLA */
+table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 35px;
+}
+
+th {
+    background-color: rgb(13, 1, 50);
+    padding: 8px 15px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.col1 {
+    background-color: rgb(175, 171, 171);
+    color: rgb(13, 1, 50);
+}
+
+.pie {
+    background-color: rgb(13, 1, 50);
+    color: #ffffff;
+    text-align: center;
+}
+
+.s13 {
+    background-color: #023e8a;
+    color: #ffffff;
+}
+
+td {
+    background-color: white;
+    color: #023e8a;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Responsive - scrolleo horizontal */
+@media screen and (max-width: 800px) {
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .titulo {
+        display: block;
+        width: 100%;
+    }
+}
+
+/* FOOTER */
+.footer {
+    margin-top: 20px;
+    padding: 20px;
+    color: #ffffff;
+    text-align: center;
+    background: #a9a9a9;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}

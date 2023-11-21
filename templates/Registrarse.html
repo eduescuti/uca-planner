@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Para que se active el modo responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Relaciona o enlaza este archivo html con el 03.css-->
+    <link rel="stylesheet" href="../static/css/Registrarse.css">
+    <title>UCA Planner | Registrarse</title>
+</head>
+
+<body>
+    <div class="header">
+        <h1>UCA Planner</h1>
+    </div>
+    <div class="topnav">
+        <a href="/home">Información</a>
+        <a href="/cronograma">Organizador de Horarios</a>
+        <div class="topnav_right">
+            <a href="/register">Registrarse</a>
+            <a href="/login">Iniciar Sesión</a>
+        </div>
+    </div>
+
+
+    <div class="contenedor">
+        <form onsubmit="return validarDatos()" action="/signup" method="post">
+
+            <label for="usuario">Nombre de Usuario:</label>
+            <input type="text" name="usuario" id="usuario" placeholder="Usuario.." onfocusout="validarUsuario()">
+            <p class="error" id="error usuario"></p>
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" id="nombre" placeholder="Nombre.." onfocusout="validarNombre()">
+            <p class="error" id="error nombre"></p>
+
+            <label for="apellido">Apellido:</label>
+            <input type="text" name="apellido" id="apellido" placeholder="Apellido.." onfocusout="validarApellido()">
+            <p class="error" id="error apellido"></p>
+
+            <label for="email">Mail</label>
+            <input type="email" id="email" name="email" placeholder="Ingrese un mail.." onfocusout="validarMail()">
+            <p class="error" id="error email"></p>
+
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contraseña" name="contraseña" placeholder="Ingrese contraseña.."
+                onfocusout="validarContra()">
+            <p class="error" id="error contra"></p>
+
+            <fieldset>
+                <legend class="rol">Rol en UCA Planner:</legend>
+                <label for="rolAlumno">Alumno</label>
+                <input type="radio" id="rolAlumno" name="rol" value="alumno">
+                <label for="sede2">Administrador</label>
+                <input type="radio" id="rolAdmin" name="rol" value="admin">
+            </fieldset>
+
+            <!-- <label for="carrera">Carrera:</label>
+            <select id="carrera" name="localidad" title="Seleccione...">
+                <option value="0" disabled selected>Seleccionar..</option>
+                <option value="1">Ingeniería en Informática (01)</option>
+            </select>
+
+            <fieldset>
+                <legend class="sede">Sedes UCA:</legend>
+                <label for="sede1">Buenos Aires</label>
+                <input type="radio" id="sede1" name="unaSede">
+                <label for="sede2">Mendoza</label>
+                <input type="radio" id="sede2" name="unaSede" value="Mendoza">
+                <label for="sede3">Paraná</label>
+                <input type="radio" id="sede3" name="unaSede" value="Paraná">
+                <label for="sede4">Rosario</label>
+                <input type="radio" id="sede4" name="unaSede" value="Rosario">
+            </fieldset> 
+        
+            Esto era un agregado, pero de momento no cumple ni una funcionalidad
+        -->
+
+            <p class="error" id="error incompleto"></p>
+
+            <input type="submit" value="Registrarse">
+
+        </form>
+    </div>
+
+    <div class="footer">
+        <h2>Contactanos</h2>
+        <p> uca_planner@uca.edu.com | Teléfono: 15-4627-9873</p>
+    </div>
+
+    <script language="javascript" type="text/javascript" src="../static/js/Registrarse.js"></script>
+
+</body>
+
+</html>
