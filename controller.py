@@ -8,6 +8,15 @@ import os
 from uuid import uuid4
 from appConfig import config
     
+def obtenerInformacionPerfil(param):
+    
+    param["usuario"] = session['usuario']
+    param["nombre"] = session['nombre']
+    param["apellido"] = session['apellido']
+    param["email"] = session['email']
+    param["rol"] = session['rol']
+    
+
 def obtenerMenuBottom(param, idActivo="mnub01"):
     '''info:
     Carga el dict 'param' con las datos de un menu
@@ -235,7 +244,7 @@ def perfil_pagina(param):
     del usuario o administrador (en caso de estar iniciado sesión) o devuelve
     una página no encontrada como mensaje.
     """
-    obtenerMenuBottom(param)
+    obtenerInformacionPerfil(param)
 
     if haySesion():
         if (session['rol'] == 'alumno'):

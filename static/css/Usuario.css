@@ -68,9 +68,8 @@ body {
     max-width: 600px;
     margin: auto;
     margin-top: 20px;
-    line-height: 3;
+    line-height: 1;
     font-size: large;
-    text-align: center;
     border-radius: 40px;
     background-color: #c7e3fd;
     padding: 40px;
@@ -83,42 +82,45 @@ body {
     color: rgb(22, 0, 56);
 }
 
+.informacion {
+    padding-top: 20px;
+    padding-bottom: 30px;
+    margin: 5px;
+    color: rgb(36, 0, 90);
+}
 
+.botones {
+    width: 265px;
+    text-align: center;
+    text-decoration: none;
+    margin: auto;
+}
 
-input[type=submit],
-.editarPerfil {
-    margin-top: 20px;
-    width: 50%;
+.boton {
+    display: block;
+    text-decoration: none;
     background-color: #152087;
     color: white;
     padding: 14px 20px;
-    margin: 40px 0;
+    margin: 30px 0;
     border: none;
     cursor: pointer;
-    font-size: large;
     border-radius: 15px;
 }
 
-input[type=submit]:hover,
-.editarPerfil:hover {
+.boton:hover {
     background-color: #3d77aa;
 }
 
 @media screen and (max-width: 400px) {
-    input[type=submit] {
-        width: 90%;
+    .botones {
+        width: 100%;
         font-size: medium;
         text-align: center;
     }
-}
 
-@media screen and (max-width: 400px) {
-
-    input[type=password],
-    input[type=text] {
-        width: 90%;
-        font-size: medium;
-        text-align: left;
+    .boton:hover {
+        background-color: #3d77aa;
     }
 }
 

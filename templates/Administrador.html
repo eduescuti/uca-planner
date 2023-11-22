@@ -7,7 +7,7 @@
     <!-- Para que se active el modo responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Relaciona o enlaza este archivo html con el 03.css-->
-    <link rel="stylesheet" href="../static/css/Administrador.css">
+    <link rel="stylesheet" href="../static/css/Usuario.css">
     <title>UCA Planner | Administrador</title>
 </head>
 
@@ -27,21 +27,23 @@
     </div>
 
     <div class="contenedor">
-        <form action="/logout" method="get">
-            <div class="perfil">
-                <h1>Perfil</h1>
-                <p>Nombre... Apellido... </p>
-            </div>
 
-            <button onclick="irAEditarPerfilAdmin()" class="editarPerfil">Editar Perfil</button>
+        <h1 class="perfil">Perfil</h1>
 
-            <input type="submit" value="Cerrar Sesión">
-        </form>
-        <!-- Tiene que ser un input o un button y que me direccione al menú principal (sin estar logueado)?
-        
-            Si puede ser un button, es mas facil como redireccionar a la pagina principal.
-            (Si hago eso los datos quedarian guardados, nose que tan eficiente y seguro sea eso.)
-        -->
+        <div class="informacion">
+            <h4 class="nombre">Nombre:</h4>
+            <p class="info">{{param["nombre"]}} {{param["apellido"]}}</p>
+
+            <h4 class="email">Mail:</h4>
+            <p class="info">{{param["email"]}}</p>
+        </div>
+
+        <div class="botones">
+
+            <a href="/editar_perfil" class="boton">Editar Perfil</a>
+            <a href="/logout" class="boton">Cerrar Sesión</a>
+
+        </div>
 
     </div>
 
@@ -49,8 +51,6 @@
         <h2>Contactanos</h2>
         <p> uca_planner@uca.edu.com | Teléfono: 15-4627-9873</p>
     </div>
-
-    <script language="javascript" type="text/javascript" src="../static/js/Usuario.js"></script>
 
 </body>
 

@@ -59,6 +59,7 @@ def route(app):
     
     @app.route("/perfil")
     def perfil():
+        
         param={}
         return perfil_pagina(param)
         
