@@ -10,10 +10,8 @@ def route(app):
         ''' Info:
           Carga la pagina del home
         '''
-        param={}
-        return home_pagina(param) 
-        
-    
+        return home_pagina() 
+
     @app.route("/login")
     def login():
         ''' Info:
@@ -37,25 +35,22 @@ def route(app):
     
     @app.route("/inscripciones")
     def inscripciones():
-        param={}
-        obtenerMenuBottom(param)
-        return render_template("GestionInscripciones.html", param=param)
+        
+        return inscripciones_pantalla()
     
     @app.route("/comisiones", methods=["GET","POST"])
     def comisiones():
         
-        param={}
         miRequest={}
         getRequest(miRequest)
-        return agregarComision(param, miRequest)
+        return agregarComision(miRequest)
     
     @app.route("/materias", methods=["GET","POST"])
     def materias():
         
-        param={}
         miRequest={}
         getRequest(miRequest)
-        return agregarMateria(param, miRequest)
+        return agregarMateria(miRequest)
     
     @app.route("/perfil")
     def perfil():
@@ -84,10 +79,9 @@ def route(app):
           retorna la pagina home en caso de exito 
                   o la pagina login en caso de fracaso
         '''
-        param={}
         miRequest={}
         getRequest(miRequest)
-        return ingresoUsuarioValido(param,miRequest)
+        return ingresoUsuarioValido(miRequest)
      
     @app.route("/logout")
     def logout():  
@@ -98,16 +92,36 @@ def route(app):
         cerrarSesion()     
         return redirect('/')  
 
-
-    @app.route("/edit_user")
+    @app.route("/editar_perfil")
     def edit_user():
         ''' Info:
           Carga la edit_user
           Retorna la edit_user, si hay sesion; sino retorna la home.
         '''
         param={}
-        return editarUsuario_pagina(param)    
- 
+        return editarPerfil_pagina(param)
+
+    @app.route("/_editar_perfil")
+    def edit():
+        
+        miRequest = {}
+        getRequest(miRequest)
+        return editarPerfil(miRequest)
+
+    @app.route('/<name>')
+    def noEncontrada(name):
+        ''' Info:
+          Entra en esta ruta todo direccionamiento recibido que 
+          no machea con ningun otro route. Es decir no es un pagina (dirección)
+            válida en el sistema.
+          Retorna una pagina indicando el error. 
+        '''  
+        
+        return paginaNoEncontrada(name)
+
+
+
+
 
     @app.route("/update_user", methods =["GET", "POST"])
     def update_user():
@@ -120,7 +134,7 @@ def route(app):
             si no hay sesion: retorna la home.
         '''
         param={}
-        return actualizarDatosDeUsuarios(param,request)  
+        return True#actualizarDatosDeUsuarios(param,request)  
 
     @app.route('/recibir_datos',methods = ["GET", "POST"])
     def formrecibe():
@@ -128,17 +142,6 @@ def route(app):
         getRequest(diRequest)
         upload_file(diRequest)
         return  diRequest
-
-    @app.route('/<name>')
-    def noEncontrada(name):
-        ''' Info:
-          Entra en esta ruta todo direccionamiento recibido que 
-          no machea con ningun otro route. Es decir no es un pagina (dirección)
-            válida en el sistema.
-          Retorna una pagina indicando el error. 
-        '''  
-        
-        return paginaNoEncontrada(name)
     
     @app.route('/upload') 
     def  upload () : 
@@ -157,7 +160,7 @@ def route(app):
         return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
      
-    @app.route('/uploader', methods = ['GET', 'POST']) 
+    """ @app.route('/uploader', methods = ['GET', 'POST']) 
     def upload_file () : 
 
         if request.method == 'POST' :
@@ -169,7 +172,7 @@ def route(app):
                 
                 #f.save( f.filename)
                 f.savec
-                return 'archivo cargado exitosamente'
+                return 'archivo cargado exitosamente' """
             
     # si existe el archivo devuelve True
     # os.path.exists(os.path.join('G:\\Mi unidad\\NUBE\\Docencia\\UCA\\_Materias\\03-UCA.PW\\_Python\\_PythonFlask\\07_login_register_bd\\uploadfile',"agua.png"))

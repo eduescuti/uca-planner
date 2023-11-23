@@ -3,6 +3,13 @@
 '''
 from _mysql_db import *
 
+def obtenerMaterias():
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    las materias y el codigo de las mismas.
+    '''
+    sQuery="""SELECT nombre, codigo FROM materias;"""
+    return selectDB(BASE, sQuery)
+    
 
 def crearUsuario(di):
     '''### Información:
@@ -71,25 +78,25 @@ def encuentraUnUsuario(result,user,password):
         result['rol']=fila[0][6]
     return res
 
-def actualizarUsuario(di,email):
-    '''### Información:
-        Actualiza el registro de la tabla usuario para la clave 'email'
-        Recibe 'di' un dict con los campos que se requiere modificar.
-        Recibe 'email' que es la clave para identificar el regsitro a actualizar.
-        Retorna True si realiza la actualización correctamente.
-                False caso contrario.
+def actualizarPerfil(di, mail):
+    """ Actualiza el perfil de un usuario pasandole por parámetro el mail,
+    y un diccionario con los nuevos usuario, mail y contraseña.
 
-    '''
-    sQuery="""update usuario 
-        SET nombre=%s, 
-        apellido=%s,
-        pass=%s 
+    Devuelve True si se pudo actualizar, False en caso contrario.
+    """
+    sQuery="""UPDATE usuario 
+        SET usuario=%s,
+        email=%s,
+        contraseña=%s 
         WHERE email=%s;
         """
-    val=(di.get('nombre'), 
-         di.get('apellido'), 
-         di.get('contraseña'), 
-         email )
+    val=(di.get('usuario'), 
+         di.get('email'), 
+         di.get('contraseña'),
+         mail)
+    print(mail)
+    print(val)
+    print(di)
     
     resul_update=updateDB(BASE,sQuery,val=val)
     return resul_update==1
@@ -118,15 +125,24 @@ def crearMateria(di):
 
     - Retorna True si realiza con existo el insert, False caso contrario.
     """
-
-    sQuery=""" 
+    insertMateria=""" 
         INSERT INTO materias
         (id, nombre, codigo)
         VALUES
         (%s,%s, %s);
     """
     val=(None, di.get('nombre'), di.get('codigo'))
-    resul_insert=insertDB(BASE,sQuery,val)
+
+    """ selectMaterias = "SELECT nombre, codigo FROM materias;"
+    val2 = (di.get('nombre'), di.get('codigo'))
+    lista = selectDB(BASE, selectMaterias, val2)
+    if (lista == val2):
+        return False
+    else: 
+        Esto es para ver si podemos indicar si ya existe en la base de datos los valores ingresados
+        
+        """
+    resul_insert=insertDB(BASE,insertMateria,val)
     return resul_insert==1
 
 def crearComision(di):
@@ -143,7 +159,6 @@ def crearComision(di):
         VALUES
         (%s,%s, %s, %s);
     """
-    print(di.get('comision'))
     val=(None, di.get('comision'), di.get('anio'), di.get('cuatrimestre'))
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1

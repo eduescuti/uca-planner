@@ -282,10 +282,9 @@
       <label for="materia" class="materia1">Seleccione la Materia:</label>
       <select name="materia" class="materiaSelect" id="mat">
         <option disabled selected>Seleccionar..</option>
-        <option value="Filosofía">Filosofía</option>
-        <option value="Complementos de Matemática">Complementos de Matemática</option>
-        <option value="Introducción a la Ingeniería">Introducción a Ingeniería</option>
-        <option value="Representación Gráfica">Representación Gráfica</option>
+        {% for mat in param["materias"] %}
+        <option value="{{mat[0]}}">{{mat[0] mat[1]}}</option>
+        {% endfor %}
       </select>
 
       <label for="com" class="com">Seleccione la Comision de la materia:</label>

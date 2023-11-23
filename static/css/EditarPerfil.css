@@ -53,8 +53,10 @@ body {
 }
 
 /* Responsive layout - cuando la pantalla tiene menos de 400 px de ancho, hace que los enlaces de navegación se apilen uno encima del otro en lugar de uno al lado del otro */
-@media screen and (max-width: 400px) {
-    .topnav a {
+@media screen and (max-width: 617px) {
+
+    .topnav a,
+    .topnav_right {
         float: none;
         width: 100%;
     }

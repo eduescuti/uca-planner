@@ -23,21 +23,26 @@
         <a href="/materias">Materias</a>
 
         <div class="topnav_right">
-            <a href="/perfil_admin">Administrador</a>
+            <a href="/perfil">Administrador</a>
         </div>
     </div>
 
     <div class="contenedor">
         <h1>Editar Perfil</h1>
 
-        <form onsubmit="return validarDatos()" action="/action_page.php" method="get">
+        <form onsubmit="return validarDatos()" action="/_editar_perfil" method="get">
+
+            <label for="usuario">Cambiar Usuario:</label>
+            <input type="text" name="usuario" id="usuario" placeholder="@{{param['usuario']}}"
+                onfocusout="validarUsuario()">
+            <p class="error" id="error usuario"></p>
 
             <label for="mail">Cambiar Mail</label>
-            <input type="email" id="mail" name="mail" placeholder="Ingrese otro mail.." onfocusout="validarMail()">
+            <input type="email" id="mail" name="email" placeholder="{{param['email']}}." onfocusout="validarMail()">
             <p class="error" id="error mail"></p>
 
             <label for="contrasena">Cambiar Contraseña</label>
-            <input type="password" id="contra" name="contra" placeholder="Ingrese contraseña.."
+            <input type="password" id="contra" name="contraseña" placeholder="Ingrese una Nueva Contraseña.."
                 onfocusout="validarContra()">
             <p class="error" id="error contra"></p>
 

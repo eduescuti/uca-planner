@@ -15,7 +15,7 @@ def obtenerInformacionPerfil(param):
     param["apellido"] = session['apellido']
     param["email"] = session['email']
     param["rol"] = session['rol']
-    
+
 
 def obtenerMenuBottom(param, idActivo="mnub01"):
     '''info:
@@ -193,21 +193,20 @@ def cerrarSesion():
 # + + I N I C I O + + PAGINA login,  home y/o principal    + + + + + + + + 
 ##########################################################################
 
-def home_pagina(param): 
+def home_pagina(): 
     '''
       Carga la pagina home.
       Recibe 'param' el diccionario de parametros
       Retorna la pagina 'home'
     '''
-    obtenerMenuBottom(param)
 
     if haySesion():
         if (session['rol']== 'alumno'):
-            return render_template('MenuPrincipalUsuario.html',param=param)
+            return render_template('MenuPrincipalUsuario.html')
         else:
-            return render_template('MenuPrincipalAdmin.html',param=param)
+            return render_template('MenuPrincipalAdmin.html')
     else:
-        return render_template('MenuPrincipal.html',param=param)
+        return render_template('MenuPrincipal.html')
 
 def login_pagina(param):
     '''
@@ -229,12 +228,12 @@ def cronograma_pagina(param):
     """Muestra la pantalla del visualizador
     """
     obtenerMenuBottom(param)
-    print(haySesion())
+
     if haySesion():
         if (session["rol"] == "alumno"):
             res = render_template("OrganizadorDeHorarios.html", param=param)
         else:
-            res = paginaNoEncontrada("cronograma")
+            res = redirect('/')
     else:
         res = render_template("Visualizador.html", param=param)
     return res
@@ -245,15 +244,25 @@ def perfil_pagina(param):
     una página no encontrada como mensaje.
     """
     obtenerInformacionPerfil(param)
+    res = redirect('/')
 
     if haySesion():
         if (session['rol'] == 'alumno'):
-            return render_template("Usuario.html", param=param)
+            res = render_template("Usuario.html", param=param)
         else:
-            return render_template("Administrador.html", param=param)
-    else:
-        paginaNoEncontrada("/perfil")
+            res = render_template("Administrador.html", param=param)
+    
+    return res
 
+def inscripciones_pantalla():
+    param = obtenerMaterias()
+
+    if haySesion():
+
+        if (session["rol"] == "admin"):
+            return render_template("GestionInscripciones.html", param=param)
+        
+    return redirect('/')
 
 ##########################################################################
 # - - F I N - - PAGINA home, main y login  - - - - - - - - - - - - - - - -
@@ -264,7 +273,7 @@ def perfil_pagina(param):
 # + + I N I C I O + + USUARIO: registro, edicion, actualizacion  + + + + + 
 ##########################################################################
 
-def ingresoUsuarioValido(param,miRequest):
+def ingresoUsuarioValido(miRequest):
     '''Valida el usuario y el pass contra la BD.
     
     Recibe 'param' dict de parámetros y 
@@ -277,11 +286,9 @@ def ingresoUsuarioValido(param,miRequest):
     '''
     
     if crearSesionUsuario(miRequest):
-        obtenerMenuBottom(param)
-        res=home_pagina(param=param)
+        res=home_pagina()
     else:
-        param['error_msg_login']="Error: Usuario y/o password inválidos"
-        res=login_pagina(param=param)
+        res=login_pagina()
     return res
 
 def registrarUsuario(param, miRequest):
@@ -305,22 +312,36 @@ def registrarUsuario(param, miRequest):
     obtenerMenuBottom(param)
     return res 
 
-def editarUsuario_pagina(param):
+def editarPerfil_pagina(param):
     '''info:
         Carga la pagina edit_user
         Retorna la pagina edit_user, si hay sesion; sino retorna la home.
     '''
-    res= redirect('/') # redirigir al home o a la pagina del login
+    obtenerInformacionPerfil(param)
+    res = redirect('/')
 
-    if haySesion():    # hay session?
-        # Confecciona la pagina en cuestion
-        obtenerMenuBottom(param)
-        obtenerUsuarioXEmail(param,session.get('username'), 'edit_user')
-        res= render_template('edit_user.html',param=param)
+    if haySesion():
+        if (session["rol"] == "alumno"):
+            res = render_template("EditarPerfil.html", param=param)
+        else:
+            res = render_template("EditarPerfilAdmin.html", param=param)
            
     return res  
 
-def actualizarDatosDeUsuarios(param, request):
+def editarPerfil(miRequest):
+    """ Se encarga de editar el perfil con los datos ingresados por parametro.
+    """
+    print(miRequest)
+    if actualizarPerfil(miRequest, session['email']):
+
+        session['usuario'] = miRequest.get('usuario')
+        session['email'] = miRequest.get('email')
+        session['contraseña'] = miRequest.get('contraseña')
+    
+    return redirect('/perfil')
+
+
+""" def actualizarDatosDeUsuarios(param, request):
     '''info:
             Recepciona la solicitud request que es enviada
             desde el formulario de edit_user 
@@ -344,11 +365,11 @@ def actualizarDatosDeUsuarios(param, request):
             res=False
             param['error_msg_updateuser']="Error: No se ha podido ACTUALIZAR el usuario"
 
-        editarUsuario_pagina(param)
+        #editarUsuario_pagina(param)
         res= render_template('edit_user.html',param=param)  
     except ValueError as e :                   
         pass
-    return res 
+    return res  """
 
 ##########################################################################
 # - - F I N - - USUARIO: registro, edicion, actualizacion  - - - - - - - -
@@ -405,29 +426,44 @@ def paginaNoEncontrada(name):
 # - - F I N - -   OTRAS PAGINAS    - - - - - - - - - - - - - - - - - - - -
 ##########################################################################
 
-def agregarMateria(param, miRequest):
+def agregarMateria(miRequest):
     """ Agrega una materia a la base de datos.
     Recibe el request del form de la página.
     """
-    obtenerMenuBottom(param)
-    res=render_template('Materias.html',param=param)
+    res = render_template("Materias.html")
+    
+    if haySesion():
 
-    if crearMateria(miRequest):
-        obtenerMenuBottom(param)
-        res=render_template('Materias.html',param=param)
+        if (session["rol"] == "admin"):
 
+            if crearMateria(miRequest):
+                res=render_template('Materias.html')
+
+            """ else:
+                res=render_template('Materias.html',mensaje="No se pudo agregar esta materia, porfavor ingrese denuevo.")
+                 
+                Si quiero hacer ese mensaje debería modificar todo el AgregarMateria, desde la route
+                   """
+    else:
+        res = redirect('/')
     return res
 
-def agregarComision(param, miRequest):
+def agregarComision(miRequest):
     """ Agrega una comision a la base de datos.
     Recibe el request del form de la página.
        """
+    res = render_template("Comisiones.html")
 
-    obtenerMenuBottom(param)
-    res=render_template('Comisiones.html',param=param)
+    if haySesion():
 
-    if crearComision(miRequest):
-        obtenerMenuBottom(param)
-        res=render_template('Comisiones.html',param=param)
+        if (session["rol"] == "admin"):
+
+            if crearComision(miRequest):
+                res = render_template('Comisiones.html')
+
+            """ else:
+                res=render_template('Comisiones.html',mensaje="No se pudo agregar la comisión, porfavor ingrese denuevo.") """
+    else:
+        res = redirect('/')
 
     return res
