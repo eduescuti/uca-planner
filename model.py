@@ -7,8 +7,17 @@ def obtenerMaterias():
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
     las materias y el codigo de las mismas.
     '''
+    dic = {}
     sQuery="""SELECT nombre, codigo FROM materias;"""
-    return selectDB(BASE, sQuery)
+    lista = selectDB(BASE, sQuery)
+    dic["materias"] = []
+    for materia in lista:
+        nombre, codigo = materia
+        dic["materias"].append({"nombre":nombre, "codigo":codigo })
+        
+    print(dic)
+    return dic
+
     
 
 def crearUsuario(di):
