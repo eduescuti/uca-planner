@@ -32,6 +32,11 @@ function cerrar() {
 }
 
 
+/*===================================
+  ------- VALIDACION DE DATOS ------- 
+  -----------------------------------
+*/
+
 function eliminarError(id) {
   var horaElegida = document.getElementById(id).value;
 
@@ -42,6 +47,14 @@ function eliminarError(id) {
   }
 }
 
+function noSelecciona(campo) {
+  return (campo == 'Seleccionar..')
+}
+
+function cupoNoValido(cupo) {
+  return (cupo == "" || cupo < 1 || cupo > 100);
+}
+
 function horasNoEstanSeleccionadas() {
 
   var horasLunes = document.getElementById("horas-lun").value;
@@ -50,18 +63,14 @@ function horasNoEstanSeleccionadas() {
   var horasJueves = document.getElementById("horas-jue").value;
   var horasViernes = document.getElementById("horas-vie").value;
 
-  var faltanSeleccionarHoras = (horasLunes == "0" && horasMartes == "0"
-    && horasMiercoles == "0" && horasJueves == "0" && horasViernes == "0");
+  var faltanSeleccionarHoras = (noSelecciona(horasLunes) && noSelecciona(horasMartes)
+    && noSelecciona(horasMiercoles) && noSelecciona(horasJueves) && noSelecciona(horasViernes));
 
   return faltanSeleccionarHoras;
 }
 
 function indicarQueFaltanCompletarCampos() {
   document.getElementById("error incompleto").innerHTML = "*Debe completar todos los campos";
-}
-
-function cupoNoValido(cupo) {
-  return (cupo == "" || cupo < 1 || cupo > 100);
 }
 
 function validarCupo() {
@@ -75,13 +84,25 @@ function validarCupo() {
 }
 
 function validarDatos() {
+  var materia = document.getElementById("mat").value;
+  var comision = document.getElementById("comi").value;
   var cupo = document.getElementById("cupo").value;
 
-  if (horasNoEstanSeleccionadas()) {
+
+  if (noSelecciona(materia)) {
+    print("HOLAAAAAA OAOFJBADOFJB")
+    indicarQueFaltanCompletarCampos();
+    return false;
+
+  } else if (noSelecciona(comision)) {
     indicarQueFaltanCompletarCampos();
     return false;
 
   } else if (cupoNoValido(cupo)) {
+    indicarQueFaltanCompletarCampos();
+    return false;
+
+  } else if (horasNoEstanSeleccionadas()) {
     indicarQueFaltanCompletarCampos();
     return false;
 

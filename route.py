@@ -33,25 +33,6 @@ def route(app):
         param={}
         return cronograma_pagina(param)
     
-    @app.route("/inscripciones")
-    def inscripciones():
-        
-        return inscripciones_pantalla()
-    
-    @app.route("/comisiones", methods=["GET","POST"])
-    def comisiones():
-        
-        miRequest={}
-        getRequest(miRequest)
-        return agregarComision(miRequest)
-    
-    @app.route("/materias", methods=["GET","POST"])
-    def materias():
-        
-        miRequest={}
-        getRequest(miRequest)
-        return agregarMateria(miRequest)
-    
     @app.route("/perfil")
     def perfil():
         
@@ -118,6 +99,31 @@ def route(app):
         '''  
         
         return paginaNoEncontrada(name)
+    
+    @app.route("/comisiones", methods=["GET","POST"])
+    def comisiones():
+        
+        miRequest={}
+        getRequest(miRequest)
+        return agregarComision(miRequest)
+    
+    @app.route("/materias", methods=["GET","POST"])
+    def materias():
+        
+        miRequest={}
+        getRequest(miRequest)
+        return agregarMateria(miRequest)
+    
+    @app.route("/inscripciones")
+    def inscripciones():
+        param = {}
+        return inscripciones_pantalla(param)
+    
+    @app.route('/recibir_materia_comision',methods = ["GET", "POST"])
+    def recibir_materia_comision():
+        miRequest={}
+        getRequest(miRequest)
+        return agregar_materia_comision(miRequest)
 
 
 
@@ -135,13 +141,6 @@ def route(app):
         '''
         param={}
         return True#actualizarDatosDeUsuarios(param,request)  
-
-    @app.route('/recibir_datos',methods = ["GET", "POST"])
-    def formrecibe():
-        diRequest={}
-        getRequest(diRequest)
-        upload_file(diRequest)
-        return  diRequest
     
     @app.route('/upload') 
     def  upload () : 

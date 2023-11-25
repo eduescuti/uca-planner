@@ -336,7 +336,7 @@ form {
 
 .tablath,
 .tablatr {
-  padding: 8px 15px;
+  padding: 8px 0px;
   border-bottom: 1px solid #b2b2b2;
 }
 
@@ -438,7 +438,7 @@ form {
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 400px) {
   img {
     margin-left: 20px;
   }

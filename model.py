@@ -185,3 +185,28 @@ def crearComision(di):
     val=(None, di.get('comision'), di.get('anio'), di.get('cuatrimestre'))
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
+
+def crear_materia_comision(di):
+    """ ### Agrega una materia_comision en la base de datos 
+    - Recibe un dicc con la información del form
+
+    - Retorna True si realiza con existo el insert, False caso contrario.
+    """
+
+    select_id_materia="""SELECT id FROM materias WHERE codigo=%s;"""
+    val_materias = (di.get('codigo'))
+    id_materia = selectDB(BASE, select_id_materia, val_materias)
+
+    select_id_comision="""SELECT id FROM comisiones WHERE nombre=%s;"""
+    val_comisiones = (di.get('comision'))
+    id_comision = selectDB(BASE, select_id_comision, val_comisiones)
+
+    sQuery=""" 
+        INSERT INTO materia_comision
+        (id, id_materia, id_comision, cupo)
+        VALUES
+        (%s,%s, %s, %s);
+    """
+    val=(None, id_materia[0], id_comision[0], di.get('cupo'))
+    resul_insert=insertDB(BASE,sQuery,val)
+    return resul_insert==1

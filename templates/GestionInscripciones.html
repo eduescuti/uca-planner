@@ -280,9 +280,9 @@
 
       <!-- Tengo que hacer un validar datos aca en el form, osea un onsubmit="return validarDatos()" -->
 
-      <form action="/" method="POST">
+      <form onsubmit="return validarDatos()" action="/recibir_materia_comision" method="POST">
         <label for="materia" class="materia">Seleccione la Materia:</label>
-        <select name="materia" class="materiaSelect" id="mat">
+        <select name="codigo" class="materiaSelect" id="mat">
           <option disabled selected>Seleccionar..</option>
 
           {% for mat in param["materias"][0:] %}
@@ -292,11 +292,12 @@
         </select>
 
         <label for="com" class="com">Seleccione la Comision de la materia:</label>
-        <select name="com" class="comisionSelect" id="comi">
+        <select name="comision" class="comisionSelect" id="comi">
           <option disabled selected>Seleccionar..</option>
 
           {% for comision in param["comisiones"][0:] %}
-          <option value="{{comision['nombre']}}">{{comision["nombre"]}} ({{comision["cuatri"]}}{{comision["tipo"]}}
+          <option value="{{comision['nombre']}}">{{comision["nombre"]}}
+            ({{comision["cuatri"]}}{{comision["tipo"]}}
             cuatri.
             {{comision["anio"]}})</option>
           {% endfor %}
@@ -326,7 +327,7 @@
               <th id="hora" class="tablath">Definir Horas:</th>
               <th id="hora" class="tablath">
                 <select id="horas-lun" name="horas-lun" title="Seleccione..." onclick="eliminarError('horas-lun')">
-                  <option value="0">Sin horario</option>
+                  <option value="Seleccionar..">Sin Horario</option>
                   <option value="1">07:45hs - 10:15hs</option>
                   <option value="2">10:15hs - 12:15hs</option>
                   <option value="3">11:30hs - 15:15hs</option>
@@ -339,7 +340,7 @@
               </th>
               <th id="hora" class="tablath">
                 <select id="horas-mar" name="horas-mar" title="Seleccione..." onclick="eliminarError('horas-mar')">
-                  <option value="0">Sin horario</option>
+                  <option value="Seleccionar..">Sin Horario</option>
                   <option value="1">07:45hs - 10:15hs</option>
                   <option value="2">10:15hs - 12:15hs</option>
                   <option value="3">11:30hs - 15:15hs</option>
@@ -352,7 +353,7 @@
               </th>
               <th id="hora" class="tablath">
                 <select id="horas-mie" name="horas-mie" title="Seleccione..." onclick="eliminarError('horas-mie')">
-                  <option value="0">Sin horario</option>
+                  <option value="Seleccionar..">Sin Horario</option>
                   <option value="1">07:45hs - 10:15hs</option>
                   <option value="2">10:15hs - 12:15hs</option>
                   <option value="3">11:30hs - 15:15hs</option>
@@ -365,7 +366,7 @@
               </th>
               <th id="hora" class="tablath">
                 <select id="horas-jue" name="horas-jue" title="Seleccione..." onclick="eliminarError('horas-jue')">
-                  <option value="0">Sin horario</option>
+                  <option value="Seleccionar..">Sin Horario</option>
                   <option value="1">07:45hs - 10:15hs</option>
                   <option value="2">10:15hs - 12:15hs</option>
                   <option value="3">11:30hs - 15:15hs</option>
@@ -378,7 +379,7 @@
               </th>
               <th id="hora" class="tablath">
                 <select id="horas-vie" name="horas-vie" title="Seleccione..." onclick="eliminarError('horas-vie')">
-                  <option value="0">Sin horario</option>
+                  <option value="Seleccionar..">Sin Horario</option>
                   <option value="1">07:45hs - 10:15hs</option>
                   <option value="2">10:15hs - 12:15hs</option>
                   <option value="3">11:30hs - 15:15hs</option>

@@ -42,6 +42,8 @@ def obtenerMenuBottom(param, idActivo="mnub01"):
     # Activar el id 
     param["menubottom"].get(idActivo)["class"]="active"
 
+def obtenerMensajeError(param):
+    param["mensaje error"] = "No se pudo cargar la materia, porfavor intente denuevo.."
 
 ##########################################################################
 # + + I N I C I O + + MANEJO DE  REQUEST + + + + + + + + + + + + + + + + +
@@ -254,11 +256,10 @@ def perfil_pagina(param):
     
     return res
 
-def inscripciones_pantalla():
-    param = {}
+def inscripciones_pantalla(param):
+
     obtenerMaterias(param)
     obtenerComisiones(param)
-    #print(param)
 
     if haySesion():
 
@@ -383,38 +384,6 @@ def editarPerfil(miRequest):
 # + + I N I C I O + +  OTRAS PAGINAS     + + + + + + + + + + + + + + + + +
 ##########################################################################
 
-
-def pagina01(param):  
-    ''' Info:
-        Carga la pagina 01
-        Retorna la pagina 01, si hay sesion; sino retorna la home.
-    '''
-    if haySesion():       # hay session?            
-        # Confecciona la pagina en cuestion
-        obtenerMenuBottom(param)  
-        param['page-header']="Pagina 01, Acceso con logeo"
-        #obtenerTablaProducto(param)
-        res= render_template('pagina01.html',param=param)
-    else:
-        res= redirect('/')   # redirigir al home o a la pagina del login
-    return res  
-    
-
-def pagina02(param):  
-    ''' Info:
-        Carga la pagina 02
-        Retorna la pagina 02, si hay sesion; sino retorna la home.
-    '''
-    if haySesion():   # hay session?
-        # Confecciona la pagina en cuestion
-        obtenerMenuBottom(param)  
-        param['page-header']="Pagina 02, Acceso con logeo"
-        res= render_template('home.html',param=param)
-    else:
-        res= redirect('/') # redirigir al home o a la pagina del login
-    return res 
-       
-
 def paginaNoEncontrada(name):
     ''' Info:
       Retorna una pagina generica indicando que la ruta 'name' no existe
@@ -423,7 +392,6 @@ def paginaNoEncontrada(name):
     res+='<a href="{}">{}</a>'.format("/","Home")
     
     return res
-
 
 ##########################################################################
 # - - F I N - -   OTRAS PAGINAS    - - - - - - - - - - - - - - - - - - - -
@@ -444,7 +412,7 @@ def agregarMateria(miRequest):
 
             """ else:
                 res=render_template('Materias.html',mensaje="No se pudo agregar esta materia, porfavor ingrese denuevo.")
-                 
+                
                 Si quiero hacer ese mensaje debería modificar todo el AgregarMateria, desde la route
                    """
     else:
@@ -466,6 +434,28 @@ def agregarComision(miRequest):
 
             """ else:
                 res=render_template('Comisiones.html',mensaje="No se pudo agregar la comisión, porfavor ingrese denuevo.") """
+    else:
+        res = redirect('/')
+
+    return res
+
+def agregar_materia_comision(miRequest):
+    """ Agrega una materia_comision a la base de datos
+    (La materia_comision incluye la materia, comision, cupo y horarios).
+    
+    Recibe el request del form de la página.
+    """
+    param = {}
+
+    if haySesion():
+
+        if (session["rol"] == "admin"):
+
+            if crear_materia_comision(miRequest):
+                res = inscripciones_pantalla(param)
+            else:
+                obtenerMensajeError(param)
+                res = inscripciones_pantalla(param)
     else:
         res = redirect('/')
 
