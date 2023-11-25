@@ -3,21 +3,35 @@
 '''
 from _mysql_db import *
 
-def obtenerMaterias():
+def obtenerMaterias(dic):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
     las materias y el codigo de las mismas.
     '''
-    dic = {}
     sQuery="""SELECT nombre, codigo FROM materias;"""
     lista = selectDB(BASE, sQuery)
     dic["materias"] = []
     for materia in lista:
         nombre, codigo = materia
         dic["materias"].append({"nombre":nombre, "codigo":codigo })
-        
-    print(dic)
-    return dic
 
+
+def obtenerComisiones(dic):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    todos los datos de las comisiones.
+    '''
+    sQuery="""SELECT nombre, año, cuatrimestre FROM comisiones;"""
+    lista = selectDB(BASE, sQuery)
+    dic["comisiones"] = []
+
+    for comision in lista:
+        nombre, anio, cuatri = comision
+
+        if (cuatri == 1):
+            dic["comisiones"].append({"nombre":nombre, "anio":anio, "cuatri":cuatri, "tipo": "er"})
+        else:
+            dic["comisiones"].append({"nombre":nombre, "anio":anio, "cuatri":cuatri, "tipo": "do"})
+
+        """ Este if es para indicar el tipo de cuatrimestre luego en pantalla. (1er/2do cuatri) """
     
 
 def crearUsuario(di):

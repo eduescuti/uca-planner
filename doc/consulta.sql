@@ -15,4 +15,6 @@ UPDATE usuario SET rol="admin" WHERE usuario="mariano"
 
 SELECT nombre, codigo FROM materias;
 
+SELECT nombre FROM comisiones;
+
 /* Esto de arriba ya no funciona mas, porque borre la base de datos "base_prueba" */

@@ -255,7 +255,10 @@ def perfil_pagina(param):
     return res
 
 def inscripciones_pantalla():
-    param = obtenerMaterias()
+    param = {}
+    obtenerMaterias(param)
+    obtenerComisiones(param)
+    #print(param)
 
     if haySesion():
 

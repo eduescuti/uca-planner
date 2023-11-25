@@ -50,9 +50,9 @@ summary {
 }
 
 details {
-  cursor: pointer;
   width: inherit;
   margin-left: 0;
+  cursor: pointer;
 }
 
 /* COLUMNAS */
@@ -64,23 +64,19 @@ details {
 
 
 
-/* 1-- */
+/* COLUMNA 1 (Donde se marca el inicio y fin de la inscripcion) */
 .col-1 {
   float: left;
   height: 350px;
   display: grid;
   grid-template-columns: 30% auto;
-  justify-content: stretch;
 
   width: 20%;
   background: rgba(139, 123, 123, 0.12);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(3.2px);
-  -webkit-backdrop-filter: blur(3.2px);
   border: 1px solid rgba(139, 123, 123, 0.31);
   padding: 10px;
-  margin-bottom: 10px;
 }
 
 .cierre-ins {
@@ -143,7 +139,7 @@ details {
   margin-top: 0;
 }
 
-/* 2-- */
+/* COLUMNA 2 (Donde se agregarán las materias, comisiones, el cupo...) */
 .col-2 {
   float: left;
   width: 79%;
@@ -153,11 +149,8 @@ details {
   background: rgba(139, 123, 123, 0.12);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(3.2px);
-  -webkit-backdrop-filter: blur(3.2px);
   border: 1px solid rgba(139, 123, 123, 0.31);
   padding: 10px;
-  margin-bottom: 10px;
 }
 
 
@@ -207,12 +200,12 @@ tbody tr.hide{
   transform: translateX(100%);
 } */
 
+
 thead {
   padding: 8px 15px;
   background-color: rgb(5, 17, 82);
   color: white;
   text-align: center;
-
 }
 
 th {
@@ -258,123 +251,80 @@ tbody:hover {
   color: white;
   margin-top: 10px;
   padding: 5px;
+  cursor: pointer;
 }
 
 #ventana_1 {
   display: none;
   width: inherit;
   position: absolute;
-  height: 600px;
   /* background-color: gray; */
 }
 
 #ventana {
   margin: auto;
   max-width: 80%;
-  height: 100%;
   border-radius: 10px;
   border: double;
 
-  display: grid;
-
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 10% 15% 15% 15% 45%;
-
   background-color: #eae8e8;
-  color: black;
 }
 
-#cerrar1 {
-  grid-column: 2/3;
-  margin-left: 90%;
-  margin-top: 10px;
-  padding: 0;
-
-  height: 15px;
-  width: 15px;
-
+#cerrar {
+  padding: 2px;
   text-align: center;
-  justify-content: center;
   font-weight: bold;
+  float: right;
+  cursor: pointer;
 }
+
+/* Este añadir clase seguro cambie, porque ahora va a ser un input */
+
+/* FORM ------ VER QUE ONDA ESTOS CSS (porque se ven mal) */
 
 #añadirClase {
-  grid-column: 1/3;
-  grid-row: 5/6;
-
-  height: 40px;
+  height: 35px;
   width: 100px;
-  padding: 0;
-  margin: auto;
-  margin-top: inherit;
   margin-bottom: 10px;
   border-radius: 15px;
-}
-
-.materia1 {
-  grid-column: 1/2;
-  grid-row: 2/3;
-  text-align: left;
-  margin-left: 40px;
-  padding: 0;
+  cursor: pointer;
 }
 
 select {
-  grid-column: 2/3;
-  grid-row: 2/3;
-  height: 25px;
-  width: 75%;
-}
-
-.com {
-  grid-column: 1/2;
-  grid-row: 3/4;
-  text-align: left;
-  margin-left: 40px;
-
-}
-
-.comisionSelect {
-  grid-row: 3/4;
-  grid-column: 2/3;
-  height: 25px;
-  width: 75%;
+  width: 80%;
+  display: block;
+  margin-left: 10px;
 }
 
 #cupo {
-  grid-row: 4/5;
-  grid-column: 2/3;
-  height: 25px;
+  display: block;
+  margin-left: 10px;
   width: 75%;
 }
 
-#errorcupo{
-  color: red;
-  grid-row: 4/5;
-  grid-column: 1/3;
-  height: 15px;
-  text-align: center;
-  margin-bottom: 0;
-  margin-top: 50px;
+.materia,
+.com,
+.cup,
+.hor {
+  margin-left: 10px;
 }
 
-.cup {
-  grid-row: 4/5;
-  grid-column: 1/2;
-  text-align: left;
-  margin-left: 40px;
-
-}
-
-.divHoras {
-  display: block;
+#mat,
+#comi,
+#cupo {
+  padding: 5px;
   width: 100%;
-  grid-column: 1/3;
-  grid-row: 5/6;
 }
 
-.divHoras>table {
-  width: 90%;
+form {
+  line-height: 2;
+  padding: 40px;
+}
+
+#errorcupo {
+  color: red;
+  text-align: center;
+  font-size: small;
 }
 
 .tablaHoraHead {
@@ -393,19 +343,13 @@ select {
 #hora {
   width: 150px;
 }
-#errorhoras{
+
+#errorhoras {
   color: red;
-  grid-row: 5/6;
-  grid-column: 1/3;
-  height: 15px;
   text-align: center;
-  margin-bottom: 0;
-  margin-top:30px;
+  font-size: small;
 }
 
-.divHoras>h3 {
-  text-align: center;
-}
 
 @media screen and (max-width: 800px) {
 
@@ -415,7 +359,8 @@ select {
   }
 
   .materia,
-  .comi {
+  .com,
+  .cup {
     font-size: small;
   }
 }
@@ -427,37 +372,6 @@ select {
   margin: auto;
   padding: 10px;
   justify-content: stretch;
-}
-
-.materia,
-.comi {
-  grid-column: 1/2;
-  margin-left: 5px;
-  justify-content: stretch;
-  padding: 5px;
-
-}
-
-#materia,
-#comision {
-  grid-column: 2/3;
-  width: 80%;
-  height: 15px;
-  margin: auto;
-  margin-top: 5px;
-}
-
-
-#cerrar {
-  grid-column: 1/3;
-  margin: auto;
-  margin-top: 15px;
-}
-
-
-label {
-  padding-right: 10px;
-  font-size: 1rem;
 }
 
 

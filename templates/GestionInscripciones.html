@@ -276,32 +276,39 @@
 
   <div id="ventana_1">
     <div id="ventana">
-      <button id="cerrar1" onclick="cerrar()"> x </button>
+      <button id="cerrar" onclick="cerrar()"> x </button>
+
+      <!-- Tengo que hacer un validar datos aca en el form, osea un onsubmit="return validarDatos()" -->
+
+      <form action="/" method="POST">
+        <label for="materia" class="materia">Seleccione la Materia:</label>
+        <select name="materia" class="materiaSelect" id="mat">
+          <option disabled selected>Seleccionar..</option>
+
+          {% for mat in param["materias"][0:] %}
+          <option value="{{mat['codigo']}}">{{mat["nombre"]}} ({{mat["codigo"]}})</option>
+          {% endfor %}
+
+        </select>
+
+        <label for="com" class="com">Seleccione la Comision de la materia:</label>
+        <select name="com" class="comisionSelect" id="comi">
+          <option disabled selected>Seleccionar..</option>
+
+          {% for comision in param["comisiones"][0:] %}
+          <option value="{{comision['nombre']}}">{{comision["nombre"]}} ({{comision["cuatri"]}}{{comision["tipo"]}}
+            cuatri.
+            {{comision["anio"]}})</option>
+          {% endfor %}
+
+        </select>
+
+        <label for="cupo" class="cup">Ingrese un cupo máximo para el Curso:</label>
+        <input type="number" name="cupo" id="cupo" min=1 placeholder="Ingrese un cupo.." onfocusout="validarCupo()">
+        <p class="error" id="errorcupo"></p>
 
 
-      <label for="materia" class="materia1">Seleccione la Materia:</label>
-      <select name="materia" class="materiaSelect" id="mat">
-        <option disabled selected>Seleccionar..</option>
-        {% for mat in param["materias"][0:] %}
-        <option value="{{mat['nombre']}}">{{mat["nombre"]}}</option>
-        {% endfor %}
-      </select>
-
-      <label for="com" class="com">Seleccione la Comision de la materia:</label>
-      <select name="com" class="comisionSelect" id="comi">
-        <option disabled selected>Seleccionar..</option>
-        <option value="AM">AM</option>
-        <option value="BM">BM</option>
-        <option value="WS">WS</option>
-        <option value="OP">OP</option>
-      </select>
-
-      <label for="cupo" class="cup">Ingrese un cupo máximo para el Curso:</label>
-      <input type="number" name="cupo" id="cupo" min=1 placeholder="Ingrese un cupo.." onfocusout="validarCupo()">
-      <p class="error" id="errorcupo"></p>
-
-      <div class="divHoras">
-        <h3>Seleccione las horas del Curso:</h3>
+        <h4 class="hor">Seleccione las horas del Curso:</h4>
         <table class="tablaHora">
           <thead class="tablaHoraHead">
             <tr class="tablatr">
@@ -387,8 +394,11 @@
         </table>
         <p class="error" id="errorhoras">*Recuerde que debe ingresar un rango de horas de al menos un día
         </p>
-      </div>
-      <button type="button" id="añadirClase" onclick="agregarFila();"> Añadir </button>
+        <input type="submit" id="añadirClase" onclick="agregarFila();" value="Añadir"></button>
+
+        <!-- Creo que hay que sacar el "onclick='agregarFila()'" porque no se puede enviar el form sino -->
+
+      </form>
 
 
     </div>
