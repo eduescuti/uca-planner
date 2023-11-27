@@ -240,30 +240,14 @@
               </tr>
             </thead>
             <tbody>
+              {% for materia in param["materias"][0:] %}
               <tr>
                 <td>10/50</td>
                 <td>AM</td>
-                <td>Complementos de Matemática</td>
-                <td>134</td>
+                <td>{{materia.nombre}}</td>
+                <td>{{materia.codigo}}</td>
               </tr>
-              <tr>
-                <td>25/30</td>
-                <td>BM</td>
-                <td>Filosofía</td>
-                <td>345</td>
-              </tr>
-              <tr>
-                <td>30/30</td>
-                <td>BM</td>
-                <td>Complementos de Matemática</td>
-                <td>134</td>
-              </tr>
-              <tr>
-                <td>40/45</td>
-                <td>BM</td>
-                <td>Cálculo Elemental</td>
-                <td>225</td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
           <!-- AGREGAR MATERIA -->
