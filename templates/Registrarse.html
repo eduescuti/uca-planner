@@ -26,7 +26,7 @@
 
 
     <div class="contenedor">
-        <form onsubmit="return validarDatos()" action="/signup" method="post">
+        <form onsubmit="return validarDatos()" action="/signup" method="post" id="formRegistro">
 
             <label for="usuario">Nombre de Usuario:</label>
             <input type="text" name="usuario" id="usuario" placeholder="Usuario.." onfocusout="validarUsuario()">
@@ -80,7 +80,7 @@
 
             <p class="error" id="error incompleto"></p>
 
-            <input type="submit" value="Registrarse">
+            <input type="submit" value="Registrarse" onsubmit="queryAjaxForm('Registrarse.html','d_00','formRegistro')"> 
 
         </form>
     </div>
@@ -90,7 +90,9 @@
         <p> uca_planner@uca.edu.com | Teléfono: 15-4627-9873</p>
     </div>
 
-    <script language="javascript" type="text/javascript" src="../static/js/Registrarse.js"></script>
+    <div id="d_00"></div>
+
+    <script language="javascript" type="text/javascript" src="../static/js/Registrarse.js" src="../static/js/ajax.js"></script>
 
 </body>
 
