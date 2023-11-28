@@ -366,12 +366,13 @@
 
           *el error estaba en que un id estaba cambiado (emoji de calavera)
 
-          - AHORA FALTA AGREGAR LA MATERIA COMISION EN LA TABLA
+          - AHORA FALTA AGREGAR LA MATERIA COMISION EN LA TABLA DE LA PANTALLA
+
+          - Y TAMBIEN ASIGNAR LA "hora_mat_com" A LA TABLA "inscripciones"
         
         -->
 
       </form>
-
 
     </div>
   </div>
@@ -383,7 +384,7 @@
     <h3>Las inscripciones sirven para poder administrar las inscripciones de los alumnos en cada cuatrimestre
     </h3>
     <p>Para poder agregar una nueva Inscripcion, las fechas deben ser del mismo año y distinto mes:</p>
-    <form onsubmit="return validarDatos()" action="/action_page.php" id="nueva-ins">
+    <form action="/action_page.php" id="nueva-ins">
       <label for="cuatrimestre">Asigne el cuatrimestre de la Inscripción:</label>
       <select id="cuatrimestre" name="cuatrimestre" title="Seleccionar...">
         <option value="0" disabled selected>Seleccionar..</option>
@@ -397,7 +398,7 @@
       <label for="finInscripcion">Fin de Inscripción</label>
       <input type="date" name="finInscripcion" id="finInscripcion">
 
-      <input type="submit" id="inscripcion" value="Agregar Inscripción">
+      <input type="submit" value="Agregar Inscripción">
 
     </form>
   </div> -->

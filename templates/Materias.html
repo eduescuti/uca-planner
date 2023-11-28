@@ -35,7 +35,7 @@
         <div class="rightcolumn">
             <div class="card" id="contenedor">
                 <h2>Agregar una Materia</h2>
-                <form onsubmit="return validarDatos()" method="POST">
+                <form onsubmit="return validarDatos()" action="/agregar_materia" method="POST">
 
                     <label for="nombre">Nombre de Materia:</label>
                     <input type="text" name="nombre" id="nombre" placeholder="Ingrese un nombre.."
@@ -47,7 +47,9 @@
                         onfocusout="validarCodigo()">
                     <p class="error" id="error codigo"></p>
 
-                    <p class="error" id="error incompleto">{{mensaje}}</p>
+                    {% if param["estado"] == "carga fallida" %}
+                    <p class="error" id="error incompleto">{{param["error"]["error materia"]}}</p>
+                    {% endif %}
 
                     <input type="submit" value="Agregar Materia">
 

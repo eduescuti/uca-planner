@@ -35,7 +35,7 @@
         <div class="rightcolumn">
             <div class="card" id="contenedor">
                 <h2>Agregar una Comisión</h2>
-                <form onsubmit="return validarDatos()" method="get">
+                <form onsubmit="return validarDatos()" action="/agregar_comision" method="get">
                     <label for="comision">Nombre de Comisión:</label>
                     <input type="text" name="comision" id="comision" placeholder="Ingrese la comisión.."
                         onfocusout="validarNombre()">

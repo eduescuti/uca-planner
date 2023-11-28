@@ -100,23 +100,39 @@ def route(app):
         
         return paginaNoEncontrada(name)
     
-    @app.route("/comisiones", methods=["GET","POST"])
+    @app.route("/comisiones")
     def comisiones():
+        
+        param={}
+        obtenerMensajeError(param)
+        return comisiones_pantalla(param)
+    
+    @app.route("/agregar_comision", methods=["GET","POST"])
+    def agregar_comision():
         
         miRequest={}
         getRequest(miRequest)
         return agregarComision(miRequest)
-    
-    @app.route("/materias", methods=["GET","POST"])
+
+    @app.route("/materias")
     def materias():
+        
+        param={}
+        obtenerMensajeError(param)
+        return materias_pantalla(param)
+    
+    @app.route("/agregar_materia", methods=["GET","POST"])
+    def agregar_materia():
         
         miRequest={}
         getRequest(miRequest)
         return agregarMateria(miRequest)
-    
+
+
     @app.route("/inscripciones")
     def inscripciones():
         param = {}
+        obtenerMensajeError(param)
         return inscripciones_pantalla(param)
     
     @app.route('/recibir_materia_comision',methods = ["GET", "POST"])

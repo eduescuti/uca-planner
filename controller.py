@@ -41,8 +41,14 @@ def obtenerMenuBottom(param, idActivo="mnub01"):
     # Activar el id 
     param["menubottom"].get(idActivo)["class"]="active"
 
-def obtenerMensajeError(param):
-    param["mensaje error"] = "No se pudo cargar la materia, porfavor intente denuevo.."
+def obtenerMensajeError(param, estado="carga exitosa"):
+    param["error"] = {
+        "error materia" : "No se pudo cargar la materia, porfavor intente denuevo..",
+        "error comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
+        "error inscripcion" : {"curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo.."}
+        }
+    
+    param["estado"] = estado
 
 ##########################################################################
 # + + I N I C I O + + MANEJO DE  REQUEST + + + + + + + + + + + + + + + + +
@@ -233,12 +239,9 @@ def cronograma_pagina(param):
 
     if haySesion():
         if (session["rol"] == "alumno"):
-            res = render_template("OrganizadorDeHorarios.html", param=param)
-        else:
-            res = redirect('/')
-    else:
-        res = render_template("Visualizador.html", param=param)
-    return res
+            return render_template("OrganizadorDeHorarios.html", param=param)
+    
+    return render_template("Visualizador.html", param=param)
 
 def perfil_pagina(param):
     """Dependiendo de si hay sesión iniciada o no, devuelve la página
@@ -246,15 +249,14 @@ def perfil_pagina(param):
     una página no encontrada como mensaje.
     """
     obtenerInformacionPerfil(param)
-    res = redirect('/')
 
     if haySesion():
         if (session['rol'] == 'alumno'):
-            res = render_template("Usuario.html", param=param)
+            return render_template("Usuario.html", param=param)
         else:
-            res = render_template("Administrador.html", param=param)
+            return render_template("Administrador.html", param=param)
     
-    return res
+    return redirect('/')
 
 def inscripciones_pantalla(param):
 
@@ -266,6 +268,28 @@ def inscripciones_pantalla(param):
 
         if (session["rol"] == "admin"):
             return render_template("GestionInscripciones.html", param=param)
+        
+    return redirect('/')
+
+def materias_pantalla(param):
+
+    obtenerMaterias(param)
+    
+    if haySesion():
+
+        if (session["rol"] == "admin"):
+            return render_template("Materias.html", param=param)
+        
+    return redirect('/')
+
+def comisiones_pantalla(param):
+
+    obtenerComisiones(param)
+    
+    if haySesion():
+
+        if (session["rol"] == "admin"):
+            return render_template("Comisiones.html", param=param)
         
     return redirect('/')
 
@@ -402,23 +426,22 @@ def agregarMateria(miRequest):
     """ Agrega una materia a la base de datos.
     Recibe el request del form de la página.
     """
-    param={}
-    obtenerMaterias(param)
-    res = render_template("Materias.html", param=param)
-    
+    param={}    
     if haySesion():
 
         if (session["rol"] == "admin"):
 
             if crearMateria(miRequest):
-                obtenerMaterias(param)
-                res=render_template('Materias.html', param=param)
+                res = redirect('/materias')
+            else:
+                estado = "carga fallida"
+                obtenerMensajeError(param, estado)
+                res = materias_pantalla(param)
 
-            """ else:
-                res=render_template('Materias.html',mensaje="No se pudo agregar esta materia, porfavor ingrese denuevo.")
-                
-                Si quiero hacer ese mensaje debería modificar todo el AgregarMateria, desde la route
-                   """
+                """ De momento, NO recibe error dado que no realizo la validacion del dato ingresado
+                con respecto a la Base de Datos.
+                """
+
     else:
         res = redirect('/')
     return res
@@ -428,22 +451,19 @@ def agregarComision(miRequest):
     Recibe el request del form de la página.
        """
     param={}
-    obtenerComisiones(param)
-    res = render_template("Comisiones.html", param=param)
-
     if haySesion():
 
         if (session["rol"] == "admin"):
 
             if crearComision(miRequest):
-                obtenerComisiones(param)
-                res = render_template('Comisiones.html')
+                res = redirect('/comisiones')
 
-            """ else:
-                res=render_template('Comisiones.html',mensaje="No se pudo agregar la comisión, porfavor ingrese denuevo.") """
+            else:
+                estado = "carga fallida"
+                obtenerMensajeError(param, estado)
+                res = comisiones_pantalla(param)
     else:
         res = redirect('/')
-
     return res
 
 def agregar_materia_comision(miRequest):
@@ -452,17 +472,18 @@ def agregar_materia_comision(miRequest):
     
     Recibe el request del form de la página.
     """
-    param = {}
-
+    param={}
     if haySesion():
 
         if (session["rol"] == "admin"):
             
             if crear_materia_comision(miRequest):
-                res = inscripciones_pantalla(param)
+                res = redirect("/inscripciones")
             else:
-                obtenerMensajeError(param)
-                res = inscripciones_pantalla(param)
+                estado = "carga fallida"
+                obtenerMensajeError(param, estado)
+                res = inscripciones_pantalla(param) 
+                
     else:
         res = redirect('/')
 
