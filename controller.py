@@ -16,7 +16,6 @@ def obtenerInformacionPerfil(param):
     param["email"] = session['email']
     param["rol"] = session['rol']
 
-
 def obtenerMenuBottom(param, idActivo="mnub01"):
     '''info:
     Carga el dict 'param' con las datos de un menu
@@ -52,6 +51,7 @@ def obtenerMensajeError(param):
 def getRequest(diccionario):
     """
         Actualiza el diccionario ingresado por parámetro con los datos del form 
+        Los guarda con { "name" : "value" } (siendo name y value los atributos de las etiquetas en el HTML)
     """
     if request.method=='POST':
         for name in request.form.to_dict().keys():
@@ -260,6 +260,7 @@ def inscripciones_pantalla(param):
 
     obtenerMaterias(param)
     obtenerComisiones(param)
+    obtenerHorarios(param)
 
     if haySesion():
 
@@ -304,7 +305,8 @@ def registrarUsuario(param, miRequest):
       retorna la pagina del login, para forzar a que el usuario realice el login con
       el usuario creado.
     '''
-    
+    obtenerMenuBottom(param)
+
     if crearUsuario(miRequest):
         param['succes_msg_login']="Se ha creado el usuario con exito"
         cerrarSesion()           # Cierra sesion existente(si la hubiere)
@@ -313,7 +315,6 @@ def registrarUsuario(param, miRequest):
         param['error_msg_register']="Error: No se ha podido crear el usuario"
         res=register_pagina(param)
 
-    obtenerMenuBottom(param)
     return res 
 
 def editarPerfil_pagina(param):
@@ -450,7 +451,7 @@ def agregar_materia_comision(miRequest):
     if haySesion():
 
         if (session["rol"] == "admin"):
-
+            
             if crear_materia_comision(miRequest):
                 res = inscripciones_pantalla(param)
             else:

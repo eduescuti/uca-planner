@@ -48,7 +48,7 @@ function eliminarError(id) {
 }
 
 function noSelecciona(campo) {
-  return (campo == 'Seleccionar..')
+  return (campo == "")
 }
 
 function cupoNoValido(cupo) {
@@ -70,7 +70,7 @@ function horasNoEstanSeleccionadas() {
 }
 
 function indicarQueFaltanCompletarCampos() {
-  document.getElementById("error incompleto").innerHTML = "*Debe completar todos los campos";
+  document.getElementById("errorhoras").innerHTML = "*Debe completar todos los campos";
 }
 
 function validarCupo() {
@@ -88,9 +88,7 @@ function validarDatos() {
   var comision = document.getElementById("comi").value;
   var cupo = document.getElementById("cupo").value;
 
-
   if (noSelecciona(materia)) {
-    print("HOLAAAAAA OAOFJBADOFJB")
     indicarQueFaltanCompletarCampos();
     return false;
 

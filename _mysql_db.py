@@ -84,7 +84,7 @@ def ejecutarDB(mydb,sQuery="",val=None):
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 def selectDB(configDB=None,sql="",val=None,title=False):
-    """ ### SELECT
+    """ ### SELECT (devuelve una Lista)
     Recibe 'configDB' un 'dict' con los parámetros de conexion, 
     'sql' una cadena con la consulta sql,
     'val' valores separados anti sql injection y 
@@ -147,4 +147,9 @@ def deleteDB(configDB=None,sql="",val=None):
 BASE={ "host":"localhost",
         "user":"root",
         "pass":"",
-        "dbname":"baseuca"}
+        "dbname":"base_prueba"}
+
+""" PUSE EN "dbname" una base_prueba para realizar pruebas de la base de datos
+
+    (Basicamente copie y pegue la base de datos que tenia antes)
+"""

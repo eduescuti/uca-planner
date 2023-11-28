@@ -26,7 +26,7 @@
 
 
     <div class="contenedor">
-        <form onsubmit="return validarDatos()" action="/signup" method="post" id="formRegistro">
+        <form onsubmit="return validarDatos()" action="/signup" method="post">
 
             <label for="usuario">Nombre de Usuario:</label>
             <input type="text" name="usuario" id="usuario" placeholder="Usuario.." onfocusout="validarUsuario()">
@@ -75,12 +75,12 @@
                 <input type="radio" id="sede4" name="unaSede" value="Rosario">
             </fieldset> 
         
-            Esto era un agregado, pero de momento no cumple ni una funcionalidad
+            Esto era un agregado, pero de momento no cumple una funcionalidad
         -->
 
             <p class="error" id="error incompleto"></p>
 
-            <input type="submit" value="Registrarse" onsubmit="queryAjaxForm('Registrarse.html','d_00','formRegistro')"> 
+            <input type="submit" value="Registrarse">
 
         </form>
     </div>
@@ -90,9 +90,7 @@
         <p> uca_planner@uca.edu.com | Teléfono: 15-4627-9873</p>
     </div>
 
-    <div id="d_00"></div>
-
-    <script language="javascript" type="text/javascript" src="../static/js/Registrarse.js" src="../static/js/ajax.js"></script>
+    <script language="javascript" type="text/javascript" src="../static/js/Registrarse.js"></script>
 
 </body>
 

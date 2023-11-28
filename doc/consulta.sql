@@ -41,5 +41,14 @@ INSERT INTO horas (hora) VALUES ("17:15hs - 19:00hs");
 INSERT INTO horas (hora) VALUES ("19:00hs - 21:00hs");
 
 
+SELECT * FROM hora_mat_com;
+ALTER TABLE horario_mat RENAME TO hora_mat_com;
 
+SELECT id FROM materias WHERE codigo=450;
 
+SELECT *
+FROM usuario
+ORDER BY id DESC
+LIMIT 1;
+
+use base_prueba;
