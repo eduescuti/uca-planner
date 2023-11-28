@@ -402,14 +402,17 @@ def agregarMateria(miRequest):
     """ Agrega una materia a la base de datos.
     Recibe el request del form de la página.
     """
-    res = render_template("Materias.html")
+    param={}
+    obtenerMaterias(param)
+    res = render_template("Materias.html", param=param)
     
     if haySesion():
 
         if (session["rol"] == "admin"):
 
             if crearMateria(miRequest):
-                res=render_template('Materias.html')
+                obtenerMaterias(param)
+                res=render_template('Materias.html', param=param)
 
             """ else:
                 res=render_template('Materias.html',mensaje="No se pudo agregar esta materia, porfavor ingrese denuevo.")
@@ -424,13 +427,16 @@ def agregarComision(miRequest):
     """ Agrega una comision a la base de datos.
     Recibe el request del form de la página.
        """
-    res = render_template("Comisiones.html")
+    param={}
+    obtenerComisiones(param)
+    res = render_template("Comisiones.html", param=param)
 
     if haySesion():
 
         if (session["rol"] == "admin"):
 
             if crearComision(miRequest):
+                obtenerComisiones(param)
                 res = render_template('Comisiones.html')
 
             """ else:

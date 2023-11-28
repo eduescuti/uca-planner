@@ -20,16 +20,12 @@
         <div class="leftcolumn">
             <div class="card">
                 <h4 class="titulo">Comisiones Cargadas</h4>
-                <label for="com" class="com">Comisiones:</label>
-                <select name="com" class="comisionSelect">
-                    <option>AM</option>
-                    <option>BM</option>
-                    <option>WS</option>
-                    <option>OP</option>
+                <select name="com" class="comisionSelect" multiple>
+                    {% for comision in param["comisiones"][0:] %}
+                    <option value="{{comision['nombre']}}">{{comision["nombre"]}}
+                        ({{comision["cuatri"]}}{{comision["tipo"]}} cuatri. {{comision["anio"]}})</option>
+                    {% endfor %}
                 </select>
-                <form action="/action_page.php">
-                    <!-- Acá irían las materias, y NO sería el select de arriba -->
-                </form>
             </div>
             <div class="card">
                 <a href="/comisiones" class="boton">Agregar Comisión</a>

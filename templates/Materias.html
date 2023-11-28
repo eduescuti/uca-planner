@@ -20,16 +20,12 @@
         <div class="leftcolumn">
             <div class="card">
                 <h4 class="titulo">Materias Cargadas</h4>
-                <label for="materia" class="materia">Materias:</label>
-                <select name="materia" class="materiaSelect">
-                    <option>Filosofía</option>
-                    <option>Complementos de Matemática</option>
-                    <option>Introducción a Ingeniería</option>
-                    <option>Representación Gráfica</option>
+                <select name="materia" class="materiaSelect" multiple>
+                    {% for mat in param["materias"][0:] %}
+                    <option value="{{mat['codigo']}}">{{mat["nombre"]}} ({{mat["codigo"]}})</option>
+                    {% endfor %}
                 </select>
-                <form action="/url?">
-                    <!-- Acá irían las materias, y NO sería el select de arriba -->
-                </form>
+
             </div>
             <div class="card">
                 <a href="/materias" class="boton">Agregar Materia</a>
