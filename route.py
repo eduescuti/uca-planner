@@ -135,6 +135,18 @@ def route(app):
         obtenerMensajeError(param)
         return inscripciones_pantalla(param)
     
+    @app.route("/agregar_inscripcion")
+    def agregar_inscripciones():
+        miRequest={}
+        getRequest(miRequest)
+        return agregarInscripcion(miRequest)
+    
+    @app.route("/gestion_inscripciones")
+    def gestion_inscripciones():
+        param = {}
+        obtenerMensajeError(param)
+        return gestion_inscripciones_pantalla(param)
+
     @app.route('/recibir_materia_comision',methods = ["GET", "POST"])
     def recibir_materia_comision():
         miRequest={}

@@ -52,3 +52,8 @@ ORDER BY id DESC
 LIMIT 1;
 
 use base_prueba;
+
+SELECT COUNT(*) AS cantidad FROM hora_mat_com;
+
+SELECT DISTINCT año FROM comisiones;
+

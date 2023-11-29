@@ -35,20 +35,68 @@ def obtenerComisiones(dic):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
     todos los datos de las comisiones.
     '''
-    sQuery="""SELECT nombre, año, cuatrimestre FROM comisiones;"""
+    sQuery="""SELECT * FROM comisiones;"""
     lista = selectDB(BASE, sQuery)
     dic["comisiones"] = []
 
     for comision in lista:
-        nombre, anio, cuatri = comision
+        id, nombre = comision
+        dic["comisiones"].append({"id":id, "nombre":nombre})
 
-        if (cuatri == 1):
-            dic["comisiones"].append({"nombre":nombre, "anio":anio, "cuatri":cuatri, "tipo": "er"})
-        else:
-            dic["comisiones"].append({"nombre":nombre, "anio":anio, "cuatri":cuatri, "tipo": "do"})
-
-        """ Este if es para indicar el tipo de cuatrimestre luego en pantalla. (1er/2do cuatri) """
     
+def obtenerInfoTablaInscripciones(dic):
+    select_inscripcion = """SELECT * FROM inscripciones;"""
+    inscripciones = selectDB(BASE, select_inscripcion)
+    """ [(id, estado, id_hora_mat, id_usuario), ...] """
+
+    select_hora_mat_com = """SELECT * FROM hora_mat_com;"""
+    hora_mat_com = selectDB(BASE, select_hora_mat_com)
+    """ (id, id_com_mat, id_dia, id_hora) """
+
+    select_mat_com = """SELECT * FROM materia_comision;"""
+    mat_com = selectDB(BASE, select_mat_com)
+    """ [(id, id_materia, id_comision, cupo), ..] """
+
+    select_anio_comisiones = """SELECT DISTINCT año FROM comisiones;"""
+    anios = selectDB(BASE, select_anio_comisiones)
+
+    obtenerComisiones(dic)
+
+
+    dic["infoTabla"] = {}
+    dic["infoTabla"]["materias"] = []
+    dic["infoTabla"]["inscripciones"] = []
+    dic["infoTabla"] = []
+    """ "materias" : [{"inscriptos" : { "usuarios" : ["eduescuti", "mariano", ...]}, "cupoMax" : 50, "materia" : Filosofia, "comision" : AM}],
+        "inscripciones" : [{"estado" : "abierta", "año" : 2023, "cuatri" : 2}]
+
+        algo asi deberia tener... para poder cargar los datos en la pagina de GestionInscripciones
+    """
+    
+
+
+    for mat in mat_com:
+
+        """ 
+        select id from hora_mat_com
+
+        cantidadInscriptos = 0;
+        for id in id_hora_mat:
+            for inscripcion in inscripciones:
+                id_insc, estado, id_hora_mat_com, id_usuario = inscripcion
+                if id_hora_mat_com == id:
+                    cantidadInscriptos += 1
+
+        Select count de los id_usuario que tengan id_hora_mat iguales (para contar los inscriptos)
+        
+        """
+
+        id, nombre, comision, cupo = mat
+        dic["infoTabla"]["infoMaterias"].append({"inscriptos" : 10, "materia" : nombre, "comision" : comision, "cupoMax" : cupo})
+
+
+    
+
 """ 
 ==================================================
 INTERACCION USUARIO, OBTENCION DE DATOS DE USUARIO
@@ -193,6 +241,8 @@ def crearMateria(di):
         return False
     else: 
         Esto es para ver si podemos indicar si ya existe en la base de datos los valores ingresados
+
+        PODRIA SER UNA FUNCION DE VALIDACION ACA EN model.py
         
         """
     resul_insert=insertDB(BASE,insertMateria,val)
@@ -208,11 +258,29 @@ def crearComision(di):
 
     sQuery=""" 
         INSERT INTO comisiones
-        (id, nombre, año, cuatrimestre)
+        (id, nombre)
         VALUES
-        (%s,%s, %s, %s);
+        (%s,%s);
     """
-    val=(None, di.get('comision'), di.get('anio'), di.get('cuatrimestre'))
+    val=(None, di.get('comision'))
+    resul_insert=insertDB(BASE,sQuery,val)
+    return resul_insert==1
+
+def crearInscripcion(di):
+    """ ### Agrega una inscripcion en la base de datos 
+    - Recibe un diccionario con la información del form
+    (y agrega la materia con la info a la base)
+
+    - Retorna True si realiza con existo el insert, False caso contrario.
+    """
+
+    sQuery=""" 
+        INSERT INTO inscripciones
+        (id, estado, año, cuatrimestre)
+        VALUES
+        (%s, %s, %s, %s);
+    """
+    val=(None, di.get('estado', di.get('anio'), di.get('cuatrimestre')))
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
@@ -255,7 +323,7 @@ def seleccionarIDComision(di):
     id_comision = selectDB(BASE, select_id_comision, val_comisiones)
     return id_comision[0][0]
 
-def seleccionarElUltimoIDCurso():
+def seleccionarUltimoIDMateria_Comision():
     """ ### Realiza un SELECT para buscar el último ID que aparece en la tabla "materia_comision" 
 
     - Retorna True si realiza con existo el insert, False caso contrario.
@@ -299,21 +367,18 @@ def insertar_hora_mat_com(id_com_mat, id_dia, id_hora):
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert
 
-def agregarHorario(dia, id_hora):
+def agregarHorario(id_dia, id_hora):
     """ ### Agrega el dia y horario junto al curso en la base de datos 
     - Recibe un dicc con la información del form, el dia (como string)
     y el id_hora.
 
     - Retorna True si realiza con existo el insert, False caso contrario.
     """
-    id_com_mat = seleccionarElUltimoIDCurso()
-    id_dia = seleccionarIDDia(dia)
-
+    id_com_mat = seleccionarUltimoIDMateria_Comision()
     return insertar_hora_mat_com(id_com_mat, id_dia, id_hora)
 
 def agregarDiasYHorarios(result, di):
-    """ ### Agrega los dias y horarios de una materia_comision en la base
-    de datos
+    """ ### Agrega los dias y horarios de una materia_comision en la base de datos
     - Recibe un dicc con la información del form, y el resultado anterior de
     si se insertó bien la materia_comision.
 
@@ -321,19 +386,19 @@ def agregarDiasYHorarios(result, di):
     """
     if result==1:
         if (hayHorarioEnDia("lunes", di)):
-            result = agregarHorario("lunes", di.get("lunes"))
+            result = agregarHorario(seleccionarIDDia("lunes"), di.get("lunes"))
         
         if (hayHorarioEnDia("martes", di)):
-            result = agregarHorario("martes", di.get("martes"))
+            result = agregarHorario(seleccionarIDDia("martes"), di.get("martes"))
         
         if (hayHorarioEnDia("miercoles", di)):
-            result = agregarHorario("miercoles", di.get("miercoles"))
+            result = agregarHorario(seleccionarIDDia("miercoles"), di.get("miercoles"))
         
         if (hayHorarioEnDia("jueves", di)):
-            result = agregarHorario("jueves", di.get("jueves"))
+            result = agregarHorario(seleccionarIDDia("jueves"), di.get("jueves"))
 
         if (hayHorarioEnDia("viernes", di)):
-            result = agregarHorario("viernes", di.get("viernes"))
+            result = agregarHorario(seleccionarIDDia("viernes"), di.get("viernes"))
 
     return result
 

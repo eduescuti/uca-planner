@@ -102,7 +102,8 @@ tr {
 
 input[type=text],
 input[type=number],
-#cuatrimestre {
+#cuatrimestre,
+#estado {
     width: 40%;
     padding: 10px;
     display: block;

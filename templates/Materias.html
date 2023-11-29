@@ -47,8 +47,10 @@
                         onfocusout="validarCodigo()">
                     <p class="error" id="error codigo"></p>
 
+                    <p class="error" id="error incompleto"></p>
+
                     {% if param["estado"] == "carga fallida" %}
-                    <p class="error" id="error incompleto">{{param["error"]["error materia"]}}</p>
+                    <p class="error" id="error carga">{{param["error"]["error comision"]}}</p>
                     {% endif %}
 
                     <input type="submit" value="Agregar Materia">

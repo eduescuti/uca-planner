@@ -35,25 +35,17 @@
         <div class="rightcolumn">
             <div class="card" id="contenedor">
                 <h2>Agregar una Comisión</h2>
-                <form onsubmit="return validarDatos()" action="/agregar_comision" method="get">
+                <form onsubmit="return validarDatos()" action="/agregar_comision" method="post">
                     <label for="comision">Nombre de Comisión:</label>
                     <input type="text" name="comision" id="comision" placeholder="Ingrese la comisión.."
                         onfocusout="validarNombre()">
                     <p class="error" id="error comision"></p>
 
-                    <label for="anio">Ingrese el año que se dictará esta comisión:</label>
-                    <input type="text" name="anio" id="anio" placeholder="Ingrese el año.."
-                        onclick="insertarAnioActual()" onfocusout="validarAnio()">
-                    <p class="error" id="error anio"></p>
+                    <p class="error" id="error incompleto"></p>
 
-                    <label for="cuatrimestre">Asigne el cuatrimestre de la Comisión:</label>
-                    <select id="cuatrimestre" name="cuatrimestre" title="Seleccionar...">
-                        <option value="0" disabled selected>Seleccionar..</option>
-                        <option value="1">Primer Cuatrimestre (1C)</option>
-                        <option value="2">Segundo Cuatrimestre (2C)</option>
-                    </select>
-
-                    <p class="error" id="error incompleto">{{mensaje}}</p>
+                    {% if param["estado"] == "carga fallida" %}
+                    <p class="error" id="error carga">{{param["error"]["error comision"]}}</p>
+                    {% endif %}
 
                     <input type="submit" value="Agregar Comisión">
 

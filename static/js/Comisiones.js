@@ -30,34 +30,14 @@ function validarNombre() {
     }
 }
 
-function validarAnio() {
-    var anio = document.getElementById("anio").value;
-
-    if (anioNoValido(anio)) {
-        document.getElementById("error anio").innerHTML = "*Ingrese un año válido";
-    } else {
-        document.getElementById("error anio").innerHTML = "";
-    }
-}
-
 function indicarQueFaltanCompletarCampos() {
     document.getElementById("error incompleto").innerHTML = "*Debe completar todos los campos";
 }
 
 function validarDatos() {
     var nombreComision = document.getElementById("comision").value;
-    var anio = document.getElementById("anio").value;
-    var cuatrimestre = document.getElementById("cuatrimestre").value;
 
     if (comisionNoValida(nombreComision)) {
-        indicarQueFaltanCompletarCampos();
-        return false;
-
-    } else if (anioNoValido(anio)) {
-        indicarQueFaltanCompletarCampos();
-        return false;
-
-    } else if (cuatrimestreNoValido(cuatrimestre)) {
         indicarQueFaltanCompletarCampos();
         return false;
 

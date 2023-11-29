@@ -198,7 +198,7 @@ def cerrarSesion():
 
 
 ##########################################################################
-# + + I N I C I O + + PAGINA login,  home y/o principal    + + + + + + + + 
+# + + I N I C I O + + PAGINAS DE UCA PLANNER   + + + + + + + + + + + + + +
 ##########################################################################
 
 def home_pagina(): 
@@ -259,6 +259,14 @@ def perfil_pagina(param):
     return redirect('/')
 
 def inscripciones_pantalla(param):
+    if haySesion():
+
+        if (session["rol"] == "admin"):
+            return render_template("Inscripciones.html", param=param)
+        
+    return redirect('/')
+
+def gestion_inscripciones_pantalla(param):
 
     obtenerMaterias(param)
     obtenerComisiones(param)
@@ -462,6 +470,23 @@ def agregarComision(miRequest):
                 estado = "carga fallida"
                 obtenerMensajeError(param, estado)
                 res = comisiones_pantalla(param)
+    else:
+        res = redirect('/')
+    return res
+
+def agregarInscripcion(miRequest):
+    param={}
+    if haySesion():
+
+        if (session["rol"] == "admin"):
+
+            if crearInscripcion(miRequest):
+                res = redirect('/inscripciones')
+
+            else:
+                estado = "carga fallida"
+                obtenerMensajeError(param, estado)
+                res = inscripciones_pantalla(param)
     else:
         res = redirect('/')
     return res

@@ -167,13 +167,26 @@
         </div>
         <div class="rightcolumn">
             <div class="card">
-                <form action="action_page.php">
-                    <!-- Debo tener un form para obtener los datos de la materia
 
-                        Y otro form para cargar datos a la base de datos (del usuario que se inscribe)
-                        (no sé si se puede hacer todo en un form)
-                    -->
-                </form>
+                <!-- <label class="titulo1" for="materia">Selecciona la Inscripción:</label>
+                <select id="materia">
+                    {% if param["inscripciones"]["estado general"] == "inhabilitado" %}
+                    {% for inscripcion in param["inscripciones"][0:] %}
+                    <option value="{{param['inscripciones']}}" disabled>Inscripciones {{inscripcion["año"]}} Cuatri.
+                        {{inscripcion["cuatri"]}}</option>
+                    {% endfor %}
+                    {% else %}
+                    {% for inscripcion in param["inscripciones"][0:] %}
+                    <option value="{{param['inscripciones']}}">Inscripciones {{inscripcion["año"]}} Cuatri.
+                        {{inscripcion["cuatri"]}}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select> 
+            
+            
+                ESTO ES POR SI CAMBIO LA BASE DE DATOS
+
+            -->
 
                 <label class="titulo1" for="materia">Selecciona una materia:</label>
                 <select id="materia">
@@ -187,7 +200,11 @@
                 <button onclick="agregarMateria()">Agregar Materia</button>
                 <button onclick="resetearCronograma()">Resetear</button>
                 <button type="submit">Inscribirse a Materias</button>
-                <!-- Estos buttons deberían ser inputs dentro de un form -->
+                <!-- Estos buttons deberían ser inputs dentro de un form 
+                
+                    SE VA A USAR AJAX EN ESTA TABLA PARA PODER REALIZAR LA CARGA DE FORMA ASINCRONICA
+                    (y asi no tener que actualizar la pagina cada vez que se carga la pantalla)
+                -->
 
             </div>
         </div>
