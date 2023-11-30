@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCA Planner | Cursos</title>
+    <link rel="stylesheet" href="../static/css/Materias.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <img src="../static/img/logo-uca.jfif" class="imagen1">
+        <h2 class="titulo">Gestión de Cursos</h2>
+    </div>
+
+
+    <div class="row">
+        <div class="leftcolumn">
+            <div class="card">
+                <h4 class="titulo">Cursos Cargados</h4>
+                <select name="com" class="comisionSelect" multiple>
+
+                </select>
+            </div>
+            <div class="card">
+                <a href="/cursos" class="boton">Agregar Curso</a>
+                <a href="/" class="boton">Volver</a>
+            </div>
+        </div>
+        <div class="rightcolumn">
+            <div class="card" id="contenedor">
+                <h2>Agregar un Curso</h2>
+                <form onsubmit="return validarDatos()" action="/agregar_curso" method="post">
+
+                    <!-- poner lo del pop up -->
+
+                    <p class="error" id="error incompleto"></p>
+
+                    {% if param["estado"] == "carga fallida" %}
+                    <p class="error" id="error carga">{{param["error"]["error ..."]}}</p>
+                    {% endif %}
+
+                    <input type="submit" value="Agregar Curso">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script language="javascript" type="text/javascript" src="../static/js/Cursos.js"></script>
+
+</body>
+
+</html>

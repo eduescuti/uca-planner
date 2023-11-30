@@ -128,6 +128,20 @@ def route(app):
         getRequest(miRequest)
         return agregarMateria(miRequest)
 
+    @app.route("/cursos")
+    def cursos():
+        
+        param={}
+        obtenerMensajeError(param)
+        return cursos_pantalla(param)
+    
+    @app.route("/agregar_curso", methods=["GET","POST"])
+    def agregar_curso():
+        
+        miRequest={}
+        getRequest(miRequest)
+        return agregarCurso(miRequest)
+
     @app.route("/inscripciones")
     def inscripciones():
         param = {}
@@ -146,17 +160,14 @@ def route(app):
         obtenerMensajeError(param)
         return gestion_inscripciones_pantalla(param)
 
-    @app.route('/recibir_materia_comision',methods = ["GET", "POST"])
-    def recibir_materia_comision():
-        miRequest={}
-        getRequest(miRequest)
-        return agregar_materia_comision(miRequest)
-
     @app.route('/inscribirse',methods = ["GET", "POST"])
     def inscribirse():
         miRequest={}
         getRequest(miRequest)
         return inscribirse(miRequest)
+
+
+
 
 
 

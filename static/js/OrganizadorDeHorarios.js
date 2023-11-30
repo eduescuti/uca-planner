@@ -133,6 +133,10 @@ function validarInscripcion() {
     }
 }
 
+function validarMateria() {
+
+}
+
 function validarDatos() {
     return true;
 }

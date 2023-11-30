@@ -1,4 +1,5 @@
 use baseuca;
+use base_prueba;
 
 /* SELECT DE CADA TABLA */
 
@@ -70,3 +71,4 @@ SELECT COUNT(*) AS cantidad FROM hora_mat_com;
 
 SELECT DISTINCT año FROM comisiones;
 
+ALTER TABLE hora_mat_com RENAME TO cursos;

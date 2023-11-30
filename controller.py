@@ -308,6 +308,17 @@ def comisiones_pantalla(param):
         
     return redirect('/')
 
+def cursos_pantalla(param):
+    obtenerCursos(param)
+    
+    if haySesion():
+
+        if (session["rol"] == "admin"):
+            return render_template("Cursos.html", param=param)
+        
+    return redirect('/')
+
+
 ##########################################################################
 # - - F I N - - PAGINA home, main y login  - - - - - - - - - - - - - - - -
 ##########################################################################
@@ -481,6 +492,27 @@ def agregarComision(miRequest):
         res = redirect('/')
     return res
 
+def agregarCurso(miRequest):
+    """ Agrega una comision a la base de datos.
+    Recibe el request del form de la página.
+       """
+    param={}
+    if haySesion():
+
+        if (session["rol"] == "admin"):
+
+            if crearCurso(miRequest, session["id"]):
+                res = redirect('/cursos')
+
+            else:
+                estado = "carga fallida"
+                obtenerMensajeError(param, estado)
+                res = cursos_pantalla(param)
+    else:
+        res = redirect('/')
+    return res
+
+
 def agregarInscripcion(miRequest):
     param={}
     if haySesion():
@@ -498,28 +530,6 @@ def agregarInscripcion(miRequest):
         res = redirect('/')
     return res
 
-def agregar_materia_comision(miRequest):
-    """ Agrega una materia_comision a la base de datos
-    (La materia_comision incluye la materia, comision, cupo y horarios).
-    
-    Recibe el request del form de la página.
-    """
-    param={}
-    if haySesion():
-
-        if (session["rol"] == "admin"):
-            
-            if crear_materia_comision(miRequest):
-                res = redirect("/inscripciones")
-            else:
-                estado = "carga fallida"
-                obtenerMensajeError(param, estado)
-                res = inscripciones_pantalla(param) 
-                
-    else:
-        res = redirect('/')
-
-    return res
 
 def inscribirse(miRequest):
     param={}

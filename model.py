@@ -9,9 +9,40 @@ OBTENCION DE DATOS
 ==================
 """
 
+""" 
+
+dic["materias"] = [ 
+    {"id" : id_hora_mat,
+    "materia_comision" : {"nombre_materia" : mat, "nombre_comision" : com},
+    "rango" : [{unDia : unaHora}, {otroDia : otraHora}, ...]
+    }, ...
+]
+
+dic["inscripciones"] = [
+    { "id":id,
+    "estado":estado,
+    "año":anio,
+    "cuatri":cuatri,
+    "tipo":"er"
+    "cursos" : [{"nombre":nombre, "comision":comision, "cupo":cupo, "inscriptos":total},
+                {"nombre":nombre, "comision":comision, "cupo":cupo, "inscriptos":total}
+                ]
+    }
+]
+
+"""
+
+def obtenerCursos(dic):
+
+    """ HABRIA QUE HACER UN BUEN DIC PARA OBTENER TODOS LOS CURSOS """
+
+    return dic
+
 def obtenerHorarios(dic):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
     los rangos de horarios disponibles para poder cursar una materia.
+    
+    dic["horas] = [{"id":1, "hora":"07:45-10:15hs"}, ...]
     '''
     sQuery="""SELECT * FROM horas;"""
     lista = selectDB(BASE, sQuery)
@@ -53,6 +84,7 @@ def obtenerInscripciones(dic):
 
     for inscripcion in lista:
         id, estado, anio, cuatri = inscripcion
+        
         if (cuatri == 1):
             dic["inscripciones"].append({"id":id, "estado":estado, "año":anio, "cuatri":cuatri, "tipo":"er"})
         else:
@@ -126,31 +158,6 @@ def obtenerDatosMateria(id_com_mat):
     nombre = obtenerNombreMateria(id_materia)
     comision = obtenerNombreComision(id_comision)
     return nombre, comision
-
-def obtenerHora_Mat_Com(dic):
-    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
-    las materias completas.
-    '''
-    sQuery="""SELECT * FROM hora_mat_com;"""
-    lista = selectDB(BASE, sQuery)
-    dic["hora_mat_com"] = {}
-    for materia in lista:
-        id, id_com_mat, id_dia, id_hora = materia
-
-        dia, hora = seleccionarRangoHorarios(id_dia, id_hora)
-        nombre, comision = obtenerDatosMateria(id_com_mat)
-        
-        dic["hora_mat_com"] = {"id":id, nombre : {comision : {"rango" : []}}}
-        dic["hora_mat_com"][nombre][comision].append({dia : hora})
-
-
-    """ DESARROLLAR MEJOR DESPUES
-     
-    HACERLO EN PAPEL PARA VER COMO PODRIA SER EL DICCIONARIO DE HORA_MAT_COM
-
-    ES FUNDAMENTAL PARA DESPUES PODER USARLO EN ORGANIZADOR DE HORARIOS
-       """
-        
 
 
 """ 
@@ -322,6 +329,22 @@ def crearComision(di):
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
+def crearMateriaComision(di, id_materia, id_comision):
+    """ ### Inserta una materia_comision en la base de datos 
+    - Recibe un dicc con la información del form, el id_materia y id_comision
+
+    - Retorna True si realiza con existo el insert, False caso contrario.
+    """
+    sQuery=""" 
+        INSERT INTO materia_comision
+        (id, id_materia, id_comision, cupo)
+        VALUES
+        (%s,%s, %s, %s);
+    """
+    val=(None, id_materia, id_comision, di.get('cupo'))
+    resul_insert=insertDB(BASE,sQuery,val)
+    return resul_insert
+
 def crearInscripcion(di):
     """ ### Agrega una inscripcion en la base de datos 
     - Recibe un diccionario con la información del form
@@ -332,11 +355,11 @@ def crearInscripcion(di):
 
     sQuery=""" 
         INSERT INTO inscripciones
-        (id, estado, año, cuatrimestre)
+        (id, id_curso, id_usuario, estado, año, cuatrimestre)
         VALUES
-        (%s, %s, %s, %s);
+        (%s, %s, %s, %s, %s, %s);
     """
-    val=(None, di.get('estado'), di.get('anio'), di.get('cuatrimestre'))
+    val=(None, 0, 0, di.get('estado'), di.get('anio'), di.get('cuatrimestre'))
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
@@ -407,33 +430,34 @@ def seleccionarIDDia(dia):
     id_dia = selectDB(BASE, select_id_dia, val_dia)
     return id_dia[0][0]
 
-def insertar_hora_mat_com(id_com_mat, id_dia, id_hora):
+def insertarCurso(id_inscripcion, id_com_mat, id_dia, id_hora, id_admin):
     """ ### Inserta el "curso" en la base de datos (en la tabla hora_mat_com)
     - Recibe id del curso (id_com_mat), el id del dia y el id_hora.
 
     - Retorna True si realiza con existo el insert, False caso contrario.
     """
     sQuery=""" 
-        INSERT INTO hora_mat_com
-        (id, id_com_mat, id_dia, id_hora)
+        INSERT INTO cursos
+        (id, id_inscripcion, id_com_mat, id_dia, id_hora, id_usuario)
         VALUES
-        (%s, %s, %s, %s);
+        (%s, %s, %s, %s, %s, %s);
     """
-    val = (None, id_com_mat, id_dia, id_hora)
+    val = (None, id_inscripcion, id_com_mat, id_dia, id_hora, id_admin)
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert
 
-def agregarHorario(id_dia, id_hora):
-    """ ### Agrega el dia y horario junto al curso en la base de datos 
+def agregarHorario(id_dia, id_hora, id_inscripcion, id_admin):
+    """ ### Agrega el dia, horario, la inscripcion y el administrador junto al curso en la base de datos 
     - Recibe un dicc con la información del form, el dia (como string)
     y el id_hora.
 
     - Retorna True si realiza con existo el insert, False caso contrario.
     """
     id_com_mat = seleccionarUltimoIDMateria_Comision()
-    return insertar_hora_mat_com(id_com_mat, id_dia, id_hora)
+    
+    return insertarCurso(id_inscripcion, id_com_mat, id_dia, id_hora, id_admin)
 
-def agregarDiasYHorarios(result, di):
+def agregarDiasYHorarios(result, di, id_inscripcion, id_admin):
     """ ### Agrega los dias y horarios de una materia_comision en la base de datos
     - Recibe un dicc con la información del form, y el resultado anterior de
     si se insertó bien la materia_comision.
@@ -442,75 +466,52 @@ def agregarDiasYHorarios(result, di):
     """
     if result==1:
         if (hayHorarioEnDia("lunes", di)):
-            result = agregarHorario(seleccionarIDDia("lunes"), di.get("lunes"))
+            id_dia = seleccionarIDDia("lunes")
+            result = agregarHorario(id_dia, di.get("lunes"), id_inscripcion, id_admin)
         
         if (hayHorarioEnDia("martes", di)):
-            result = agregarHorario(seleccionarIDDia("martes"), di.get("martes"))
+            id_dia = seleccionarIDDia("martes")
+            result = agregarHorario(id_dia, di.get("martes"), id_inscripcion, id_admin)
         
         if (hayHorarioEnDia("miercoles", di)):
-            result = agregarHorario(seleccionarIDDia("miercoles"), di.get("miercoles"))
+            id_dia = seleccionarIDDia("miercoles")
+            result = agregarHorario(id_dia, di.get("miercoles"), id_inscripcion, id_admin)
         
         if (hayHorarioEnDia("jueves", di)):
-            result = agregarHorario(seleccionarIDDia("jueves"), di.get("jueves"))
+            id_dia = seleccionarIDDia("jueves")
+            result = agregarHorario(id_dia, di.get("jueves"), id_inscripcion, id_admin)
 
         if (hayHorarioEnDia("viernes", di)):
-            result = agregarHorario(seleccionarIDDia("viernes"), di.get("viernes"))
+            id_dia = seleccionarIDDia("viernes")
+            result = agregarHorario(id_dia, di.get("viernes"), id_inscripcion, id_admin)
 
     return result
 
-def insertar_materia_comision(di, id_materia, id_comision):
-    """ ### Inserta una materia_comision en la base de datos 
-    - Recibe un dicc con la información del form, el id_materia y id_comision
-
-    - Retorna True si realiza con existo el insert, False caso contrario.
-    """
-    sQuery=""" 
-        INSERT INTO materia_comision
-        (id, id_materia, id_comision, cupo)
-        VALUES
-        (%s,%s, %s, %s);
-    """
-    val=(None, id_materia, id_comision, di.get('cupo'))
-    resul_insert=insertDB(BASE,sQuery,val)
-    return resul_insert
-
-def crear_materia_comision(di):
-    """ ### Agrega una materia_comision en la base de datos 
-    - Recibe un dicc con la información del form
-
-    - Retorna True si realiza con existo el insert, False caso contrario.
-    """
+def crearCurso(di, id_admin):
     id_materia = seleccionarIDMateria(di)
     id_comision = seleccionarIDComision(di)
-    resul_insert = insertar_materia_comision(di, id_materia, id_comision)
+    resul_insert = crearMateriaComision(di, id_materia, id_comision)
+    id_inscripcion = di.get("inscripcion")
 
-    return agregarDiasYHorarios(resul_insert, di)
-
-def obtenerIDMateriasSeleccionadas(di):
-    """ Recibe el diccionario con el formRequest
-    Dentro tiene que tener las materias seleccionadas.
-
-    TENGO QUE VER COMO SELECCIONO PRIMERO LAS MATERIAS DESDE EL FORM DE LA PAGINA DE OrganizadorDeHorarios.html 
-    """
-    return []
+    return agregarDiasYHorarios(resul_insert, di, id_inscripcion, id_admin)
 
 def inscribirseACurso(di, id_usuario):
-    """ ###INSCRIBE a un alumno a un curso
+    """ ### INSCRIBE un alumno a un curso
     - Recibe por parámetro un diccionario con el formRequest
     (tiene dentro la inscripcion que elije y... tiene que tener las materias que se inscribe... como hago para seleccionarlas?)
     
     """
     
-    id_hora_mat = obtenerIDMateriasSeleccionadas(di)
+    """ id_hora_mat = obtenerIDMateriasSeleccionadas(di)
 
     for hora_mat in id_hora_mat:
-        insertCurso=""" 
+        insertCurso=""
             INSERT INTO cursos
             (id, id_hora_mat, id_usuario, id_inscripcion)
             VALUES
             (%s, %s, %s, %s);
-        """
+        ""
         val=(None, hora_mat, id_usuario, di.get('inscripcion'))
 
     resul_insert=insertDB(BASE,insertCurso,val)
-    return resul_insert==1
+    return resul_insert==1 """

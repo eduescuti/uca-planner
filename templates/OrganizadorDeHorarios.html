@@ -188,7 +188,7 @@
                     <p class="error" id="error inscripcion"></p>
 
                     <label class="titulo1" for="materia">Selecciona una materia:</label>
-                    <select id="materia" name="materia">
+                    <select id="materia" name="materia" onfocusout="validarMateria()">
                         <option value="0" disabled selected>Seleccionar..</option>
 
                         <!-- {% for materias in param["hora_mat_com"] %} -->
@@ -203,7 +203,7 @@
 
                     <button onclick="agregarMateria()">Agregar Materia</button>
                     <button onclick="resetearCronograma()">Resetear</button>
-                    <button type="submit">Inscribirse a Materias</button>
+                    <button type="submit">Inscribirse a Materia</button>
                     <!-- Estos buttons deberían ser inputs dentro de un form 
                 
                     SE VA A USAR AJAX EN ESTA TABLA PARA PODER REALIZAR LA CARGA DE FORMA ASINCRONICA
