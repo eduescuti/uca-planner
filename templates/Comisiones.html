@@ -22,8 +22,7 @@
                 <h4 class="titulo">Comisiones Cargadas</h4>
                 <select name="com" class="comisionSelect" multiple>
                     {% for comision in param["comisiones"][0:] %}
-                    <option value="{{comision['nombre']}}">{{comision["nombre"]}}
-                        ({{comision["cuatri"]}}{{comision["tipo"]}} cuatri. {{comision["anio"]}})</option>
+                    <option value="{{comision['nombre']}}">{{comision["nombre"]}}</option>
                     {% endfor %}
                 </select>
             </div>

@@ -123,3 +123,16 @@ function eliminarMateriasDelCronograma(dia, hora) {
     celda.textContent = "";
     celda.style.background = "white";
 }
+
+function validarInscripcion() {
+    var inscripcion = document.getElementById("inscripcion").value;
+    if (inscripcion == 0) {
+        document.getElementById("error inscripcion").innerHTML = "*Seleccione una fecha de inscripciones (en caso de no poder seleccionar ninguna, significa que NO hay inscripciones habilitadas para poder inscribirse)";
+    } else {
+        document.getElementById("error inscripcion").innerHTML = "";
+    }
+}
+
+function validarDatos() {
+    return true;
+}

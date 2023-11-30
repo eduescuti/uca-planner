@@ -41,6 +41,11 @@ a {
 
 /* CUERPO */
 /* DESPLEGABLES */
+
+.inscripciones {
+  margin-bottom: 20px;
+}
+
 summary {
   background-color: rgb(5, 17, 82);
   color: white;
@@ -315,6 +320,8 @@ form {
   border-radius: 8px;
   background-color: #152087;
   cursor: pointer;
+  padding: 8px;
+  float: left;
 }
 
 @media screen and (max-width: 800px) {
@@ -341,7 +348,7 @@ form {
 
   .col-2 {
     margin-top: 5px;
-    height: 50vh;
+    height: 55vh;
   }
 }
 

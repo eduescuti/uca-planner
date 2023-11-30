@@ -43,59 +43,115 @@ def obtenerComisiones(dic):
         id, nombre = comision
         dic["comisiones"].append({"id":id, "nombre":nombre})
 
-    
-def obtenerInfoTablaInscripciones(dic):
-    select_inscripcion = """SELECT * FROM inscripciones;"""
-    inscripciones = selectDB(BASE, select_inscripcion)
-    """ [(id, estado, id_hora_mat, id_usuario), ...] """
+def obtenerInscripciones(dic):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    todos los datos de las comisiones.
+    '''
+    sQuery="""SELECT * FROM inscripciones;"""
+    lista = selectDB(BASE, sQuery)
+    dic["inscripciones"] = []
 
-    select_hora_mat_com = """SELECT * FROM hora_mat_com;"""
-    hora_mat_com = selectDB(BASE, select_hora_mat_com)
-    """ (id, id_com_mat, id_dia, id_hora) """
+    for inscripcion in lista:
+        id, estado, anio, cuatri = inscripcion
+        if (cuatri == 1):
+            dic["inscripciones"].append({"id":id, "estado":estado, "año":anio, "cuatri":cuatri, "tipo":"er"})
+        else:
+            dic["inscripciones"].append({"id":id, "estado":estado, "año":anio, "cuatri":cuatri, "tipo":"do"})
 
-    select_mat_com = """SELECT * FROM materia_comision;"""
-    mat_com = selectDB(BASE, select_mat_com)
-    """ [(id, id_materia, id_comision, cupo), ..] """
+def obtenerHora(id_hora):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    la hora.
+    '''
+    select_hora="""SELECT hora FROM horas WHERE id=%s;"""
+    valHora = (id_hora, )
+    listaHora = selectDB(BASE, select_hora, valHora)
+    return listaHora[0][0]
 
-    select_anio_comisiones = """SELECT DISTINCT año FROM comisiones;"""
-    anios = selectDB(BASE, select_anio_comisiones)
+def obtenerDia(id_dia):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    el dia.
+    '''
+    select_dia="""SELECT dia FROM dias WHERE id=%s;"""
+    valDia = (id_dia, )
+    listaDia = selectDB(BASE, select_dia, valDia)
+    return listaDia[0][0]
 
-    obtenerComisiones(dic)
+def seleccionarRangoHorarios(id_dia, id_hora):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    las materias completas.
+    '''
+    dia = obtenerDia(id_dia)
+    hora = obtenerHora(id_hora)
+    return dia, hora
 
-
-    dic["infoTabla"] = {}
-    dic["infoTabla"]["materias"] = []
-    dic["infoTabla"]["inscripciones"] = []
-    dic["infoTabla"] = []
-    """ "materias" : [{"inscriptos" : { "usuarios" : ["eduescuti", "mariano", ...]}, "cupoMax" : 50, "materia" : Filosofia, "comision" : AM}],
-        "inscripciones" : [{"estado" : "abierta", "año" : 2023, "cuatri" : 2}]
-
-        algo asi deberia tener... para poder cargar los datos en la pagina de GestionInscripciones
+def obtenerNombreMateria(id_materia):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    el nombre de una materia.
+    '''
+    sQuery="""
+        SELECT nombre
+        FROM materias
+        WHERE id=%s;
     """
-    
+    val=(id_materia, )
+    listaID = selectDB(BASE, sQuery, val)
+    return listaID[0][0]
 
+def obtenerNombreComision(id_comision):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    el nombre de una comision.
+    '''
+    sQuery="""
+        SELECT nombre
+        FROM comisiones
+        WHERE id=%s;
+    """
+    val=(id_comision, )
+    listaID = selectDB(BASE, sQuery, val)
+    return listaID[0][0]
 
-    for mat in mat_com:
+def obtenerDatosMateria(id_com_mat):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    el nombre y comision de una materia.
+    '''
+    sQuery="""
+        SELECT id_materia, id_comision
+        FROM materia_comision
+        WHERE id_com_mat=%s;
+    """
+    val=(id_com_mat, )
+    listaID = selectDB(BASE, sQuery, val)
+    id_materia = listaID[0][0]
+    id_comision = listaID[0][1]
+    nombre = obtenerNombreMateria(id_materia)
+    comision = obtenerNombreComision(id_comision)
+    return nombre, comision
 
-        """ 
-        select id from hora_mat_com
+def obtenerHora_Mat_Com(dic):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    las materias completas.
+    '''
+    sQuery="""SELECT * FROM hora_mat_com;"""
+    lista = selectDB(BASE, sQuery)
+    dic["hora_mat_com"] = {}
+    for materia in lista:
+        id, id_com_mat, id_dia, id_hora = materia
 
-        cantidadInscriptos = 0;
-        for id in id_hora_mat:
-            for inscripcion in inscripciones:
-                id_insc, estado, id_hora_mat_com, id_usuario = inscripcion
-                if id_hora_mat_com == id:
-                    cantidadInscriptos += 1
-
-        Select count de los id_usuario que tengan id_hora_mat iguales (para contar los inscriptos)
+        dia, hora = seleccionarRangoHorarios(id_dia, id_hora)
+        nombre, comision = obtenerDatosMateria(id_com_mat)
         
-        """
-
-        id, nombre, comision, cupo = mat
-        dic["infoTabla"]["infoMaterias"].append({"inscriptos" : 10, "materia" : nombre, "comision" : comision, "cupoMax" : cupo})
+        dic["hora_mat_com"] = {"id":id, nombre : {comision : {"rango" : []}}}
+        dic["hora_mat_com"][nombre][comision].append({dia : hora})
 
 
-    
+    """ DESARROLLAR MEJOR DESPUES
+     
+    HACERLO EN PAPEL PARA VER COMO PODRIA SER EL DICCIONARIO DE HORA_MAT_COM
+
+    ES FUNDAMENTAL PARA DESPUES PODER USARLO EN ORGANIZADOR DE HORARIOS
+       """
+        
+
 
 """ 
 ==================================================
@@ -280,7 +336,7 @@ def crearInscripcion(di):
         VALUES
         (%s, %s, %s, %s);
     """
-    val=(None, di.get('estado', di.get('anio'), di.get('cuatrimestre')))
+    val=(None, di.get('estado'), di.get('anio'), di.get('cuatrimestre'))
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
@@ -429,3 +485,32 @@ def crear_materia_comision(di):
     resul_insert = insertar_materia_comision(di, id_materia, id_comision)
 
     return agregarDiasYHorarios(resul_insert, di)
+
+def obtenerIDMateriasSeleccionadas(di):
+    """ Recibe el diccionario con el formRequest
+    Dentro tiene que tener las materias seleccionadas.
+
+    TENGO QUE VER COMO SELECCIONO PRIMERO LAS MATERIAS DESDE EL FORM DE LA PAGINA DE OrganizadorDeHorarios.html 
+    """
+    return []
+
+def inscribirseACurso(di, id_usuario):
+    """ ###INSCRIBE a un alumno a un curso
+    - Recibe por parámetro un diccionario con el formRequest
+    (tiene dentro la inscripcion que elije y... tiene que tener las materias que se inscribe... como hago para seleccionarlas?)
+    
+    """
+    
+    id_hora_mat = obtenerIDMateriasSeleccionadas(di)
+
+    for hora_mat in id_hora_mat:
+        insertCurso=""" 
+            INSERT INTO cursos
+            (id, id_hora_mat, id_usuario, id_inscripcion)
+            VALUES
+            (%s, %s, %s, %s);
+        """
+        val=(None, hora_mat, id_usuario, di.get('inscripcion'))
+
+    resul_insert=insertDB(BASE,insertCurso,val)
+    return resul_insert==1

@@ -235,13 +235,16 @@ def register_pagina(param):
 def cronograma_pagina(param):
     """Muestra la pantalla del visualizador
     """
-    obtenerMenuBottom(param)
 
     if haySesion():
         if (session["rol"] == "alumno"):
+            obtenerMenuBottom(param)
+            obtenerInscripciones(param)
+            obtenerMaterias(param)
+
             return render_template("OrganizadorDeHorarios.html", param=param)
     
-    return render_template("Visualizador.html", param=param)
+    return render_template("Visualizador.html")
 
 def perfil_pagina(param):
     """Dependiendo de si hay sesión iniciada o no, devuelve la página
@@ -259,6 +262,9 @@ def perfil_pagina(param):
     return redirect('/')
 
 def inscripciones_pantalla(param):
+    
+    obtenerInscripciones(param)
+
     if haySesion():
 
         if (session["rol"] == "admin"):
@@ -271,6 +277,7 @@ def gestion_inscripciones_pantalla(param):
     obtenerMaterias(param)
     obtenerComisiones(param)
     obtenerHorarios(param)
+    obtenerInscripciones(param)
 
     if haySesion():
 
@@ -323,9 +330,9 @@ def ingresoUsuarioValido(miRequest):
     '''
     
     if crearSesionUsuario(miRequest):
-        res=home_pagina()
+        res = redirect('/')
     else:
-        res=login_pagina()
+        res = redirect('/login')
     return res
 
 def registrarUsuario(param, miRequest):
@@ -512,4 +519,21 @@ def agregar_materia_comision(miRequest):
     else:
         res = redirect('/')
 
+    return res
+
+def inscribirse(miRequest):
+    param={}
+    if haySesion():
+
+        if (session["rol"] == "alumno"):
+
+            if inscribirseACurso(miRequest, session["id"]):
+                res = redirect('/cronograma')
+
+            else:
+                estado = "carga fallida"
+                obtenerMensajeError(param, estado)
+                res = cronograma_pagina(param)
+    else:
+        res = redirect('/')
     return res

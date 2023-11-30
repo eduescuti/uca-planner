@@ -90,14 +90,21 @@ th {
 
 
 #materia,
+#inscripcion,
 button {
     font-size: medium;
     margin-top: 10px;
+    margin-bottom: 10px;
     display: block;
 }
 
 .titulo1 {
     color: rgb(5, 17, 82);
+}
+
+.error {
+    color: #dd0000;
+    width: 100%;
 }
 
 /* Responsive - scrolleo horizontal */

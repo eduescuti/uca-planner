@@ -22,8 +22,8 @@
                 <h4 class="titulo">Inscripciones Cargadas</h4>
                 <select name="com" class="comisionSelect" multiple>
                     {% for inscripcion in param["inscripciones"][0:] %}
-                    <option value="{{comision['nombre']}}">Inscripciones {{inscripcion["año"]} Cuatri.
-                        {{inscripcion["cuatri"]}}}</option>
+                    <option>Inscripciones {{inscripcion["año"]}} {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}
+                        Cuatri.</option>
                     {% endfor %}
                 </select>
             </div>

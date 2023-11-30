@@ -128,14 +128,13 @@ def route(app):
         getRequest(miRequest)
         return agregarMateria(miRequest)
 
-
     @app.route("/inscripciones")
     def inscripciones():
         param = {}
         obtenerMensajeError(param)
         return inscripciones_pantalla(param)
     
-    @app.route("/agregar_inscripcion")
+    @app.route("/agregar_inscripcion", methods=["GET","POST"])
     def agregar_inscripciones():
         miRequest={}
         getRequest(miRequest)
@@ -153,7 +152,11 @@ def route(app):
         getRequest(miRequest)
         return agregar_materia_comision(miRequest)
 
-
+    @app.route('/inscribirse',methods = ["GET", "POST"])
+    def inscribirse():
+        miRequest={}
+        getRequest(miRequest)
+        return inscribirse(miRequest)
 
 
 

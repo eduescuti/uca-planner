@@ -1,8 +1,19 @@
 use baseuca;
 
-SELECT * FROM usuario;
+/* SELECT DE CADA TABLA */
 
+SELECT * FROM usuario;
+SELECT * FROM dias;
+SELECT * FROM horas;
+SELECT * FROM materia_comision;
 SELECT * FROM inscripciones;
+SELECT * FROM hora_mat_com;
+SELECT * FROM materias;
+SELECT * FROM comisiones;
+SELECT * FROM cursos;
+
+/* -------------------- */
+
 
 SELECT id, usuario, nombre, apellido, email, contraseña, rol 
 FROM  usuario WHERE  email="eduescuti99@gmail.com" and contraseña="10101999";
@@ -15,7 +26,9 @@ UPDATE usuario SET rol="admin" WHERE usuario="mariano"
 
 SELECT nombre, codigo FROM materias;
 
-SELECT nombre FROM comisiones;
+SELECT * FROM comisiones;
+
+INSERT INTO comisiones (nombre) VALUES ("BM");
 
 SELECT id FROM materias WHERE codigo="450";
 

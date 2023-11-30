@@ -167,45 +167,49 @@
         </div>
         <div class="rightcolumn">
             <div class="card">
+                <form onsubmit="return validarDatos()" action="/inscribirse" method="POST">
 
-                <!-- <label class="titulo1" for="materia">Selecciona la Inscripción:</label>
-                <select id="materia">
-                    {% if param["inscripciones"]["estado general"] == "inhabilitado" %}
-                    {% for inscripcion in param["inscripciones"][0:] %}
-                    <option value="{{param['inscripciones']}}" disabled>Inscripciones {{inscripcion["año"]}} Cuatri.
-                        {{inscripcion["cuatri"]}}</option>
-                    {% endfor %}
-                    {% else %}
-                    {% for inscripcion in param["inscripciones"][0:] %}
-                    <option value="{{param['inscripciones']}}">Inscripciones {{inscripcion["año"]}} Cuatri.
-                        {{inscripcion["cuatri"]}}</option>
-                    {% endfor %}
-                    {% endif %}
-                </select> 
-            
-            
-                ESTO ES POR SI CAMBIO LA BASE DE DATOS
+                    <label class="titulo1" for="inscripcion">Selecciona la Inscripción:</label>
+                    <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
+                        <option value="0" disabled selected>Seleccionar..</option>
 
-            -->
+                        {% for inscripcion in param["inscripciones"] %}
+                        {% if inscripcion["estado"] == "cerrada" %}
+                        <option disabled>Inscripciones {{inscripcion["año"]}}
+                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
+                        </option>
+                        {% else %}
+                        <option value="{{inscripcion['id']}}">Inscripciones {{inscripcion["año"]}}
+                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <p class="error" id="error inscripcion"></p>
 
-                <label class="titulo1" for="materia">Selecciona una materia:</label>
-                <select id="materia">
-                    <option value="calculoElemental">Cálculo Elemental</option>
-                    <option value="filo">Filosofía</option>
-                    <option value="info">Informática General</option>
-                    <option value="compl">Complemento de Matemática</option>
-                    <option value="repre">Representación Gráfica</option>
-                    <option value="intro">Introducción a la Ingeniería</option>
-                </select>
-                <button onclick="agregarMateria()">Agregar Materia</button>
-                <button onclick="resetearCronograma()">Resetear</button>
-                <button type="submit">Inscribirse a Materias</button>
-                <!-- Estos buttons deberían ser inputs dentro de un form 
+                    <label class="titulo1" for="materia">Selecciona una materia:</label>
+                    <select id="materia" name="materia">
+                        <option value="0" disabled selected>Seleccionar..</option>
+
+                        <!-- {% for materias in param["hora_mat_com"] %} -->
+                        <option value="calculoElemental">Cálculo Elemental</option>
+                        <option value="filo">Filosofía</option>
+                        <option value="info">Informática General</option>
+                        <option value="compl">Complemento de Matemática</option>
+                        <option value="repre">Representación Gráfica</option>
+                        <option value="intro">Introducción a la Ingeniería</option>
+                    </select>
+                    <p class="error" id="error incompleto"></p>
+
+                    <button onclick="agregarMateria()">Agregar Materia</button>
+                    <button onclick="resetearCronograma()">Resetear</button>
+                    <button type="submit">Inscribirse a Materias</button>
+                    <!-- Estos buttons deberían ser inputs dentro de un form 
                 
                     SE VA A USAR AJAX EN ESTA TABLA PARA PODER REALIZAR LA CARGA DE FORMA ASINCRONICA
                     (y asi no tener que actualizar la pagina cada vez que se carga la pantalla)
                 -->
-
+                </form>
             </div>
         </div>
     </div>

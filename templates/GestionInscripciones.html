@@ -19,22 +19,18 @@
   </header>
 
   <!-- DESPLEGABLES -->
-  <article>
+  <article class="inscripciones">
     <!-- ACA VAN A IR LOS DESPLEGABLES, Y SE VAN A ABRIR CON UN FOR USANDO JINJA -->
     <details class="prueba">
-      <summary>INSCRIPCION2023_2C</summary>
+      {% for inscripcion in param["inscripciones"][0:] %}
+      <summary>INSCRIPCION {{inscripcion["año"]}} {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} CUATRIMESTRE
+      </summary>
       <div class="row">
         <div class="col-1">
           <input type="submit" class="cierre-ins" value="Cerrar Inscripción">
 
-          <label for="inicio" class="label-1">Inicio</label>
-          <input type="date" id="inicio" value="2023-08-08">
-
-          <label for="fin" class="label-2">Fin</label>
-          <input type="date" id="fin">
-
-          <p class="texto"> ESTADO:</p>
-          <p class="estado1"> ABIERTA</p>
+          <p class="texto">ESTADO:</p>
+          <p class="estado1">{{inscripcion["estado"]}}</p>
         </div>
         <div class="col-2">
           <section class="header-tabla">
@@ -67,6 +63,7 @@
 
         </div>
       </div>
+      {% endfor %}
     </details>
   </article>
 
@@ -91,10 +88,7 @@
           <option value="">Seleccionar..</option>
 
           {% for comision in param["comisiones"][0:] %}
-          <option value="{{comision['nombre']}}">{{comision["nombre"]}}
-            ({{comision["cuatri"]}}{{comision["tipo"]}}
-            cuatri.
-            {{comision["anio"]}})</option>
+          <option value="{{comision['nombre']}}">{{comision["nombre"]}}</option>
           {% endfor %}
 
         </select>
@@ -172,32 +166,12 @@
 
         <input type="submit" id="añadirClase" value="Añadir"></button>
 
-        <!-- Creo que hay que sacar el "onclick='agregarFila()'" porque no se puede enviar el form sino
-        
-          EL FORM NO ANDA PORQUE NO ANDA EL JAVASCRIPT, nose porque
-          
-          NO TOMA EL VALIDAR DATOS()
-
-          *el error estaba en que un id estaba cambiado (emoji de calavera)
-
-          - AHORA FALTA AGREGAR LA MATERIA COMISION EN LA TABLA DE LA PANTALLA
-
-          - Y TAMBIEN ASIGNAR LA "hora_mat_com" A LA TABLA "inscripciones"
-        
-        -->
-
       </form>
 
     </div>
   </div>
 
   <a href="/inscripciones" id="agregarInscripcion">Agregar Nueva Inscripción</a>
-  <!-- 
-
-    TENGO QUE CREAR UNA PANTALLA DE AGREGADO DE INSCRIPCIONES PARA PODER LUEGO
-    CARGAR LAS INSCRIPCIONES EN ESTA PANTALLA
-
-   -->
 
   <script language="javascript" type="text/javascript" src="../static/js/GestionInscripciones.js"></script>
 </body>
