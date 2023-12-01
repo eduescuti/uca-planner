@@ -26,10 +26,12 @@
 
 
     <div class="contenedor">
-        <form onsubmit="return validarDatos()" action="/signup" method="post">
+        <form onsubmit="return validarDatos()" action="/signup" method="post"> 
 
             <label for="usuario">Nombre de Usuario:</label>
-            <input type="text" name="usuario" id="usuario" placeholder="Usuario.." onfocusout="validarUsuario()">
+            <input type="text" name="usuario" id="usuario" placeholder="Usuario.." onfocusout="validarUsuario()"
+            onkeyup="validateOnKeyUp()" >
+            <div id="respuesta"> </div>
             <p class="error" id="error usuario"></p>
 
             <label for="nombre">Nombre:</label>
@@ -80,7 +82,8 @@
 
             <p class="error" id="error incompleto"></p>
 
-            <input type="submit" value="Registrarse">
+            <input type="submit" value="Registrarse" id="btnSubmit" disabled>
+
 
         </form>
     </div>
@@ -90,6 +93,7 @@
         <p> uca_planner@uca.edu.com | Teléfono: 15-4627-9873</p>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script language="javascript" type="text/javascript" src="../static/js/Registrarse.js"></script>
 
 </body>

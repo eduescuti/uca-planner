@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, redirect, session, flash, url_for  
+from flask import Flask, request, redirect, session, flash, url_for
 from controller import *
 
 def route(app):
@@ -222,3 +222,24 @@ def route(app):
     # os.remove(os.path.join('G:\\Mi unidad\\NUBE\\Docencia\\UCA\\_Materias\\03-UCA.PW\\_Python\\_PythonFlask\\07_login_register_bd\\uploadfile',"agua.png"))
     
     
+    @app.route('/validate-username/<username>')
+    def validate_username(username):
+        try:
+            # Conexión a la base de datos
+            connection = mysql.connector.connect(**conectarBD)
+            cursor = connection.cursor()
+
+            # Consulta para verificar la existencia del usuario
+            query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
+            cursor.execute(query, (username,))
+            count = cursor.fetchone()[0]
+
+            # Cerrar la conexión
+            cursor.close()
+            connection.close()
+
+            # Devolver la respuesta JSON
+            return jsonify({'exists': count > 0})  #cantidad de registros (que coinciden) mayor a 0
+
+        except Exception as e:
+            return jsonify({'error': str(e)})

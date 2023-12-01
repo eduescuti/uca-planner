@@ -1,13 +1,15 @@
 '''### info:
      CONTROL 
 '''
-from flask import request, session, redirect, render_template
+from flask import request, session, redirect, render_template, jsonify
 from model import *
 from werkzeug.utils import secure_filename
 import os
 from uuid import uuid4
 from appConfig import config
-    
+
+
+
 def obtenerInformacionPerfil(param):
     
     param["usuario"] = session['usuario']
@@ -229,6 +231,7 @@ def register_pagina(param):
     '''
        Carga la pagina 'register'
     '''
+
     obtenerMenuBottom(param)       
     return render_template('Registrarse.html',param=param)
 
@@ -547,3 +550,6 @@ def inscribirse(miRequest):
     else:
         res = redirect('/')
     return res
+
+
+

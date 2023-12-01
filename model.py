@@ -3,6 +3,8 @@
 '''
 from _mysql_db import *
 
+
+
 """ 
 ==================
 OBTENCION DE DATOS
@@ -515,3 +517,6 @@ def inscribirseACurso(di, id_usuario):
 
     resul_insert=insertDB(BASE,insertCurso,val)
     return resul_insert==1 """
+
+
+
