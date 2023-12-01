@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2023 a las 13:41:50
+-- Servidor: localhost
+-- Tiempo de generación: 30-11-2023 a las 22:46:54
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `baseuca`
+-- Base de datos: `base_prueba`
 --
 
 -- --------------------------------------------------------
@@ -29,9 +29,30 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `comisiones` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(3) NOT NULL,
-  `año` int(11) NOT NULL,
-  `cuatrimestre` int(11) NOT NULL
+  `nombre` varchar(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `comisiones`
+--
+
+INSERT INTO `comisiones` (`id`, `nombre`) VALUES
+(3, 'BM'),
+(4, 'AM');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cursos`
+--
+
+CREATE TABLE `cursos` (
+  `id` int(11) NOT NULL,
+  `id_inscripcion` int(11) NOT NULL,
+  `id_com_mat` int(30) NOT NULL,
+  `id_dia` int(30) NOT NULL,
+  `id_hora` int(30) NOT NULL,
+  `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -45,18 +66,16 @@ CREATE TABLE `dias` (
   `dia` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `horario_mat`
+-- Volcado de datos para la tabla `dias`
 --
 
-CREATE TABLE `horario_mat` (
-  `id` int(11) NOT NULL,
-  `id_com_mat` int(30) NOT NULL,
-  `id_dia` int(30) NOT NULL,
-  `id_hora` int(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `dias` (`id`, `dia`) VALUES
+(1, 'lunes'),
+(2, 'martes'),
+(3, 'miercoles'),
+(4, 'jueves'),
+(5, 'viernes');
 
 -- --------------------------------------------------------
 
@@ -69,6 +88,20 @@ CREATE TABLE `horas` (
   `hora` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `horas`
+--
+
+INSERT INTO `horas` (`id`, `hora`) VALUES
+(1, '07:45hs - 10:15hs'),
+(2, '10:15hs - 12:15hs'),
+(3, '11:30hs - 15:15hs'),
+(4, '13:00hs - 15:15hs'),
+(5, '14:00hs - 16:00hs'),
+(6, '15:15hs - 17:15hs'),
+(7, '17:15hs - 19:00hs'),
+(8, '19:00hs - 21:00hs');
+
 -- --------------------------------------------------------
 
 --
@@ -78,8 +111,8 @@ CREATE TABLE `horas` (
 CREATE TABLE `inscripciones` (
   `id` int(11) NOT NULL,
   `estado` varchar(10) NOT NULL,
-  `id_hora_mat` int(10) NOT NULL,
-  `id_usuario` int(30) NOT NULL
+  `año` int(10) NOT NULL,
+  `cuatrimestre` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -102,7 +135,9 @@ INSERT INTO `materias` (`id`, `nombre`, `codigo`) VALUES
 (1, 'Filosofía', 154),
 (2, 'Complementos de Matemática', 300),
 (3, 'Representación Gráfica', 230),
-(4, 'Calculo Elemental', 450);
+(4, 'Calculo Elemental', 450),
+(8, 'Seminario', 100),
+(13, 'Introduccion a la Ingenieria', 240);
 
 -- --------------------------------------------------------
 
@@ -134,6 +169,15 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `usuario`, `nombre`, `apellido`, `email`, `contraseña`, `rol`) VALUES
+(1, 'eduescuti', 'Eduardo', 'Escuti', 'eduescuti99@gmail.com', '10101999', 'alumno'),
+(2, 'admin', 'Eduardo', 'Escuti', 'eduescuti99@gmail.com', '10101999', 'admin'),
+(3, 'mariano', 'Mariano', 'Triglia', 'mariano_triglia@uca.edu.ar', 'mariano', 'admin');
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -144,18 +188,21 @@ ALTER TABLE `comisiones`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `cursos`
+--
+ALTER TABLE `cursos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_hora` (`id_hora`),
+  ADD KEY `id_dia` (`id_dia`),
+  ADD KEY `id_com_mat` (`id_com_mat`),
+  ADD KEY `id_inscripcion` (`id_inscripcion`,`id_usuario`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
 -- Indices de la tabla `dias`
 --
 ALTER TABLE `dias`
   ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `horario_mat`
---
-ALTER TABLE `horario_mat`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_hora` (`id_hora`),
-  ADD KEY `id_dia` (`id_dia`);
 
 --
 -- Indices de la tabla `horas`
@@ -167,9 +214,7 @@ ALTER TABLE `horas`
 -- Indices de la tabla `inscripciones`
 --
 ALTER TABLE `inscripciones`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_hora_mat` (`id_hora_mat`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `materias`
@@ -199,67 +244,63 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `comisiones`
 --
 ALTER TABLE `comisiones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `cursos`
+--
+ALTER TABLE `cursos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `dias`
 --
 ALTER TABLE `dias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `horario_mat`
---
-ALTER TABLE `horario_mat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `horas`
 --
 ALTER TABLE `horas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `inscripciones`
 --
 ALTER TABLE `inscripciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
 --
 ALTER TABLE `materias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `materia_comision`
 --
 ALTER TABLE `materia_comision`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `horario_mat`
+-- Filtros para la tabla `cursos`
 --
-ALTER TABLE `horario_mat`
-  ADD CONSTRAINT `horario_mat_ibfk_1` FOREIGN KEY (`id_hora`) REFERENCES `horas` (`id`),
-  ADD CONSTRAINT `horario_mat_ibfk_2` FOREIGN KEY (`id_dia`) REFERENCES `dias` (`id`);
-
---
--- Filtros para la tabla `inscripciones`
---
-ALTER TABLE `inscripciones`
-  ADD CONSTRAINT `inscripciones_ibfk_1` FOREIGN KEY (`id_hora_mat`) REFERENCES `horario_mat` (`id`),
-  ADD CONSTRAINT `inscripciones_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
+ALTER TABLE `cursos`
+  ADD CONSTRAINT `cursos_ibfk_1` FOREIGN KEY (`id_hora`) REFERENCES `horas` (`id`),
+  ADD CONSTRAINT `cursos_ibfk_2` FOREIGN KEY (`id_dia`) REFERENCES `dias` (`id`),
+  ADD CONSTRAINT `cursos_ibfk_3` FOREIGN KEY (`id_com_mat`) REFERENCES `materia_comision` (`id`),
+  ADD CONSTRAINT `cursos_ibfk_4` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`),
+  ADD CONSTRAINT `cursos_ibfk_5` FOREIGN KEY (`id_inscripcion`) REFERENCES `inscripciones` (`id`);
 
 --
 -- Filtros para la tabla `materia_comision`
