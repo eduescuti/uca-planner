@@ -88,7 +88,11 @@ function validarDatos() {
   var comision = document.getElementById("comi").value;
   var cupo = document.getElementById("cupo").value;
 
-  if (noSelecciona(materia)) {
+  if (noSelecciona(inscripcion)) {
+    indicarQueFaltanCompletarCampos();
+    return false;
+
+  } else if (noSelecciona(materia)) {
     indicarQueFaltanCompletarCampos();
     return false;
 

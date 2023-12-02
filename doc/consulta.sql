@@ -31,7 +31,7 @@ SELECT * FROM comisiones;
 
 INSERT INTO comisiones (nombre) VALUES ("BM");
 
-SELECT id FROM materias WHERE codigo="450";
+SELECT nombre FROM materias WHERE codigo="450";
 
 
 /* AGREGADO DE LOS DIAS A LA TABLA DIAS */
@@ -67,7 +67,8 @@ LIMIT 1;
 
 use base_prueba;
 
-SELECT COUNT(*) AS cantidad FROM hora_mat_com;
+SELECT COUNT(*) AS cantidad FROM materias WHERE codigo=100 and nombre='Seminario';
+
 
 SELECT DISTINCT año FROM comisiones;
 

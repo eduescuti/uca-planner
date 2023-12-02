@@ -47,7 +47,8 @@ def obtenerMensajeError(param, estado="carga exitosa"):
     param["error"] = {
         "error materia" : "No se pudo cargar la materia, porfavor intente denuevo..",
         "error comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
-        "error inscripcion" : {"curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo.."}
+        "error curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
+        "error inscripcion" : "No se pudo cargar los datos del período de inscripciones, porfavor intente denuevo.."
         }
     
     param["estado"] = estado
@@ -279,7 +280,7 @@ def gestion_inscripciones_pantalla(param):
 
     obtenerMaterias(param)
     obtenerComisiones(param)
-    obtenerHorarios(param)
+    obtenerCursos(param)
     obtenerInscripciones(param)
 
     if haySesion():
@@ -312,8 +313,15 @@ def comisiones_pantalla(param):
     return redirect('/')
 
 def cursos_pantalla(param):
+
+    """ obtenerCursos """
+
+    obtenerInscripciones(param)
     obtenerCursos(param)
-    
+    obtenerMaterias(param)
+    obtenerComisiones(param)
+    obtenerHorarios(param)
+
     if haySesion():
 
         if (session["rol"] == "admin"):
@@ -514,7 +522,6 @@ def agregarCurso(miRequest):
     else:
         res = redirect('/')
     return res
-
 
 def agregarInscripcion(miRequest):
     param={}

@@ -98,6 +98,15 @@ body {
     */
 }
 
+@media screen and (max-width: 700px) {
+
+    .topnav a,
+    .topnav_right {
+        float: none;
+        width: 100%;
+    }
+}
+
 /* Responsive layout - cuando la pantalla tiene menos de 800 px de ancho, hace que las dos columnas se apilen una encima de la otra en lugar de una al lado de la otra */
 @media screen and (max-width: 800px) {
 

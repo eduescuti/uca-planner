@@ -20,8 +20,11 @@
         <div class="leftcolumn">
             <div class="card">
                 <h4 class="titulo">Cursos Cargados</h4>
-                <select name="com" class="comisionSelect" multiple>
-
+                <select id="cursos" multiple>
+                    {% for curso in param["cursos"] %}
+                    <option value="{{curso['id']}}">{{curso["materia"]["nombre"]}} ({{curso["materia"]["comision"]}})
+                    </option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="card">
@@ -33,29 +36,49 @@
             <div class="card" id="contenedor">
                 <h2>Agregar un Curso</h2>
                 <form onsubmit="return validarDatos()" action="/agregar_curso" method="post">
+
+                    <label class="inscripcion" for="inscripcion">Selecciona la Inscripción:</label>
+                    <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
+                        <option value="" disabled selected>Seleccionar..</option>
+
+                        {% for inscripcion in param["inscripciones"] %}
+                        {% if inscripcion["estado"] == "cerrada" %}
+                        <option disabled>Inscripciones {{inscripcion["año"]}}
+                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
+                        </option>
+                        {% else %}
+                        <option value="{{inscripcion['id']}}">Inscripciones {{inscripcion["año"]}}
+                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <p class="error" id="error inscripcion"></p>
+
                     <label for="mat" class="materia">Seleccione la Materia:</label>
                     <select class="materiaSelect" name="mat" id="mat">
-                        <option value="">Seleccionar..</option>
-                
+                        <option value="" disabled selected>Seleccionar..</option>
+
                         {% for mat in param["materias"][0:] %}
                         <option value="{{mat['codigo']}}">{{mat["nombre"]}} ({{mat["codigo"]}})</option>
-                        {% endfor %}               
+                        {% endfor %}
                     </select>
-                
+
                     <label for="comi" class="com">Seleccione la Comision de la materia:</label>
                     <select class="comisionSelect" name="comi" id="comi">
-                        <option value="">Seleccionar..</option>
-                
+                        <option value="" disabled selected>Seleccionar..</option>
+
                         {% for comision in param["comisiones"][0:] %}
                         <option value="{{comision['nombre']}}">{{comision["nombre"]}}</option>
                         {% endfor %}
                     </select>
-                
+
                     <label for="cupo" class="cup">Ingrese un cupo máximo para el Curso:</label>
-                    <input type="number" name="cupo" id="cupo" min=1 placeholder="Ingrese un cupo.." onfocusout="validarCupo()">
+                    <input type="number" name="cupo" id="cupo" min=1 placeholder="Ingrese un cupo.."
+                        onfocusout="validarCupo()">
                     <p class="error" id="errorcupo"></p>
-                
-                
+
+
                     <h4 class="hor">Seleccione las horas del Curso:</h4>
                     <table class="tablaHora">
                         <thead class="tablaHoraHead">
@@ -71,59 +94,55 @@
                         <tbody>
                             <!-- Aquí se mostrará la tabla de horarios -->
                             <tr id="horas" class="tablatr">
-                              <th id="hora" class="tablath">Definir Horas:</th>
-                              <th id="hora" class="tablath">
-                                <select id="horas-lun" name="lunes" onclick="eliminarError('horas-lun')">
-                                  <option value="">Sin Horario</option>
-                                  {% for hora in param["horas"][0:] %}
-                                  <option value="{{hora['id']}}">{{hora["hora"]}}</option>
-                                  {% endfor %}
-                                </select>
-                              </th>
-                              <th id="hora" class="tablath">
-                                <select id="horas-mar" name="martes" onclick="eliminarError('horas-mar')">
-                                  <option value="">Sin Horario</option>
-                                  {% for hora in param["horas"][0:] %}
-                                  <option value="{{hora['id']}}">{{hora["hora"]}}</option>
-                                  {% endfor %}
-                                </select>
-                              </th>
-                              <th id="hora" class="tablath">
-                                <select id="horas-mie" name="miercoles" onclick="eliminarError('horas-mie')">
-                                  <option value="">Sin Horario</option>
-                                  {% for hora in param["horas"][0:] %}
-                                  <option value="{{hora['id']}}">{{hora["hora"]}}</option>
-                                  {% endfor %}
-                                </select>
-                              </th>
-                              <th id="hora" class="tablath">
-                                <select id="horas-jue" name="jueves" onclick="eliminarError('horas-jue')">
-                                  <option value="">Sin Horario</option>
-                                  {% for hora in param["horas"][0:] %}
-                                  <option value="{{hora['id']}}">{{hora["hora"]}}</option>
-                                  {% endfor %}
-                                </select>
-                              </th>
-                              <th id="hora" class="tablath">
-                                <select id="horas-vie" name="viernes" onclick="eliminarError('horas-vie')">
-                                  <option value="">Sin Horario</option>
-                                  {% for hora in param["horas"][0:] %}
-                                  <option value="{{hora['id']}}">{{hora["hora"]}}</option>
-                                  {% endfor %}
-                                </select>
-                              </th>
+                                <th id="hora" class="tablath">Definir Horas:</th>
+                                <th id="hora" class="tablath">
+                                    <select id="horas-lun" name="lunes" onfocusout="eliminarError()">
+                                        <option value="">Sin Horario</option>
+                                        {% for hora in param["horas"][0:] %}
+                                        <option value="{{hora['id']}}">{{hora["hora"]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </th>
+                                <th id="hora" class="tablath">
+                                    <select id="horas-mar" name="martes" onfocusout="eliminarError()">
+                                        <option value="">Sin Horario</option>
+                                        {% for hora in param["horas"][0:] %}
+                                        <option value="{{hora['id']}}">{{hora["hora"]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </th>
+                                <th id="hora" class="tablath">
+                                    <select id="horas-mie" name="miercoles" onfocusout="eliminarError()">
+                                        <option value="">Sin Horario</option>
+                                        {% for hora in param["horas"][0:] %}
+                                        <option value="{{hora['id']}}">{{hora["hora"]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </th>
+                                <th id="hora" class="tablath">
+                                    <select id="horas-jue" name="jueves" onfocusout="eliminarError()">
+                                        <option value="">Sin Horario</option>
+                                        {% for hora in param["horas"][0:] %}
+                                        <option value="{{hora['id']}}">{{hora["hora"]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </th>
+                                <th id="hora" class="tablath">
+                                    <select id="horas-vie" name="viernes" onfocusout="eliminarError()">
+                                        <option value="">Sin Horario</option>
+                                        {% for hora in param["horas"][0:] %}
+                                        <option value="{{hora['id']}}">{{hora["hora"]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </th>
                             </tr>
-                          </tbody>
-                        </table>
-                        <p class="error" id="errorhoras">*Recuerde que debe ingresar un rango de horas de al menos un día
-                        </p>
-                        {% if param["estado"] == "carga fallida" %}
-                        <p class="error" id="error carga">{{param["error"]["error inscripcion"]["curso"]}}</p>
-                        {% endif %}
-                
-                        <input type="submit" id="añadirClase" value="Añadir"></input>
-                
-                    <!-- poner lo del pop up -->
+                        </tbody>
+                    </table>
+                    <p class="error" id="errorhoras">*Recuerde que debe ingresar un rango de horas de al menos un día
+                    </p>
+                    {% if param["estado"] == "carga fallida" %}
+                    <p class="error" id="error carga">{{param["error"]["error inscripcion"]["curso"]}}</p>
+                    {% endif %}
 
                     <p class="error" id="error incompleto"></p>
 

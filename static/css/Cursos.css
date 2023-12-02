@@ -100,10 +100,11 @@ tr {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }
 
-input[type=text],
 input[type=number],
-#cuatrimestre,
-#estado {
+#inscripcion,
+#mat,
+#comi,
+#cupo {
     width: 40%;
     padding: 10px;
     display: block;
@@ -127,7 +128,6 @@ input[type=submit] {
 
 input[type=submit]:hover {
     background-color: #3d77aa;
-
 }
 
 .error {
@@ -143,37 +143,3 @@ input[type=submit]:hover {
         padding: 0;
     }
 }
-
-#mat,
-#comi,
-#cupo {
-  padding: 5px;
-  width: 100%;
-}
-
-select {
-    width: 80%;
-    display: block;
-    margin-left: 10px;
-  }
-  
-  #cupo {
-    display: block;
-    margin-left: 10px;
-    width: 75%;
-  }
-  
-  .materia,
-  .com,
-  .cup,
-  .hor {
-    margin-left: 10px;
-  }
-  
-  #mat,
-  #comi,
-  #cupo {
-    padding: 5px;
-    width: 100%;
-    border-radius: 15px;
-  }
