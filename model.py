@@ -11,6 +11,14 @@ OBTENCION DE DATOS
 ==================
 """
 
+""" 
+
+obtencion de datos de los cursos de una inscripcion dada
+
+
+
+"""
+
 def obtenerHorarios(dic):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
     los rangos de horarios disponibles para poder cursar una materia.

@@ -40,126 +40,17 @@
                     </thead>
                     <tbody>
                         <!-- Aquí se mostrará la tabla de horarios -->
-                        <tr id="hora1">
-                            <th id="hora">07:45 - 08:30 hs</th>
-                            <th id="lun-hora-1"></th>
-                            <th id="mar-hora-1"></th>
-                            <th id="mie-hora-1"></th>
-                            <th id="jue-hora-1"></th>
-                            <th id="vie-hora-1"></th>
+                        {% for horas in param["horas"] %}
+                        <tr id="hora{{horas['id']}}">
+                            <th id="hora">{{horas['hora']}}</th>
+                            <th id="lun-hora-{{horas['id']}}"></th>
+                            <th id="mar-hora-{{horas['id']}}"></th>
+                            <th id="mie-hora-{{horas['id']}}"></th>
+                            <th id="jue-hora-{{horas['id']}}"></th>
+                            <th id="vie-hora-{{horas['id']}}"></th>
                         </tr>
-                        <tr id="hora2">
-                            <th id="hora">08:30 - 09:15 hs</th>
-                            <th id="lun-hora-2"></th>
-                            <th id="mar-hora-2"></th>
-                            <th id="mie-hora-2"></th>
-                            <th id="jue-hora-2"></th>
-                            <th id="vie-hora-2"></th>
-                        </tr>
-                        <tr id="hora3">
-                            <th id="hora">09:30 - 10:15 hs</th>
-                            <th id="lun-hora-3"></th>
-                            <th id="mar-hora-3"></th>
-                            <th id="mie-hora-3"></th>
-                            <th id="jue-hora-3"></th>
-                            <th id="vie-hora-3"></th>
-                        </tr>
-                        <tr id="hora4">
-                            <th id="hora">10:15 - 11:00 hs</th>
-                            <th id="lun-hora-4"></th>
-                            <th id="mar-hora-4"></th>
-                            <th id="mie-hora-4"></th>
-                            <th id="jue-hora-4"></th>
-                            <th id="vie-hora-4"></th>
-                        </tr>
-                        <tr id="hora5">
-                            <th id="hora">11:00 - 12:15 hs</th>
-                            <th id="lun-hora-5"></th>
-                            <th id="mar-hora-5"></th>
-                            <th id="mie-hora-5"></th>
-                            <th id="jue-hora-5"></th>
-                            <th id="vie-hora-5"></th>
-                        </tr>
-                        <tr id="hora6">
-                            <th id="hora">12:15 - 13:00 hs</th>
-                            <th id="lun-hora-6"></th>
-                            <th id="mar-hora-6"></th>
-                            <th id="mie-hora-6"></th>
-                            <th id="jue-hora-6"></th>
-                            <th id="vie-hora-6"></th>
-                        </tr>
-                        <tr id="hora7">
-                            <th id="hora">13:00 - 13:30 hs</th>
-                            <th id="lun-hora-7"></th>
-                            <th id="mar-hora-7"></th>
-                            <th id="mie-hora-7"></th>
-                            <th id="jue-hora-7"></th>
-                            <th id="vie-hora-7"></th>
-                        </tr>
-                        <tr id="hora8">
-                            <th id="hora">13:30 - 14:15 hs</th>
-                            <th id="lun-hora-8"></th>
-                            <th id="mar-hora-8"></th>
-                            <th id="mie-hora-8"></th>
-                            <th id="jue-hora-8"></th>
-                            <th id="vie-hora-8"></th>
-                        </tr>
-                        <tr id="hora9">
-                            <th id="hora">14:15 - 15:00 hs</th>
-                            <th id="lun-hora-9"></th>
-                            <th id="mar-hora-9"></th>
-                            <th id="mie-hora-9"></th>
-                            <th id="jue-hora-9"></th>
-                            <th id="vie-hora-9"></th>
-                        </tr>
-                        <tr id="hora10">
-                            <th id="hora">15:15 - 16:00 hs</th>
-                            <th id="lun-hora-10"></th>
-                            <th id="mar-hora-10"></th>
-                            <th id="mie-hora-10"></th>
-                            <th id="jue-hora-10"></th>
-                            <th id="vie-hora-10"></th>
-                        </tr>
-                        <tr id="hora11">
-                            <th id="hora">16:00 - 16:45 hs</th>
-                            <th id="lun-hora-11"></th>
-                            <th id="mar-hora-11"></th>
-                            <th id="mie-hora-11"></th>
-                            <th id="jue-hora-11"></th>
-                            <th id="vie-hora-11"></th>
-                        </tr>
-                        <tr id="hora12">
-                            <th id="hora">16:45 - 17:30 hs</th>
-                            <th id="lun-hora-12"></th>
-                            <th id="mar-hora-12"></th>
-                            <th id="mie-hora-12"></th>
-                            <th id="jue-hora-12"></th>
-                            <th id="vie-hora-12"></th>
-                        </tr>
-                        <tr id="hora13">
-                            <th id="hora">17:30 - 18:45 hs</th>
-                            <th id="lun-hora-13"></th>
-                            <th id="mar-hora-13"></th>
-                            <th id="mie-hora-13"></th>
-                            <th id="jue-hora-13"></th>
-                            <th id="vie-hora-13"></th>
-                        </tr>
-                        <tr id="hora14">
-                            <th id="hora">18:45 - 19:30 hs</th>
-                            <th id="lun-hora-14"></th>
-                            <th id="mar-hora-14"></th>
-                            <th id="mie-hora-14"></th>
-                            <th id="jue-hora-14"></th>
-                            <th id="vie-hora-14"></th>
-                        </tr>
-                        <tr id="hora15">
-                            <th id="hora">19:30 - 20:30 hs</th>
-                            <th id="lun-hora-15"></th>
-                            <th id="mar-hora-15"></th>
-                            <th id="mie-hora-15"></th>
-                            <th id="jue-hora-15"></th>
-                            <th id="vie-hora-15"></th>
-                        </tr>
+                        {% endfor %}
+
                     </tbody>
                 </table>
             </div>
@@ -167,7 +58,7 @@
         </div>
         <div class="rightcolumn">
             <div class="card">
-                <form onsubmit="return validarDatos()" action="/inscribirse" method="POST">
+                <form onsubmit="return validarDatos()" action="/inscribirse" method="POST" id="form_inscripcion">
 
                     <label class="titulo1" for="inscripcion">Seleccione la Inscripción:</label>
                     <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
@@ -179,19 +70,23 @@
                             {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
                         </option>
                         {% else %}
-                        <option value="{{inscripcion['id']}}">Inscripciones {{inscripcion["año"]}}
-                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
+                        <option value="{{inscripcion['id']}}"
+                            onclick="ofrecerMaterias('recibir_inscripcion', 'materia', 'form_inscripcion')">
+                            Inscripciones {{inscripcion["año"]}}
+                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} Cuatri.
                         </option>
                         {% endif %}
                         {% endfor %}
                     </select>
-                    <p class="error" id="error inscripcion"></p>
+                </form>
+                <p class="error" id="error inscripcion"></p>
 
+                <form>
                     <label class="titulo1" for="materia">Selecciona una materia:</label>
-                    <select id="materia" name="materia" onfocusout="validarMateria()">
+                    <select id="materia" name="materia" onfocusout="validarMateria()" disabled>
                         <option value="0" disabled selected>Seleccionar..</option>
 
-                        <!-- {% for materias in param["hora_mat_com"] %} -->
+
                         <option value="calculoElemental">Cálculo Elemental</option>
                         <option value="filo">Filosofía</option>
                         <option value="info">Informática General</option>
@@ -204,6 +99,9 @@
                     <button onclick="agregarMateria()">Agregar Materia</button>
                     <button onclick="resetearCronograma()">Resetear</button>
                     <button type="submit">Inscribirse a Materia</button>
+
+
+
                     <!-- Estos buttons deberían ser inputs dentro de un form 
                 
                     SE VA A USAR AJAX EN ESTA TABLA PARA PODER REALIZAR LA CARGA DE FORMA ASINCRONICA

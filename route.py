@@ -166,7 +166,11 @@ def route(app):
         getRequest(miRequest)
         return inscribirse(miRequest)
 
-
+    @app.route('/recibir_datos',methods = ["GET", "POST"])
+    def recibir_datos():
+        miRequest={}
+        getRequest(miRequest)
+        return miRequest
 
 
 

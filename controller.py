@@ -242,9 +242,9 @@ def cronograma_pagina(param):
 
     if haySesion():
         if (session["rol"] == "alumno"):
-            obtenerMenuBottom(param)
             obtenerInscripciones(param)
             obtenerMaterias(param)
+            obtenerHorarios(param)
 
             return render_template("OrganizadorDeHorarios.html", param=param)
     
