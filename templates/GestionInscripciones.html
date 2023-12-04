@@ -39,8 +39,9 @@
         </div>
         <div class="col-2">
           <section class="header-tabla">
-            <div class="input-grupo">
-              <input type="search" placeholder="Filtrar por..." name="search" id="search_4">
+            <div class="input-grupo" id="formBusqueda">
+              <input type="search" placeholder="Filtrar por..." name="search" id="inputFiltro"
+              oninput="filtrarTabla()">
             </div>
           </section>
           <table id="tablaCurso">
@@ -66,8 +67,8 @@
             </tbody>
           </table>
           <!-- AGREGAR MATERIA -->
-          <button id="abrir" onclick="abrir()">Agregar Curso</button>
-          <!-- Este button puede ser un <a href="/cursos"> -->
+          <!-- <button id="abrir" onclick="abrir()">Agregar Curso</button> -->
+          <button id="abrir" href="/cursos">Agregar Curso</button>
 
         </div>
       </div>

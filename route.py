@@ -267,16 +267,4 @@ def route(app):
 
 
 
-
-        # try:
-        # # Obtener datos del formulario enviado
-        #     form_data = request.form
-        #     return verUsuario(username)
-        # # Tu lógica para verificar la existencia del usuario aquí
-        # # ...
-        # except Exception as e:
-        #     print(f"Error en la aplicación: {str(e)}")
-        # return 'Error interno del servidor', 500
-    
-       
-       
+        
