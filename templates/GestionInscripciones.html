@@ -77,7 +77,41 @@
 
   {% endfor %}
 
-  <a href="/inscripciones" id="agregarInscripcion">Agregar período de Inscripción</a>
+  <div class="card" id="contenedor">
+    <h3>Agregar una Inscripción</h3>
+    <form onsubmit="return validarDatos()" action="/agregar_inscripcion" method="post" id="formInscripciones">
+
+        <label for="anio" id="año">Ingrese el año del período de Inscripciones:</label>
+        <input type="text" name="anio" id="anio" placeholder="Ingrese el año.."
+            onclick="insertarAnioActual()" onfocusout="validarAnio()">
+        <p class="error" id="error anio"></p>
+
+        <label for="cuatrimestre" id="labelCuatri">Asigne el cuatrimestre del período de Inscripciones:</label>
+        <select id="cuatrimestre" name="cuatrimestre" title="Seleccionar...">
+            <option value="0" disabled selected>Seleccionar..</option>
+            <option value="1">Primer Cuatrimestre (1C)</option>
+            <option value="2">Segundo Cuatrimestre (2C)</option>
+        </select>
+
+        <label for="estado" id="labelEstado">Asigne el estado del período de Inscripciones:</label>
+        <select id="estado" name="estado" title="Seleccionar...">
+            <option value="0" disabled selected>Seleccionar..</option>
+            <option value="abierta">Abierta</option>
+            <option value="cerrada">Cerrada</option>
+        </select>
+
+        <p class="error" id="error incompleto"></p>
+
+        {% if param["estado"] == "carga fallida" %}
+        <p class="error" id="error carga">{{param["error"]["error inscripcion"]}}</p>
+        {% endif %}
+
+        <input type="submit" value="Agregar Inscripción" id="btnInscripciones">
+
+    </form>
+</div>
+
+  <!-- <a href="/inscripciones" id="agregarInscripcion">Agregar período de Inscripción</a> -->
 
   <script language="javascript" type="text/javascript" src="../static/js/GestionInscripciones.js"></script>
 </body>
