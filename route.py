@@ -222,24 +222,57 @@ def route(app):
     # os.remove(os.path.join('G:\\Mi unidad\\NUBE\\Docencia\\UCA\\_Materias\\03-UCA.PW\\_Python\\_PythonFlask\\07_login_register_bd\\uploadfile',"agua.png"))
     
     
-    @app.route('/validate-username/<username>')
-    def validate_username(username):
+    # @app.route('/validate-username/<username>')
+    # def validate_username(username):
+    #     try:
+    #         # Conexión a la base de datos
+    #         connection = mysql.connector.connect(**conectarBD)
+    #         cursor = connection.cursor()
+
+    #         # Consulta para verificar la existencia del usuario
+    #         query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
+    #         cursor.execute(query, (username,))
+    #         count = cursor.fetchone()[0]
+
+    #         # Cerrar la conexión
+    #         cursor.close()
+    #         connection.close()
+
+    #         # Devolver la respuesta JSON
+    #         return jsonify({'exists': count > 0})  #cantidad de registros (que coinciden) mayor a 0
+
+    #     except Exception as e:
+    #         return jsonify({'error': str(e)})
+
+    @app.route('/validar_usuario/<username>', methods=['POST','GET'])
+    # def verificarUsuario():
+    #       form_data = request.form
+    #       return verUsuario()
+    def verificarUsuario(username):
         try:
-            # Conexión a la base de datos
-            connection = mysql.connector.connect(**conectarBD)
-            cursor = connection.cursor()
-
-            # Consulta para verificar la existencia del usuario
-            query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
-            cursor.execute(query, (username,))
-            count = cursor.fetchone()[0]
-
-            # Cerrar la conexión
-            cursor.close()
-            connection.close()
-
-            # Devolver la respuesta JSON
-            return jsonify({'exists': count > 0})  #cantidad de registros (que coinciden) mayor a 0
-
+            username = request.form.get('usuario', '').strip()
+            if username:
+                respuesta_verificacion = verUsuario(username)
+                return respuesta_verificacion
+            else:
+             return 'El nombre de usuario no puede estar vacío.'
         except Exception as e:
-            return jsonify({'error': str(e)})
+            print(f"Error en la ruta /validar_usuario: {str(e)}")
+            return 'Error interno del servidor', 500
+
+
+
+
+
+        # try:
+        # # Obtener datos del formulario enviado
+        #     form_data = request.form
+        #     return verUsuario(username)
+        # # Tu lógica para verificar la existencia del usuario aquí
+        # # ...
+        # except Exception as e:
+        #     print(f"Error en la aplicación: {str(e)}")
+        # return 'Error interno del servidor', 500
+    
+       
+       

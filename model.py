@@ -551,4 +551,24 @@ def inscribirseACurso(di, id_usuario):
     return resul_insert==1 """
 
 
+def verificar_existe(username):
+    h = username
+    try:
+        # connection = conectarBD()
+        connection = mysql.connector.connect(conectarBD())
+        cursor = connection.cursor()
 
+        # Consulta para verificar la existencia del usuario
+        query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
+        cursor.execute(query, (h,))
+        count = cursor.fetchone()[0]
+
+        cursor.close()
+        connection.close()
+
+        res = count > 0
+        return res
+
+    except Exception as e:
+        print(f'Error verificando existencia del user: {str(e)}')
+        return False

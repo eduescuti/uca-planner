@@ -26,11 +26,11 @@
 
 
     <div class="contenedor">
-        <form onsubmit="return validarDatos()" action="/signup" method="post"> 
+        <form onsubmit="return validarDatos()" action="/signup" method="post" id="formRegistro"> 
 
             <label for="usuario">Nombre de Usuario:</label>
             <input type="text" name="usuario" id="usuario" placeholder="Usuario.." onfocusout="validarUsuario()"
-            onkeyup="validateOnKeyUp()" >
+            onkeyup="validarUsuario()" >
             <div id="respuesta"> </div>
             <p class="error" id="error usuario"></p>
 

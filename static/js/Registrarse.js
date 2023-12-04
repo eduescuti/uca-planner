@@ -147,35 +147,147 @@ function validarDatos() {
 }
 
 
-function validateOnKeyUp() {
-    const inputUsuario = $('#usuario');
-    const username = inputUsuario.val(); //toma el valor del input
-    const resultDiv = $('#respuesta');
-    const submitButton = $('#btnSubmmit');
+// function validateOnKeyUp() {
+//     const inputUsuario = $('#usuario');
+//     const username = inputUsuario.val(); //toma el valor del input
+//     const resultDiv = $('#respuesta');
+//     const submitButton = $('#btnSubmmit');
 
 
-    // Realizar la solicitud AJAX con jQuery
-    $.ajax({
-        url: '/validate-username/${username}',  // url donde realiza la peticion, incluye el nombre del usuario
-        method: 'GET', //método http que utiliza
-        dataType: 'json', // espera respuesta de tipo json
-        success: function (data) { 
-            const resultDiv = $('#respuesta');
+//     // Realizar la solicitud AJAX con jQuery
+//     $.ajax({
+//         url: '/validate-username/${username}',  // url donde realiza la peticion, incluye el nombre del usuario
+//         method: 'GET', //método http que utiliza
+//         dataType: 'json', // espera respuesta de tipo json
+//         success: function (data) { 
+//             const resultDiv = $('#respuesta');
                 
-                if (data.exists) {       // data es el parámetro que tiene la respuesta json; exist indica si existe o no en la BD
-                    resultDiv.html('El nombre de usuario ya existe.');
+//                 if (data.exists) {       // data es el parámetro que tiene la respuesta json; exist indica si existe o no en la BD
+//                     resultDiv.html('El nombre de usuario ya existe.');
 
-                    // Deshabilitar el botón de envío si el usuario existe
-                    submitButton.prop('disabled', true);
+//                     // Deshabilitar el botón de envío si el usuario existe
+//                     submitButton.prop('disabled', true);
+//                 } else {
+//                     resultDiv.html('El nombre de usuario está disponible.');
+//                     // Habilitar el botón de envío si el usuario no existe
+//                     submitButton.prop('disabled', false);
+//                 }
+//             },
+//             error: function (error) {
+//                 console.error('Error:', error);
+//             }
+//         });
+    
+
+
+
+function validarUsuario() {
+    var inputUsuario = document.getElementById('usuario');
+    var username = inputUsuario.value.trim(); // Toma el valor del input
+    var submitButton = document.getElementById('btnSubmit');
+    
+    queryAjaxForm('/validar_usuario/' + username, 'respuesta', 'formRegistro');
+}
+    
+function queryAjaxForm(url, idDest, idForm, method = "POST") {
+    var formData = getDataForm(idForm);
+    var xhr = conectAjax();
+
+    if (xhr) {
+        xhr.open(method, url, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                    setDataIntoNode(idDest, xhr.responseText);
+                    console.log(xhr.responseText);
+
+                    // Después de recibir la respuesta, verifica si el usuario existe
+                    var userExists = xhr.responseText.includes('El nombre de usuario ya existe.');
+
+                    // Obtén una referencia al botón de envío
+                    var submitButton = document.getElementById('btnSubmit');
+
+                    // Inhabilita el botón si el usuario existe
+                    submitButton.disabled = userExists;
                 } else {
-                    resultDiv.html('El nombre de usuario está disponible.');
-                    // Habilitar el botón de envío si el usuario no existe
-                    submitButton.prop('disabled', false);
+                    console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
                 }
-            },
-            error: function (error) {
-                console.error('Error:', error);
             }
-        });
+        
+        xhr.send(formData);
+    } 
+    else {
+        console.log('No se pudo instanciar el objeto AJAX!');
     }
 
+function conectAjax() {
+    /** Retorna el objeto httpRequest que es una insTancia de XMLHttpRequest()
+    *   httpRequest se utilizará para enviar peticiones http al servidor
+    */
+    var httpRequest = false;        		 //	CREA EL OBJETO "AJAX".  
+    if (window.XMLHttpRequest) {             // -> Mozilla, Safari, ...
+        httpRequest = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {       // -> IE
+        httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return httpRequest;                      // RETORNA el objeto AJAX
+}
+
+function setDataIntoNode(idDest, response) {
+    var resultDiv = document.getElementById(idDest);
+            resultDiv.innerHTML = response;
+
+            var submitButton = document.getElementById('btnSubmit');
+
+            // Deshabilitar el botón si el usuario existe
+            if (response.includes('ya existe')) {
+                submitButton.disabled = true;
+            } else {
+                submitButton.disabled = false;
+            }
+        }
+function getDataForm(idForm) {
+            /**
+             * Retorna un objeto FormData() con los name y value de los elementos
+             * del formulario cuyo id de formuario es 'idForm' pasado por parámetros.
+             * 
+             * Preparado para los siguientes type: text, password, checkbox, radio, file y select
+             *   
+             * https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
+             * */
+            var formData = new FormData();
+            /** Tratamiento para los input, incluye los tipos
+             *  tipos: text, password, checkbox, radio, file 
+             */
+            data = document.forms[idForm].getElementsByTagName("input");                // Obtener los input
+            for (let i = 0; i < data.length; i++) {                                        // recorrer los elementos del formulario
+                if (data[i].name != undefined && data[i].value != undefined)
+                    if (data[i].type == 'text' || data[i].type == 'password') {
+                        formData.append(data[i].name, data[i].value);                 //  agrega a formData el par name/value
+                    }
+                    else if ((data[i].type == 'checkbox' || data[i].type == 'radio') && data[i].checked) {
+                        formData.append(data[i].name, data[i].value);                 //  agrega a formData el par name/value
+                    }
+                    else if (data[i].type == 'file') {
+                        formData.append(data[i].name, data[i].files[0]);              //  agrega a formData el par name/value
+                    }
+            }
+            /** Tratamiento para los select 
+             *  incluye tanto para una selección simple como para selección múltiple.
+             */
+            data = document.forms[idForm].getElementsByTagName("select");               // Obtener los select
+            for (let i = 0; i < data.length; i++) {                                        // recorrer los elementos del formulario
+                if (data[i] != undefined && data[i].type == 'select-one') {                //   Para selección simple
+                    nombre = data[i].name;                                              //     obtiene el name
+                    valor = data[i].options[data[i].selectedIndex].value;               //     obtiene el value
+                    formData.append(nombre, valor);                                   //     agrega a formData el par name/value
+                }
+                if (data[i] != undefined && data[i].type == 'select-multiple') {            //   Para selección multiple
+                    nombre = data[i].name;                                              //     obtiene el name
+                    for (let j = 0; j < data[i].selectedOptions.length; j++) {                //     recorrer los elementos seleccionados
+                        formData.append(nombre, data[i].selectedOptions[j].value);    //       agrega a formData el par name/value
+                    }
+                }
+            }
+            return formData;                                                              // retorna el objeto formData
+        }
+}
