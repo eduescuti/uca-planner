@@ -530,12 +530,12 @@ def agregarInscripcion(miRequest):
         if (session["rol"] == "admin"):
 
             if crearInscripcion(miRequest):
-                res = redirect('/inscripciones')
+                res = redirect('/gestion_inscripciones')
 
             else:
                 estado = "carga fallida"
                 obtenerMensajeError(param, estado)
-                res = inscripciones_pantalla(param)
+                res = gestion_inscripciones_pantalla(param)
     else:
         res = redirect('/')
     return res
