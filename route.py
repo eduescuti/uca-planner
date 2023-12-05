@@ -248,10 +248,11 @@ def route(app):
     #     except Exception as e:
     #         return jsonify({'error': str(e)})
 
-    @app.route('/validar_usuario/<username>', methods=['POST','GET'])
     # def verificarUsuario():
     #       form_data = request.form
     #       return verUsuario()
+
+    @app.route('/validar_usuario/<username>', methods=['POST','GET'])
     def verificarUsuario(username):
         try:
             username = request.form.get('usuario', '').strip()

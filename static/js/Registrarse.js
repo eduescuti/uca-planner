@@ -195,7 +195,7 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
 
     if (xhr) {
         xhr.open(method, url, true);
-        xhr.onreadystatechange = function () {
+        xhr.onreadystatechange = function () { 
             if (xhr.readyState == 4 && xhr.status == 200) {
                 setDataIntoNode(idDest, xhr.responseText);
                 console.log(xhr.responseText);
