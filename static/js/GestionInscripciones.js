@@ -69,7 +69,7 @@ function validarAnio() {
 }
 
 function indicarQueFaltanCompletarCampos() {
-  document.getElementById("error incompleto").innerHTML = "*Debe completar todos los campos";
+  document.getElementById("error_incompleto").innerHTML = "*Debe completar todos los campos";
 }
 
 function validarDatos() {

@@ -38,12 +38,8 @@
           {% endif %}
         </div>
         <div class="col-2">
-          <section class="header-tabla">
-            <div class="input-grupo" id="formBusqueda">
-              <input type="search" placeholder="Filtrar por..." name="search" id="inputFiltro"
+          <input type="search" placeholder="Filtrar por..." name="search" id="inputFiltro"
               oninput="filtrarTabla()">
-            </div>
-          </section>
           <table id="tablaCurso">
             <thead>
               <tr>
@@ -68,7 +64,7 @@
           </table>
           <!-- AGREGAR MATERIA -->
           <!-- <button id="abrir" onclick="abrir()">Agregar Curso</button> -->
-          <button id="abrir" href="/cursos">Agregar Curso</button>
+          <a id="btnAgregarCurso" href="/cursos">Agregar Curso</a>
 
         </div>
       </div>
@@ -101,14 +97,14 @@
             <option value="cerrada">Cerrada</option>
         </select>
 
-        <p class="error" id="error incompleto"></p>
+        
 
         {% if param["estado"] == "carga fallida" %}
         <p class="error" id="error carga">{{param["error"]["error inscripcion"]}}</p>
         {% endif %}
 
         <input type="submit" value="Agregar Inscripción" id="btnInscripciones">
-
+        <p class="error" id="error_incompleto"></p>
     </form>
 </div>
 
