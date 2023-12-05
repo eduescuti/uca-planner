@@ -14,6 +14,8 @@ OBTENCION DE DATOS
 """ 
 
 obtencion de datos de los cursos de una inscripcion dada
+Tengo el id_inscripcion ya, necesito los datos de los cursos
+
 
 
 
@@ -91,6 +93,13 @@ def obtenerInscripciones(dic):
             dic["inscripciones"].append({"id":id, "estado":estado, "año":anio, "cuatri":cuatri, "tipo":"er"})
         else:
             dic["inscripciones"].append({"id":id, "estado":estado, "año":anio, "cuatri":cuatri, "tipo":"do"})
+
+def obtenerCursosCon(id_inscripcion):
+
+    dic = {}
+    
+    select = """SELECT id_C FROM inscripciones;"""
+
 
 def obtenerCantidadInscriptos(id_inscripcion, id_mat_com):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)

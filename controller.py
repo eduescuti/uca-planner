@@ -53,6 +53,12 @@ def obtenerMensajeError(param, estado="carga exitosa"):
     
     param["estado"] = estado
 
+def obtenerCursosDeInscripcion(miRequest):
+
+    id_inscripcion = miRequest["inscripcion"]
+
+    return obtenerCursosCon(id_inscripcion)
+
 ##########################################################################
 # + + I N I C I O + + MANEJO DE  REQUEST + + + + + + + + + + + + + + + + +
 ##########################################################################
