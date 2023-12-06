@@ -53,12 +53,6 @@ def obtenerMensajeError(param, estado="carga exitosa"):
     
     param["estado"] = estado
 
-def obtenerCursosDeInscripcion(miRequest):
-
-    id_inscripcion = miRequest["inscripcion"]
-
-    return obtenerCursosCon(id_inscripcion)
-
 ##########################################################################
 # + + I N I C I O + + MANEJO DE  REQUEST + + + + + + + + + + + + + + + + +
 ##########################################################################
@@ -249,10 +243,11 @@ def cronograma_pagina(param):
     if haySesion():
         if (session["rol"] == "alumno"):
             obtenerInscripciones(param)
-            obtenerMaterias(param)
+            obtenerCursos(param)
             obtenerHorarios(param)
+            id_inscripcion = param["inscripcion"]
 
-            return render_template("OrganizadorDeHorarios.html", param=param)
+            return render_template("OrganizadorDeHorarios.html", param=param, id_inscripcion=id_inscripcion)
     
     return render_template("Visualizador.html")
 

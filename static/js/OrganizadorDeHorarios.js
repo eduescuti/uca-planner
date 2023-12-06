@@ -171,7 +171,7 @@ function ofrecerMaterias(url, idDest, idForm, method = "POST") {
         xhr.open(method, url, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                setDataIntoNode(idDest, xhr.responseText)
+                agregarOpcion(idDest, xhr.responseText)
             }
         }
         xhr.send(formData);

@@ -31,6 +31,7 @@ def route(app):
     @app.route("/cronograma")
     def cronograma():
         param={}
+        param["inscripcion"] = ""
         return cronograma_pagina(param)
     
     @app.route("/perfil")
@@ -160,17 +161,18 @@ def route(app):
         obtenerMensajeError(param)
         return gestion_inscripciones_pantalla(param)
 
+    @app.route('/elegir_inscripcion',methods = ["GET", "POST"])
+    def elegir_inscripcion():
+        miRequest={}
+        getRequest(miRequest)
+        return cronograma_pagina(miRequest)
+
     @app.route('/inscribirse',methods = ["GET", "POST"])
     def inscribirse():
         miRequest={}
         getRequest(miRequest)
         return inscribirse(miRequest)
 
-    @app.route('/recibir_inscripcion_agregar_cursos',methods = ["GET", "POST"])
-    def recibir_inscripcion_agregar_cursos():
-        miRequest={}
-        getRequest(miRequest)
-        return obtenerCursosDeInscripcion(miRequest)
 
 
 

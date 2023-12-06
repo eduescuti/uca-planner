@@ -58,7 +58,8 @@
         </div>
         <div class="rightcolumn">
             <div class="card">
-                <form onsubmit="return validarDatos()" action="/inscribirse" method="POST" id="form_inscripcion">
+                <form onsubmit="return validarDatosInscripcion()" action="/inscribirse" method="POST">
+
 
                     <label class="titulo1" for="inscripcion">Seleccione la Inscripción:</label>
                     <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
@@ -70,30 +71,34 @@
                             {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
                         </option>
                         {% else %}
-                        <option value="{{inscripcion['id']}}"
-                            onclick="ofrecerMaterias('recibir_inscripcion_agregar_cursos', 'materia', 'form_inscripcion')">
-                            Inscripciones {{inscripcion["año"]}}
+                        <option value="{{inscripcion['id']}}">Inscripciones {{inscripcion["año"]}}
                             {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} Cuatri.
                         </option>
                         {% endif %}
                         {% endfor %}
-                    </select>
-                </form>
-                <p class="error" id="error inscripcion"></p>
 
-                <form>
+
+                    </select>
+                    <p class="error" id="error inscripcion"></p>
+
                     <label class="titulo1" for="materia">Selecciona una materia:</label>
                     <select id="materia" name="materia" onfocusout="validarMateria()" disabled>
-                        <option value="0" disabled selected>Seleccionar..</option>
+                        <option value="" disabled selected>Seleccionar..</option>
 
+                        {% for curso in param["cursos"] %}
+                        {% if curso["id_inscripcion"] == inscripcion["id"] %}
+                        <option value="">{{curso["materia"]["nombre"]}} ({{curso["materia"]["comision"]}})</option>
+                        {% endif %}
+                        {% endfor %}
 
-                        <option value="calculoElemental">Cálculo Elemental</option>
+                        <!-- <option value="calculoElemental">Cálculo Elemental</option>
                         <option value="filo">Filosofía</option>
                         <option value="info">Informática General</option>
                         <option value="compl">Complemento de Matemática</option>
                         <option value="repre">Representación Gráfica</option>
-                        <option value="intro">Introducción a la Ingeniería</option>
+                        <option value="intro">Introducción a la Ingeniería</option> -->
                     </select>
+
                     <p class="error" id="error incompleto"></p>
 
                     <button onclick="agregarMateria()">Agregar Materia</button>
