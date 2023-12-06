@@ -58,8 +58,7 @@
         </div>
         <div class="rightcolumn">
             <div class="card">
-                <form onsubmit="return validarDatosInscripcion()" action="/inscribirse" method="POST">
-
+                <form onsubmit="return validarDatos()" action="/inscribirse" method="POST">
 
                     <label class="titulo1" for="inscripcion">Seleccione la Inscripción:</label>
                     <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
@@ -76,8 +75,6 @@
                         </option>
                         {% endif %}
                         {% endfor %}
-
-
                     </select>
                     <p class="error" id="error inscripcion"></p>
 
@@ -86,21 +83,11 @@
                         <option value="" disabled selected>Seleccionar..</option>
 
                         {% for curso in param["cursos"] %}
-                        <!-- Capaz podria recibir unicamente los cursos de LA inscripcion y no de todas...
-                        
-                            Unica inscripcion habilitada? puedo hacer que solo exista una unica inscripcion abierta y ponerlo como default
-                        -->
-                        {% if curso["id_inscripcion"] == inscripcion["id"] %}
-                        <option value="">{{curso["materia"]["nombre"]}} ({{curso["materia"]["comision"]}})</option>
-                        {% endif %}
+                        <option value="{{curso['materia']['id_com_mat']}}">
+                            {{curso["materia"]["nombre"]}}
+                            ({{curso["materia"]["comision"]}})
+                        </option>
                         {% endfor %}
-
-                        <!-- <option value="calculoElemental">Cálculo Elemental</option>
-                        <option value="filo">Filosofía</option>
-                        <option value="info">Informática General</option>
-                        <option value="compl">Complemento de Matemática</option>
-                        <option value="repre">Representación Gráfica</option>
-                        <option value="intro">Introducción a la Ingeniería</option> -->
                     </select>
 
                     <p class="error" id="error incompleto"></p>

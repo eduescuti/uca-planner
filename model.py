@@ -4,21 +4,10 @@
 from _mysql_db import *
 
 
-
 """ 
 ==================
 OBTENCION DE DATOS
 ==================
-"""
-
-""" 
-
-obtencion de datos de los cursos de una inscripcion dada
-Tengo el id_inscripcion ya, necesito los datos de los cursos
-
-
-
-
 """
 
 def obtenerHorarios(dic):
@@ -58,29 +47,50 @@ def obtenerComisiones(dic):
         dic["comisiones"].append({"id":id, "nombre":nombre})
 
 def obtenerCursos(dic):
-    """ ### Obtiene TODOS los datos de los cursos de cada período de inscripciones.
+    """ ### Obtiene TODOS los datos de los cursos de todas las inscripciones.
     Recibe un diccionario el cual se va a actualizar dentro cada curso
 
     Retorna el diccionario actualizado, se mostraría tal que:
 
-    dic = {"cursos" : [{"id":id,
-                        "id_inscripcion":id_inscripcion,
-
-                        "materia": {"nombre":nombre, "codigo":codigo, "comision":comision},
-                        
-                        "inscriptos" : cantidadInscriptos,
-                        
-                        "cupo": cupo,
-                        
-                        "rango" : [{dia : hora}]}]}
+    dic["cursos"] = [{"id_inscripcion":id_inscripcion,
+                    "materia": {"nombre":nombre, "codigo":codigo, "comision":comision},
+                    "inscriptos" : cantidadInscriptos,
+                    "cupo": cupo,
+                    "rango" : [{dia : hora}, {dia : hora}]}, ...]
     """
-    sQuery="""SELECT id, id_inscripcion, id_com_mat, id_dia, id_hora FROM cursos;"""
+    sQuery="""SELECT DISTINCT id_inscripcion, id_com_mat FROM cursos;"""
     listaCursos = selectDB(BASE, sQuery)
     dic["cursos"] = []
-    for curso in listaCursos:
-        actualizarDiccionarioCursos(dic, curso)
 
-    return dic
+    for curso in listaCursos:
+        nuevoCurso = obtenerDatosCurso(curso)
+        obtenerRangoHorario(nuevoCurso)
+        dic["cursos"].append(nuevoCurso)
+
+def obtenerCursosDisponibles(dic):
+    """ ### Obtiene TODOS los datos de los cursos de la inscripcion dada que se encuentre 'Abierta'.
+    Recibe un diccionario el cual se va a actualizar dentro cada curso
+
+    Retorna el diccionario actualizado, se mostraría tal que:
+
+    dic["cursos"] = [{"id_inscripcion":id_inscripcion,
+                    "materia": {"nombre":nombre, "codigo":codigo, "comision":comision},
+                    "inscriptos" : cantidadInscriptos,
+                    "cupo": cupo,
+                    "rango" : [{dia : hora}, {dia : hora}]}, ...]
+    """
+    sQuery="""SELECT DISTINCT id_inscripcion, id_com_mat FROM cursos;"""
+    listaCursos = selectDB(BASE, sQuery)
+    dic["cursos"] = []
+
+    for curso in listaCursos:
+        nuevoCurso = obtenerDatosCurso(curso)
+
+        for inscripcion in dic["inscripciones"]:
+            if ((inscripcion["id"] == nuevoCurso["id_inscripcion"]) and (inscripcion["estado"] == "abierta")):
+
+                obtenerRangoHorario(nuevoCurso)
+                dic["cursos"].append(nuevoCurso)
 
 def obtenerInscripciones(dic):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
@@ -98,48 +108,16 @@ def obtenerInscripciones(dic):
         else:
             dic["inscripciones"].append({"id":id, "estado":estado, "año":anio, "cuatri":cuatri, "tipo":"do"})
 
-def sonElMismoCurso(curso, nuevoCurso):
-    id_inscripcion = curso["id_inscripcion"]
-    nombre = curso["materia"]["nombre"]
-    comision = curso["materia"]["comision"]
-    cupo = curso["cupo"]
-
-    sonIguales = (id_inscripcion == nuevoCurso["id_inscripcion"] and
-                  nombre == nuevoCurso["materia"]["nombre"] and
-                  comision == nuevoCurso["materia"]["comision"] and
-                  cupo == nuevoCurso["cupo"]
-             )
-
-    return sonIguales
-
-def actualizarDiccionarioCursos(dic, curso):
-    id, id_inscripcion, id_mat_com, id_dia, id_hora = curso
+def obtenerDatosCurso(curso):
+    id_inscripcion, id_mat_com = curso
     nombre, codigo, comision = obtenerDatosMateriaComision(id_mat_com)
     cantidadInscriptos = obtenerCantidadInscriptos(id_inscripcion, id_mat_com)
     cupo = obtenerCupo(id_mat_com)
-    dia, hora = seleccionarRangoHorarios(id_dia, id_hora)
-
-    nuevoCurso = {"id":id,"id_inscripcion":id_inscripcion,
-                  "materia": {"nombre":nombre, "codigo":codigo, "comision":comision},
+    nuevoCurso = {"id_inscripcion":id_inscripcion,
+                  "materia": {"id_com_mat":id_mat_com, "nombre":nombre, "codigo":codigo, "comision":comision},
                   "inscriptos" : cantidadInscriptos,
-                  "cupo": cupo,
-                  "rango" : [{dia : hora}]}
-    
-    if (dic["cursos"] == []):
-
-        dic["cursos"].append(nuevoCurso)
-
-    else:
-        noHayCurso = True
-    
-        for curso in dic["cursos"]:
-
-            if (sonElMismoCurso(curso, nuevoCurso)):
-                noHayCurso = False
-                curso["rango"].append({dia : hora})
-            
-        if noHayCurso:
-            dic["cursos"].append(nuevoCurso)
+                  "cupo": cupo}
+    return nuevoCurso
 
 def obtenerCantidadInscriptos(id_inscripcion, id_mat_com):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
@@ -184,12 +162,29 @@ def obtenerDia(id_dia):
     return listaDia[0][0]
 
 def seleccionarRangoHorarios(id_dia, id_hora):
-    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
-    las materias completas.
+    ''' Obtiene de la base de datos los dias y horas que se obtienen
+    al ingresar un id_dia y un id_hora.
     '''
     dia = obtenerDia(id_dia)
     hora = obtenerHora(id_hora)
     return dia, hora
+
+def obtenerRangoHorario(curso):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    el rango horario de un curso.
+    '''
+    sQuery="""
+        SELECT id_dia, id_hora 
+        FROM cursos 
+        WHERE id_inscripcion=%s and id_com_mat=%s;
+    """
+    val = (curso["id_inscripcion"], curso["materia"]["id_com_mat"])
+    lista = selectDB(BASE, sQuery, val)
+    curso["rango"] = []
+    for rango in lista:
+        id_dia, id_hora = rango
+        dia, hora = seleccionarRangoHorarios(id_dia, id_hora)
+        curso["rango"].append({dia : hora})
 
 def obtenerDatosMateria(id_materia):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
@@ -237,7 +232,7 @@ def obtenerDatosMateriaComision(id_com_mat):
 
 def obtenerCantidadDeUsuariosEn(id_inscripcion, id_mat_com):
     sQuery="""
-        SELECT COUNT(*) AS cantidad 
+        SELECT COUNT(DISTINCT id_usuario) 
         FROM cursos 
         WHERE id_inscripcion=%s and id_com_mat=%s;
     """

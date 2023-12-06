@@ -126,7 +126,7 @@ function eliminarMateriasDelCronograma(dia, hora) {
 
 function validarInscripcion() {
     var inscripcion = document.getElementById("inscripcion").value;
-    if (inscripcion == 0) {
+    if (inscripcion == "") {
         document.getElementById("error inscripcion").innerHTML = "*Seleccione una fecha de inscripciones (en caso de no poder seleccionar ninguna, significa que NO hay inscripciones habilitadas para poder inscribirse)";
     } else {
         document.getElementById("error inscripcion").innerHTML = "";
@@ -141,6 +141,11 @@ function validarMateria() {
 function validarDatos() {
     return true;
 }
+
+
+
+
+
 
 
 function conectAjax() {

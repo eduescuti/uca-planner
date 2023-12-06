@@ -243,7 +243,7 @@ def cronograma_pagina(param):
     if haySesion():
         if (session["rol"] == "alumno"):
             obtenerInscripciones(param)
-            obtenerCursos(param)
+            obtenerCursosDisponibles(param)
             obtenerHorarios(param)
 
             return render_template("OrganizadorDeHorarios.html", param=param)
@@ -278,10 +278,8 @@ def inscripciones_pantalla(param):
 
 def gestion_inscripciones_pantalla(param):
 
-    obtenerMaterias(param)
-    obtenerComisiones(param)
-    obtenerCursos(param)
     obtenerInscripciones(param)
+    obtenerCursos(param)
 
     if haySesion():
 
@@ -313,8 +311,6 @@ def comisiones_pantalla(param):
     return redirect('/')
 
 def cursos_pantalla(param):
-
-    """ obtenerCursos """
 
     obtenerInscripciones(param)
     obtenerCursos(param)

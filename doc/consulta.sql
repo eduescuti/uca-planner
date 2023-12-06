@@ -69,9 +69,16 @@ use base_prueba;
 
 SELECT COUNT(*) AS cantidad FROM materias WHERE codigo=100 and nombre='Seminario';
 
-SELECT COUNT(DISTINCT id_dia) 
-        FROM cursos 
-        WHERE id_inscripcion=%s and id_com_mat=%s;
+SELECT COUNT(DISTINCT id_usuario) AS cant_usuarios 
+FROM cursos 
+WHERE id_inscripcion=4 and id_com_mat=12
+
+SELECT id_dia, id_hora 
+FROM cursos 
+WHERE id_inscripcion=4 and id_com_mat=12;
+
+SELECT DISTINCT id_inscripcion, id_com_mat
+FROM cursos;
 
 SELECT DISTINCT año FROM comisiones;
 
