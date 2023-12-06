@@ -245,9 +245,8 @@ def cronograma_pagina(param):
             obtenerInscripciones(param)
             obtenerCursos(param)
             obtenerHorarios(param)
-            id_inscripcion = param["inscripcion"]
 
-            return render_template("OrganizadorDeHorarios.html", param=param, id_inscripcion=id_inscripcion)
+            return render_template("OrganizadorDeHorarios.html", param=param)
     
     return render_template("Visualizador.html")
 
