@@ -161,19 +161,11 @@ def route(app):
         obtenerMensajeError(param)
         return gestion_inscripciones_pantalla(param)
 
-    @app.route('/elegir_inscripcion',methods = ["GET", "POST"])
-    def elegir_inscripcion():
-        miRequest={}
-        getRequest(miRequest)
-        return cronograma_pagina(miRequest)
-
     @app.route('/inscribirse',methods = ["GET", "POST"])
     def inscribirse():
         miRequest={}
         getRequest(miRequest)
-        return inscribirse(miRequest)
-
-
+        return inscripcion_usuario(miRequest)
 
 
 

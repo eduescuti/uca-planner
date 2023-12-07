@@ -9,6 +9,18 @@ from _mysql_db import *
 OBTENCION DE DATOS
 ==================
 """
+def obtenerDias(dic):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    los dias disponibles para poder cursar una materia.
+    
+    dic["dias] = [{"id":1, "dia":"lunes"}, ...]
+    '''
+    sQuery="""SELECT * FROM dias;"""
+    lista = selectDB(BASE, sQuery)
+    dic["dias"] = []
+    for dias in lista:
+        id, dia = dias
+        dic["dias"].append({"id":id, "dia":dia })
 
 def obtenerHorarios(dic):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
@@ -184,7 +196,7 @@ def obtenerRangoHorario(curso):
     for rango in lista:
         id_dia, id_hora = rango
         dia, hora = seleccionarRangoHorarios(id_dia, id_hora)
-        curso["rango"].append({dia : hora})
+        curso["rango"].append({"id_dia":id_dia, "dia":dia, "id_hora":id_hora, "hora" : hora})
 
 def obtenerDatosMateria(id_materia):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
@@ -240,6 +252,7 @@ def obtenerCantidadDeUsuariosEn(id_inscripcion, id_mat_com):
     listaCantidad = selectDB(BASE, sQuery, val)
     return listaCantidad[0][0]
 
+
 """ 
 ==================================================
 INTERACCION USUARIO, OBTENCION DE DATOS DE USUARIO
@@ -259,10 +272,7 @@ def crearUsuario(di):
         (%s, %s, %s, %s, %s, %s, %s);
     """
     val=(None, di.get('usuario'), di.get('nombre'), di.get('apellido'), di.get('email'), di.get('contraseña'), di.get('rol'))
-    """ checkeo_usuario_valido(di.get('usuario'), di.get... lo que sea)
     
-        PARA VALIDAR LOS DATOS
-    """
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
@@ -339,7 +349,7 @@ def actualizarPerfil(di, mail):
     resul_update=updateDB(BASE,sQuery,val=val)
     return resul_update==1
 
-""" # def validarUsuario(email,password):
+# def validarUsuario(email,password):
 #     '''### Información:
 #           Se consulta a la BD un usuario 'email' y un 'password'
 #           retorna True si 'email' y  'password' son válido
@@ -354,7 +364,7 @@ def actualizarPerfil(di, mail):
 #     '''
 #     val=(email,password)
 #     fila=selectDB(BASE,sSql,val=val)
-#     return fila!=[] """
+#     return fila!=[]
 
 """ 
 ==========================
@@ -581,26 +591,39 @@ def crearInscripcion(di):
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
+def obtenerDiaHora(id_inscripcion, id_com_mat):
+    ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
+    un rango horario de un curso.
+    '''
+    sQuery="""
+        SELECT id_dia, id_hora 
+        FROM cursos 
+        WHERE id_inscripcion=%s and id_com_mat=%s;
+    """
+    val = (id_inscripcion, id_com_mat)
+    lista = selectDB(BASE, sQuery, val)
+    id_dia = lista[0][0]
+    id_hora = lista[0][1]
+    return id_dia, id_hora
+
 def inscribirseACurso(di, id_usuario):
     """ ### INSCRIBE un alumno a un curso
     - Recibe por parámetro un diccionario con el formRequest
-    (tiene dentro la inscripcion que elije y... tiene que tener las materias que se inscribe... como hago para seleccionarlas?)
+    (tiene dentro la inscripcion que elije y... tiene que tener la materia que se inscribe)
     
     """
-    
-    """ id_hora_mat = obtenerIDMateriasSeleccionadas(di)
-
-    for hora_mat in id_hora_mat:
-        insertCurso=""
-            INSERT INTO cursos
-            (id, id_hora_mat, id_usuario, id_inscripcion)
-            VALUES
-            (%s, %s, %s, %s);
-        ""
-        val=(None, hora_mat, id_usuario, di.get('inscripcion'))
-
-    resul_insert=insertDB(BASE,insertCurso,val)
-    return resul_insert==1 """
+    id_inscripcion = di["inscripcion"]
+    id_com_mat = di["materia"]
+    id_dia, id_hora = obtenerDiaHora(id_inscripcion, id_com_mat)
+    sQuery=""" 
+        INSERT INTO cursos
+        (id, id_inscripcion, id_com_mat, id_dia, id_hora, id_usuario)
+        VALUES
+        (%s, %s, %s, %s, %s, %s);
+    """
+    val=(None, id_inscripcion, id_com_mat, id_dia, id_hora, id_usuario)
+    resul_insert=insertDB(BASE,sQuery,val)
+    return resul_insert==1
 
 
 def verificar_existe(username):

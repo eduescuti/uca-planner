@@ -27,15 +27,13 @@
     <div class="row">
         <div class="leftcolumn">
             <div class="card">
-                <table>
+                <table id="cronograma">
                     <thead>
                         <tr>
                             <th id="hora">Hora</th>
-                            <th>Lunes</th>
-                            <th>Martes</th>
-                            <th>Miércoles</th>
-                            <th>Jueves</th>
-                            <th>Viernes</th>
+                            {% for dias in param["dias"] %}
+                            <th>{{dias["dia"]}}</th>
+                            {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
@@ -43,22 +41,21 @@
                         {% for horas in param["horas"] %}
                         <tr id="hora{{horas['id']}}">
                             <th id="hora">{{horas['hora']}}</th>
-                            <th id="lun-hora-{{horas['id']}}"></th>
-                            <th id="mar-hora-{{horas['id']}}"></th>
-                            <th id="mie-hora-{{horas['id']}}"></th>
-                            <th id="jue-hora-{{horas['id']}}"></th>
-                            <th id="vie-hora-{{horas['id']}}"></th>
+                            {% for dias in param["dias"] %}
+                            <th id="{{dias['id']}}-{{horas['id']}}"></th>
+                            {% endfor %}
                         </tr>
                         {% endfor %}
 
                     </tbody>
                 </table>
+                <p id="prueba"></p>
             </div>
 
         </div>
         <div class="rightcolumn">
             <div class="card">
-                <form onsubmit="return validarDatos()" action="/inscribirse" method="POST">
+                <form onsubmit="return validarDatos()" action="/inscribirse" id="formInscripcion" method="POST">
 
                     <label class="titulo1" for="inscripcion">Seleccione la Inscripción:</label>
                     <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
@@ -79,7 +76,7 @@
                     <p class="error" id="error inscripcion"></p>
 
                     <label class="titulo1" for="materia">Selecciona una materia:</label>
-                    <select id="materia" name="materia" onfocusout="validarMateria()" disabled>
+                    <select id="materia" name="materia" disabled>
                         <option value="" disabled selected>Seleccionar..</option>
 
                         {% for curso in param["cursos"] %}
@@ -92,19 +89,22 @@
 
                     <p class="error" id="error incompleto"></p>
 
-                    <button onclick="agregarMateria()">Agregar Materia</button>
-                    <button onclick="resetearCronograma()">Resetear</button>
-                    <button type="submit">Inscribirse a Materia</button>
+                    <input type="button" value="Mostrar Materia" onclick="mostrarMateria()"></input>
+                    <input type="submit" value="Inscribirse a Materia"></input>
 
-
-
-                    <!-- Estos buttons deberían ser inputs dentro de un form 
-                
-                    SE VA A USAR AJAX EN ESTA TABLA PARA PODER REALIZAR LA CARGA DE FORMA ASINCRONICA
-                    (y asi no tener que actualizar la pagina cada vez que se carga la pantalla)
-                -->
                 </form>
+                <input type="button" onclick="resetearCronograma()" value="Resetear"></button>
             </div>
+            {% for curso in param["cursos"] %}
+            {% for rango in curso["rango"] %}
+            <input name="{{curso['materia']['id_com_mat']}}" id="{{rango['id_dia']}}" value="{{rango['id_hora']}}"
+                hidden></input>
+            {% endfor %}
+            {% endfor %}
+            {% for curso in param["cursos"] %}
+            <input id="{{curso['materia']['id_com_mat']}}"
+                value="{{curso['materia']['nombre']}} ({{curso['materia']['comision']}})" hidden></input>
+            {% endfor %}
         </div>
     </div>
 

@@ -80,6 +80,10 @@ WHERE id_inscripcion=4 and id_com_mat=12;
 SELECT DISTINCT id_inscripcion, id_com_mat
 FROM cursos;
 
+SELECT DISTINCT id_dia, id_hora
+FROM cursos
+WHERE id_inscripcion=4 and id_com_mat=12;
+
 SELECT DISTINCT año FROM comisiones;
 
 ALTER TABLE hora_mat_com RENAME TO cursos;

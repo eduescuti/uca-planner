@@ -9,7 +9,6 @@ from uuid import uuid4
 from appConfig import config
 
 
-
 def obtenerInformacionPerfil(param):
     
     param["usuario"] = session['usuario']
@@ -245,6 +244,7 @@ def cronograma_pagina(param):
             obtenerInscripciones(param)
             obtenerCursosDisponibles(param)
             obtenerHorarios(param)
+            obtenerDias(param)
 
             return render_template("OrganizadorDeHorarios.html", param=param)
     
@@ -536,8 +536,7 @@ def agregarInscripcion(miRequest):
         res = redirect('/')
     return res
 
-
-def inscribirse(miRequest):
+def inscripcion_usuario(miRequest):
     param={}
     if haySesion():
 
