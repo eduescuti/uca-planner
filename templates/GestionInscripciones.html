@@ -19,11 +19,10 @@
   </header>
 
   <!-- DESPLEGABLES -->
-  {% for inscripcion in param["inscripciones"][0:] %}
-  <article class="inscripciones">
+  <article class="inscripciones"> 
     <!-- ACA VAN A IR LOS DESPLEGABLES, Y SE VAN A ABRIR CON UN FOR USANDO JINJA -->
+    {% for inscripcion in param["inscripciones"][0:] %}
     <details class="prueba">
-
       <summary>INSCRIPCION {{inscripcion["año"]}} {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} CUATRIMESTRE
       </summary>
       <div class="row">
@@ -67,11 +66,9 @@
 
         </div>
       </div>
-
     </details>
+    {% endfor %}
   </article>
-
-  {% endfor %}
 
   <div class="card" id="contenedor">
     <h3>Agregar una Inscripción</h3>
@@ -103,7 +100,7 @@
       {% endif %}
 
       <input type="submit" value="Agregar Inscripción" id="btnInscripciones">
-      <p class="error" id="error_incompleto"></p>
+      <!-- <p class="error" id="error_incompleto"></p> -->
     </form>
   </div>
 

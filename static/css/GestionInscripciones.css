@@ -9,6 +9,7 @@ body {
   background: white;
   display: grid;
   grid-template-rows: 25% auto auto;
+  grid-template-columns: 100%;
 }
 
 /* HEADER */
