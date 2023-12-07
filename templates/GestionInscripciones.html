@@ -20,7 +20,6 @@
 
   <!-- DESPLEGABLES -->
   <article class="inscripciones"> 
-    <!-- ACA VAN A IR LOS DESPLEGABLES, Y SE VAN A ABRIR CON UN FOR USANDO JINJA -->
     {% for inscripcion in param["inscripciones"][0:] %}
     <details class="prueba">
       <summary>INSCRIPCION {{inscripcion["año"]}} {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} CUATRIMESTRE
@@ -87,11 +86,12 @@
       </select>
 
       <label for="estado" id="labelEstado">Asigne el estado del período de Inscripciones:</label>
-      <select id="estado" name="estado" title="Seleccionar...">
+      <select id="estado" name="estado" title="Seleccionar..." onchange="validarEstado()">
         <option value="0" disabled selected>Seleccionar..</option>
         <option value="abierta">Abierta</option>
         <option value="cerrada">Cerrada</option>
       </select>
+      <div id="res"></div>
 
 
 
@@ -99,11 +99,11 @@
       <p class="error" id="error carga">{{param["error"]["error inscripcion"]}}</p>
       {% endif %}
 
-      <input type="submit" value="Agregar Inscripción" id="btnInscripciones">
       <!-- <p class="error" id="error_incompleto"></p> -->
     </form>
   </div>
 
+  <button type="submit" id="btnInscripciones">Agregar Inscripcion</button>
   <!-- <a href="/inscripciones" id="agregarInscripcion">Agregar período de Inscripción</a> -->
 
   <script language="javascript" type="text/javascript" src="../static/js/GestionInscripciones.js"></script>

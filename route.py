@@ -268,6 +268,15 @@ def route(app):
             return 'Error interno del servidor', 500
 
 
-
-
-        
+    @app.route('/validar_estado/<option>', methods=['POST', 'GET'])
+    def verificarOpcion(option):
+        try:
+            option = request.form.get('estado', '').strip()
+            if option:
+                resVerificacion = verEstado(option)
+                return resVerificacion
+            else:
+             return 'La selección no puede ser vacía'
+        except Exception as e:
+            print(f"Error en la ruta /validar_usuario: {str(e)}")
+            return 'Error interno del servidor', 500

@@ -560,3 +560,10 @@ def verUsuario(username):
         return 'El nombre de usuario ya existe.'
     else:
         return 'El nombre de usuario está disponible.'
+    
+
+def verEstado(option):
+    if verificarExiste(option)==True:
+        return 'Ya existe una inscripción abierta'
+    else:
+        return ''
