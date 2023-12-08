@@ -73,7 +73,7 @@
     <h3>Agregar una Inscripción</h3>
     <form onsubmit="return validarDatos()" action="/agregar_inscripcion" method="post" id="formInscripciones">
 
-      <label for="anio" id="año">Ingrese el año del período de Inscripciones:</label>
+      <label for="anio" id="labelaño">Ingrese el año del período de Inscripciones:</label>
       <input type="text" name="anio" id="anio" placeholder="Ingrese el año.." onclick="insertarAnioActual()"
         onfocusout="validarAnio()">
       <p class="error" id="error anio"></p>
@@ -91,7 +91,7 @@
         <option value="abierta">Abierta</option>
         <option value="cerrada">Cerrada</option>
       </select>
-      <div id="res"></div>
+      <div id="resAjax"></div>
 
 
 
@@ -100,10 +100,11 @@
       {% endif %}
 
       <!-- <p class="error" id="error_incompleto"></p> -->
+      <button type="submit" id="btnInscripciones">Agregar Inscripcion</button>
+
     </form>
   </div>
 
-  <button type="submit" id="btnInscripciones">Agregar Inscripcion</button>
   <!-- <a href="/inscripciones" id="agregarInscripcion">Agregar período de Inscripción</a> -->
 
   <script language="javascript" type="text/javascript" src="../static/js/GestionInscripciones.js"></script>

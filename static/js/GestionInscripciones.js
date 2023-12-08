@@ -137,7 +137,7 @@ function validarEstado(){
   var boton = document.getElementById('btnInscripciones');
 
 
-  queryAjaxForm('/validar_estado/' + option , 'res', 'formInscripciones')
+  queryAjaxForm('/validar_estado/' + option , 'resAjax', 'formInscripciones')
 }
 
 function queryAjaxForm(url, idDest, idForm, method = "POST") {
