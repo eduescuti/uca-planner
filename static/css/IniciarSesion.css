@@ -127,6 +127,10 @@ input[type=submit]:hover {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }
 
+.error {
+    color: #dd0000;
+}
+
 /* FOOTER */
 .footer {
     margin-top: 20px;

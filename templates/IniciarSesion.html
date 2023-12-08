@@ -25,6 +25,8 @@
     </div>
     <article>
         <div class="contenedor">
+            <h3 class="registroExitoso">{{param["mensaje_registro_exitoso"]}}</h3>
+
             <form action="/signin" method="post">
                 <label for="usuario">Usuario</label>
                 <input type="text" id="usuario" name="usuario" placeholder="Usuario.." required>
@@ -34,10 +36,13 @@
 
                 <p>¿No tiene una cuenta? Regístrese <a href="/register">aquí</a>.</p>
 
+                <p class="error">{{param["error"]["ingrese_usuario_valido"]}}</p>
+
                 <div class="sub1">
                     <input type="submit" value="Iniciar Sesión">
                 </div>
             </form>
+
         </div>
     </article>
 

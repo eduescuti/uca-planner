@@ -8,7 +8,6 @@ SELECT * FROM dias;
 SELECT * FROM horas;
 SELECT * FROM materia_comision;
 SELECT * FROM inscripciones;
-SELECT * FROM hora_mat_com;
 SELECT * FROM materias;
 SELECT * FROM comisiones;
 SELECT * FROM cursos;

@@ -259,6 +259,27 @@ INTERACCION USUARIO, OBTENCION DE DATOS DE USUARIO
 ==================================================
 """
 
+def esUsuarioValido(value):
+    checkeoMismoUsuario="""
+        SELECT COUNT(*)
+        FROM usuario
+        WHERE usuario=%s;
+    """
+    val=(value[1], )
+    usuarios=selectDB(BASE,checkeoMismoUsuario,val)
+    cantidadUsuarios = usuarios[0][0]
+
+    checkeoMismoMail="""
+        SELECT COUNT(*)
+        FROM usuario
+        WHERE email=%s;
+    """
+    val=(value[4], )
+    mails=selectDB(BASE,checkeoMismoMail,val)
+    cantidadMail = mails[0][0]
+
+    return ((cantidadUsuarios == 0) and (cantidadMail == 0))
+
 def crearUsuario(di):
     '''### Información:
         Agrega un nuevo usuario (un registro) en la tabla usuario de la DB
@@ -272,8 +293,10 @@ def crearUsuario(di):
         (%s, %s, %s, %s, %s, %s, %s);
     """
     val=(None, di.get('usuario'), di.get('nombre'), di.get('apellido'), di.get('email'), di.get('contraseña'), di.get('rol'))
-    
-    resul_insert=insertDB(BASE,sQuery,val)
+    if (esUsuarioValido(val)):
+        resul_insert=insertDB(BASE,sQuery,val)
+    else:
+        resul_insert=0
     return resul_insert==1
 
 def obtenerUsuarioXEmail(param,email,clave='usuario'):
@@ -349,22 +372,6 @@ def actualizarPerfil(di, mail):
     resul_update=updateDB(BASE,sQuery,val=val)
     return resul_update==1
 
-# def validarUsuario(email,password):
-#     '''### Información:
-#           Se consulta a la BD un usuario 'email' y un 'password'
-#           retorna True si 'email' y  'password' son válido
-#           retorna False caso contrario
-#     '''
-#     sSql='''
-#         SELECT * FROM  usuario
-#             WHERE 
-#             email=%s
-#             AND 
-#             pass=%s;
-#     '''
-#     val=(email,password)
-#     fila=selectDB(BASE,sSql,val=val)
-#     return fila!=[]
 
 """ 
 ==========================
@@ -502,6 +509,27 @@ def agregarDiasYHorarios(result, di, id_inscripcion, id_admin):
 
     return result
 
+def esMateriaValida(value):
+    checkeoMismoNombre="""
+        SELECT COUNT(*)
+        FROM materias
+        WHERE nombre=%s;
+    """
+    val=(value[1], )
+    nombres=selectDB(BASE,checkeoMismoNombre,val)
+    cantidadNombresIguales = nombres[0][0]
+
+    checkeoMismoCodigo="""
+        SELECT COUNT(*)
+        FROM materias
+        WHERE codigo=%s;
+    """
+    val=(value[2], )
+    codigos=selectDB(BASE,checkeoMismoCodigo,val)
+    cantidadCodigosIguales = codigos[0][0]
+
+    return ((cantidadNombresIguales == 0) and (cantidadCodigosIguales == 0))
+
 def crearMateria(di):
     """ ### Agrega una materia en la base de datos 
     - Recibe un diccionario con la información del form
@@ -516,19 +544,11 @@ def crearMateria(di):
         (%s,%s, %s);
     """
     val=(None, di.get('nombre'), di.get('codigo'))
+    if (esMateriaValida(val)):
+        resul_insert=insertDB(BASE,insertMateria,val)
+    else:
+        resul_insert=0
 
-    """ selectMaterias = "SELECT nombre, codigo FROM materias;"
-    val2 = (di.get('nombre'), di.get('codigo'))
-    lista = selectDB(BASE, selectMaterias, val2)
-    if (lista == val2):
-        return False
-    else: 
-        Esto es para ver si podemos indicar si ya existe en la base de datos los valores ingresados
-
-        PODRIA SER UNA FUNCION DE VALIDACION ACA EN model.py
-        
-        """
-    resul_insert=insertDB(BASE,insertMateria,val)
     return resul_insert==1
 
 def crearComision(di):

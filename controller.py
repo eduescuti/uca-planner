@@ -42,15 +42,17 @@ def obtenerMenuBottom(param, idActivo="mnub01"):
     # Activar el id 
     param["menubottom"].get(idActivo)["class"]="active"
 
-def obtenerMensajeError(param, estado="carga exitosa"):
+def obtenerMensajes(param):
     param["error"] = {
-        "error materia" : "No se pudo cargar la materia, porfavor intente denuevo..",
-        "error comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
-        "error curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
-        "error inscripcion" : "No se pudo cargar los datos del período de inscripciones, porfavor intente denuevo.."
+        "registro_usuario" : "",
+        "ingrese_usuario_valido" : "",
+        "materia" : "",
+        "comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
+        "curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
+        "inscripcion" : "No se pudo cargar los datos del período de inscripciones, porfavor intente denuevo.."
         }
     
-    param["estado"] = estado
+    param["mensaje_registro_exitoso"] = ""
 
 ##########################################################################
 # + + I N I C I O + + MANEJO DE  REQUEST + + + + + + + + + + + + + + + + +
@@ -224,15 +226,12 @@ def login_pagina(param):
       Recibe 'param' el diccionario de parametros
       Retorna la pagina 'login'
     '''
-    obtenerMenuBottom(param)
     return render_template('IniciarSesion.html',param=param)
 
 def register_pagina(param):
     '''
        Carga la pagina 'register'
-    '''
-
-    obtenerMenuBottom(param)       
+    '''      
     return render_template('Registrarse.html',param=param)
 
 def cronograma_pagina(param):
@@ -346,11 +345,13 @@ def ingresoUsuarioValido(miRequest):
     y agrega en el diccionario de parámetros una clave con un mensaje 
     de error para ser mostrada en la pagina login.
     '''
-    
+    param={}
     if crearSesionUsuario(miRequest):
         res = redirect('/')
     else:
-        res = redirect('/login')
+        obtenerMensajes(param)
+        param["error"]["ingrese_usuario_valido"] = "*Ingrese un usuario válido.."
+        res = login_pagina(param)
     return res
 
 def registrarUsuario(param, miRequest):
@@ -362,14 +363,12 @@ def registrarUsuario(param, miRequest):
       retorna la pagina del login, para forzar a que el usuario realice el login con
       el usuario creado.
     '''
-    obtenerMenuBottom(param)
-
     if crearUsuario(miRequest):
-        param['succes_msg_login']="Se ha creado el usuario con exito"
+        param['mensaje_registro_exitoso']="Inicie la sesión con su usuario creado:"
         cerrarSesion()           # Cierra sesion existente(si la hubiere)
         res=login_pagina(param)  # Envia al login para que vuelva a loguearse el usuario
     else:
-        param['error_msg_register']="Error: No se ha podido crear el usuario"
+        param['error']['registro_usuario']="*No se ha podido crear el usuario, es probable que ya hay un usuario con los datos ingresados. Por favor, ingrese otros datos.."
         res=register_pagina(param)
 
     return res 
@@ -403,36 +402,6 @@ def editarPerfil(miRequest):
     return redirect('/perfil')
 
 
-""" def actualizarDatosDeUsuarios(param, request):
-    '''info:
-            Recepciona la solicitud request que es enviada
-            desde el formulario de edit_user 
-          Retorna 
-            si hay sesion: retorna la edit_user con los datos actualizados
-               y un mensaje de exito o fracaso sobre el mismo form ; 
-            si no hay sesion: retorna la home.
-    '''
-    res=False
-    msj=""
-    
-    try:     
-        getRequest(request)      
-        # *** ACTUALIZAR USUARIO ***
-        
-        if actualizarUsuario(request, session.get("username")):
-            res=True
-            param['succes_msg_updateuser']="Se ha ACTUALIZADO el usuario con exito"
-        else:
-            #error
-            res=False
-            param['error_msg_updateuser']="Error: No se ha podido ACTUALIZAR el usuario"
-
-        #editarUsuario_pagina(param)
-        res= render_template('edit_user.html',param=param)  
-    except ValueError as e :                   
-        pass
-    return res  """
-
 ##########################################################################
 # - - F I N - - USUARIO: registro, edicion, actualizacion  - - - - - - - -
 ##########################################################################
@@ -452,29 +421,27 @@ def paginaNoEncontrada(name):
     return res
 
 ##########################################################################
-# - - F I N - -   OTRAS PAGINAS    - - - - - - - - - - - - - - - - - - - -
+# - - FUNCIONES DE  INTERACCION    - - - - - - - - - - - - - - - - - - - -
 ##########################################################################
 
 def agregarMateria(miRequest):
     """ Agrega una materia a la base de datos.
     Recibe el request del form de la página.
     """
-    param={}    
+    param={}
+    obtenerMensajes(param)
     if haySesion():
 
         if (session["rol"] == "admin"):
 
             if crearMateria(miRequest):
-                res = redirect('/materias')
+                param["materia agregada"] = "*La materia fue agregada con éxito!"
+                res = materias_pantalla(param)
             else:
-                estado = "carga fallida"
-                obtenerMensajeError(param, estado)
+                param["error"]["materia"] = "No se pudo cargar la materia, porfavor intente denuevo.."
                 res = materias_pantalla(param)
 
-                """ De momento, NO recibe error dado que no realizo la validacion del dato ingresado
-                con respecto a la Base de Datos.
-                """
-
+                """ Estas validaciones pueden ser con AJAX tambien, hasta quedarian mejor probablemente """
     else:
         res = redirect('/')
     return res
@@ -493,7 +460,7 @@ def agregarComision(miRequest):
 
             else:
                 estado = "carga fallida"
-                obtenerMensajeError(param, estado)
+                obtenerMensajes(param, estado)
                 res = comisiones_pantalla(param)
     else:
         res = redirect('/')
@@ -513,7 +480,7 @@ def agregarCurso(miRequest):
 
             else:
                 estado = "carga fallida"
-                obtenerMensajeError(param, estado)
+                obtenerMensajes(param, estado)
                 res = cursos_pantalla(param)
     else:
         res = redirect('/')
@@ -530,7 +497,7 @@ def agregarInscripcion(miRequest):
 
             else:
                 estado = "carga fallida"
-                obtenerMensajeError(param, estado)
+                obtenerMensajes(param, estado)
                 res = gestion_inscripciones_pantalla(param)
     else:
         res = redirect('/')
@@ -547,7 +514,7 @@ def inscripcion_usuario(miRequest):
 
             else:
                 estado = "carga fallida"
-                obtenerMensajeError(param, estado)
+                obtenerMensajes(param, estado)
                 res = cronograma_pagina(param)
     else:
         res = redirect('/')

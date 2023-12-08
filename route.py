@@ -18,6 +18,7 @@ def route(app):
           Carga la pagina del login
         ''' 
         param={}
+        obtenerMensajes(param)
         return login_pagina(param)
 
     @app.route("/register")
@@ -26,6 +27,7 @@ def route(app):
           Carga la pagina para el registro del usuario
         '''
         param={}
+        obtenerMensajes(param)
         return register_pagina(param)
     
     @app.route("/cronograma")
@@ -51,6 +53,7 @@ def route(app):
         param={}
         miRequest={}
         getRequest(miRequest)
+        obtenerMensajes(param)
         return registrarUsuario(param,miRequest)
 
     @app.route('/signin', methods =["GET", "POST"])
@@ -105,7 +108,7 @@ def route(app):
     def comisiones():
         
         param={}
-        obtenerMensajeError(param)
+        obtenerMensajes(param)
         return comisiones_pantalla(param)
     
     @app.route("/agregar_comision", methods=["GET","POST"])
@@ -119,7 +122,7 @@ def route(app):
     def materias():
         
         param={}
-        obtenerMensajeError(param)
+        obtenerMensajes(param)
         return materias_pantalla(param)
     
     @app.route("/agregar_materia", methods=["GET","POST"])
@@ -133,7 +136,7 @@ def route(app):
     def cursos():
         
         param={}
-        obtenerMensajeError(param)
+        obtenerMensajes(param)
         return cursos_pantalla(param)
     
     @app.route("/agregar_curso", methods=["GET","POST"])
@@ -146,7 +149,7 @@ def route(app):
     @app.route("/inscripciones")
     def inscripciones():
         param = {}
-        obtenerMensajeError(param)
+        obtenerMensajes(param)
         return inscripciones_pantalla(param)
     
     @app.route("/agregar_inscripcion", methods=["GET","POST"])
@@ -158,7 +161,7 @@ def route(app):
     @app.route("/gestion_inscripciones")
     def gestion_inscripciones():
         param = {}
-        obtenerMensajeError(param)
+        obtenerMensajes(param)
         return gestion_inscripciones_pantalla(param)
 
     @app.route('/inscribirse',methods = ["GET", "POST"])
@@ -169,56 +172,7 @@ def route(app):
 
 
 
-    @app.route("/update_user", methods =["GET", "POST"])
-    def update_user():
-        ''' Info:
-          Recepciona la solicitud request que es enviada
-              desde el formulario de edit_user 
-          Retorna 
-            si hay sesion: retorna la edit_user con los datos actualizados
-               y un mensaje de exito o fracaso sobre el mismo form ; 
-            si no hay sesion: retorna la home.
-        '''
-        param={}
-        return True#actualizarDatosDeUsuarios(param,request)  
-    
-    @app.route('/upload') 
-    def  upload () : 
-      return'''
-        <!doctype html>
-        <title>Upload new File</title>
-        <h1>Upload new File</h1>
-        <form action="uploader" method="post" enctype="multipart/form-data">
-          <input type=file name=file>
-          <input type=submit value=Upload>
-        </form>
-        '''
-    
-    def allowed_file(filename):
-        ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-        return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-     
-    """ @app.route('/uploader', methods = ['GET', 'POST']) 
-    def upload_file () : 
 
-        if request.method == 'POST' :
-            if 'file' not in request.files:
-                flash('No file part')
-            else:                
-                f = request.files[ 'file' ]       
-                #f = secure_filename(f.filename)
-                
-                #f.save( f.filename)
-                f.savec
-                return 'archivo cargado exitosamente' """
-            
-    # si existe el archivo devuelve True
-    # os.path.exists(os.path.join('G:\\Mi unidad\\NUBE\\Docencia\\UCA\\_Materias\\03-UCA.PW\\_Python\\_PythonFlask\\07_login_register_bd\\uploadfile',"agua.png"))
-    
-    # borrar un archivo
-    # os.remove(os.path.join('G:\\Mi unidad\\NUBE\\Docencia\\UCA\\_Materias\\03-UCA.PW\\_Python\\_PythonFlask\\07_login_register_bd\\uploadfile',"agua.png"))
-    
     
     # @app.route('/validate-username/<username>')
     # def validate_username(username):

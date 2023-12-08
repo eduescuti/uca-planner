@@ -67,7 +67,7 @@ function mostrarMateria() {
             var celda = document.getElementById(id_dia + "-" + id_hora);
             celda.innerHTML = nombreMateria;
             celda.style.background = "grey";
-            celda.style.color = "white"
+            celda.style.color = "white";
 
         }
     }
