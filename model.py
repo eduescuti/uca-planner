@@ -138,7 +138,7 @@ def obtenerCantidadInscriptos(id_inscripcion, id_mat_com):
     Recibe el id_inscripcion y id_materia_comision para identificar cuántos alumnos hay inscriptos.
     '''
     select="""
-        SELECT COUNT(DISTINCT id_dia) 
+        SELECT COUNT(DISTINCT id_usuario) 
         FROM cursos 
         WHERE id_inscripcion=%s and id_com_mat=%s;
     """
