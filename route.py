@@ -229,3 +229,9 @@ def route(app):
         except Exception as e:
             print(f"Error en la ruta /validar_usuario: {str(e)}")
             return 'Error interno del servidor', 500
+
+    @app.route('/cerrar_inscripcion', methods=['POST', 'GET'])
+    def cerrar_inscripcion():
+        idInscripcion = request.form.get('idInscripcion')
+
+        return cerrarInscripcion(idInscripcion)

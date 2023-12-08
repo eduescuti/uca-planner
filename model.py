@@ -683,3 +683,23 @@ def verificarExiste(option):
     except Exception as e:
         print(f'Error verificando existencia del user: {str(e)}')
         return False
+
+
+def cerrarIns(idIns):
+    try:
+        connection = conectarBD(BASE)
+        cursor = connection.cursor()
+
+        # Realizar la actualización en la base de datos
+        query = "UPDATE inscripciones SET estado = 'cerrada' WHERE id = %s"
+        cursor.execute(query, (idIns,))
+        connection.commit()
+
+        # Cerrar la conexión
+        cursor.close()
+        connection.close()
+
+        return True
+    except Exception as e:
+        # Manejar cualquier error
+        return False, 'Error al cerrar la inscripción: ' + str(e)

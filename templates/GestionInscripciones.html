@@ -25,16 +25,19 @@
       <summary>INSCRIPCION {{inscripcion["año"]}} {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} CUATRIMESTRE
       </summary>
       <div class="row">
-        <div class="col-1">
-          <input type="submit" class="cierre-ins" value="Cerrar Inscripción">
-
+        {% if inscripcion['id'] is defined %}
+        <form class="col-1" id="formCierre{{inscripcion['id']}}" data-inscripcion-id="{{inscripcion['id']}}" onsubmit="cambiarEstado(event)">
+          <input type="hidden" name="idInscripcion" value="{{inscripcion['id']}}">
+          <input type="submit" class="cierre-ins" value="Cerrar Inscripción" id="btnCierre" >
+          <div id="resCierre"></div>
           <p class="texto">ESTADO:</p>
           {% if inscripcion["estado"] == "cerrada" %}
           <p class="cerrada">{{inscripcion["estado"]}}</p>
           {% else %}
           <p class="abierta">{{inscripcion["estado"]}}</p>
           {% endif %}
-        </div>
+        </form>
+        {% endif %}
         <div class="col-2">
           <input type="search" placeholder="Filtrar por..." name="search" id="inputFiltro" oninput="filtrarTabla()">
           <table id="tablaCurso">

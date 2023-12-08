@@ -533,3 +533,17 @@ def verEstado(option):
         return 'Ya existe una inscripción abierta'
     else:
         return ''
+
+
+def cerrarInscripcion(idIns):
+    try:
+        success = cerrarIns(idIns)
+
+        if success:
+            return 'Inscripción cerrada exitosamente'
+        else:
+            return 'Error al intentar cerrar la inscripción. Por favor, inténtalo nuevamente.'
+    except Exception as e:
+        # Captura cualquier excepción inesperada para evitar que la aplicación falle
+        print(f'Error al cerrar la inscripción: {str(e)}')
+        return 'Ocurrió un error inesperado al cerrar la inscripción.'
