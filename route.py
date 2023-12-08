@@ -265,8 +265,11 @@ def route(app):
         try:
             option = request.form.get('estado', '').strip()
             if option:
-                resVerificacion = verEstado(option)
-                return resVerificacion
+                if option=="abierta":    
+                    resVerificacion = verEstado(option)
+                    return resVerificacion
+                else:
+                    return ''
             else:
              return 'La selección no puede ser vacía'
         except Exception as e:

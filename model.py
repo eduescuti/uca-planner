@@ -649,7 +649,7 @@ def verificarExiste(option):
     try:
         connection = conectarBD(BASE)
         cursor = connection.cursor()
-
+        
         # Consulta para verificar la existencia del usuario
         query = 'SELECT COUNT(*) FROM inscripciones WHERE estado = %s'
         cursor.execute(query, (option,))
