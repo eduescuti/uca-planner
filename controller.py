@@ -525,7 +525,7 @@ def verUsuario(username):
     if verificar_existe(username)==True:
         return 'El nombre de usuario ya existe.'
     else:
-        return 'El nombre de usuario está disponible.'
+        return ''
     
 
 def verEstado(option):
