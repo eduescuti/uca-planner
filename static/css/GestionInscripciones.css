@@ -7,7 +7,7 @@ body {
   font-family: Arial;
   padding: 5px;
   background: white;
-  height: 150vh;
+  height: 120vh;
   display: grid;
   grid-template-rows: 25% auto auto;
   grid-template-columns: 100%;
@@ -58,6 +58,7 @@ a {
 .inscripciones {
   margin-top: 20px;
   grid-row: 2/3;
+  grid-column: 1/2;
 }
 
 summary {
@@ -339,13 +340,12 @@ tbody:hover {
 #contenedor {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
   background-color: #f1f1f1;
-  height: 100%;
+  height: 95%;
   width: 70%;
   grid-row: 3/4;
   margin: auto;
   display: grid;
   grid-template-rows: 20% auto ;
-  margin-top: 10px; 
 }
 
 #formInscripciones{
@@ -429,8 +429,7 @@ h3{
 #btnInscripciones{
   grid-column: 1/3;
   grid-row: 4/5;
-  display: block;
-  width: 25%;
+  width: 30%;
   background-color: #152087;
   color: white;
   border: none;
@@ -466,4 +465,42 @@ h3{
   color: rgb(209, 3, 3);
   margin: auto;
   margin-top: 60px;
+}
+
+#btnOrden{
+  grid-row: 2/3;
+  grid-column: 1/2;
+  margin: auto;  
+  margin-top: 0px;
+  margin-right: 0px;
+  width: 150px;
+  height: 20px;
+
+  background-color: #152087;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+
+#error_anio{
+  grid-column: 1/3;
+  grid-row: 1/2;
+  margin: auto;
+  margin-top: 60px;
+
+  color: rgb(209, 3, 3);
+
+}
+
+#error_incompleto{
+  grid-column: 1/3;
+  grid-row: 4/5;
+  margin: auto;
+  margin-top: 60px;
+    
+  color: rgb(209, 3, 3);
+
 }

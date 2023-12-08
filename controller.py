@@ -523,14 +523,14 @@ def inscripcion_usuario(miRequest):
 
 def verUsuario(username):
     if verificar_existe(username)==True:
-        return 'El nombre de usuario ya existe.'
+        return '*El nombre de usuario ya existe.'
     else:
         return ''
     
 
 def verEstado(option):
     if verificarExiste(option)==True:
-        return 'Ya existe una inscripción abierta'
+        return '*Ya existe una inscripción abierta'
     else:
         return ''
 

@@ -71,6 +71,8 @@
     </details>
     {% endfor %}
   </article>
+  <button type="button" onclick="sortDesplegables()" id="btnOrden">Ordenar por año</button>
+
 
   <div class="card" id="contenedor">
     <h3>Agregar una Inscripción</h3>
@@ -79,7 +81,7 @@
       <label for="anio" id="labelaño">Ingrese el año del período de Inscripciones:</label>
       <input type="text" name="anio" id="anio" placeholder="Ingrese el año.." onclick="insertarAnioActual()"
         onfocusout="validarAnio()">
-      <p class="error" id="error anio"></p>
+      <p class="error" id="error_anio"></p>
 
       <label for="cuatrimestre" id="labelCuatri">Asigne el cuatrimestre del período de Inscripciones:</label>
       <select id="cuatrimestre" name="cuatrimestre" title="Seleccionar...">
@@ -99,16 +101,14 @@
 
 
       {% if param["estado"] == "carga fallida" %}
-      <p class="error" id="error carga">{{param["error"]["error inscripcion"]}}</p>
+      <p class="error" id="error_carga">{{param["error"]["error inscripcion"]}}</p>
       {% endif %}
 
-      <!-- <p class="error" id="error_incompleto"></p> -->
+      <p class="error" id="error_incompleto"></p> 
       <button type="submit" id="btnInscripciones">Agregar Inscripcion</button>
 
     </form>
   </div>
-
-  <!-- <a href="/inscripciones" id="agregarInscripcion">Agregar período de Inscripción</a> -->
 
   <script language="javascript" type="text/javascript" src="../static/js/GestionInscripciones.js"></script>
 </body>

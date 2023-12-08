@@ -62,9 +62,9 @@ function validarAnio() {
   var anio = document.getElementById("anio").value;
 
   if (anioNoValido(anio)) {
-    document.getElementById("error anio").innerHTML = "*Ingrese un año válido";
+    document.getElementById("error_anio").innerHTML = "*Ingrese un año válido";
   } else {
-    document.getElementById("error anio").innerHTML = "";
+    document.getElementById("error_anio").innerHTML = "";
   }
 }
 
@@ -244,3 +244,27 @@ function getDataForm(idForm) {
 function cambiarEstado(event, idForm) {
 }
   
+
+
+function sortDesplegables(){
+  // Obtener todos los elementos <details> con la clase "prueba"
+  var detailsList = document.querySelectorAll('details.prueba');
+
+  // Convertir la NodeList (que contiene los elementos de 'prueba') a un array (lista)
+  var detailsArray = Array.from(detailsList);
+
+  // Obtener los textos de los elementos <summary>
+  // La función map devuelve un nuevo array con los resultados de aplicar la función 
+  // a cada elemento del array original, sin modificar el array original.
+  var summariesTextArray = detailsArray.map(function (details) {
+      return details.querySelector('summary').textContent;
+  });
+
+  // Ordenar el array de textos alfabeticamente usando sort
+  summariesTextArray.sort();
+
+  // Iterar sobre los elementos <details> y actualizar el contenido de <summary> sin moverlo de lugar
+  detailsArray.forEach(function (details, index) {
+      details.querySelector('summary').textContent = summariesTextArray[index];
+  });
+}
