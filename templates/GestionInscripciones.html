@@ -26,9 +26,9 @@
       </summary>
       <div class="row">
         {% if inscripcion['id'] is defined %}
-        <form class="col-1" id="formCierre{{inscripcion['id']}}" data-inscripcion-id="{{inscripcion['id']}}" onsubmit="cambiarEstado(event)">
+        <form class="col-1" id="formCierre{{inscripcion['id']}}" >
           <input type="hidden" name="idInscripcion" value="{{inscripcion['id']}}">
-          <input type="submit" class="cierre-ins" value="Cerrar Inscripción" id="btnCierre" >
+          <button type="button" class="cierre-ins" id="btnCierre" idIns="{{inscripcion['id']}}"onclick="cerrarIns()">Cerrar Inscripción</button>
           <div id="resCierre"></div>
           <p class="texto">ESTADO:</p>
           {% if inscripcion["estado"] == "cerrada" %}

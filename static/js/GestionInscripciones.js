@@ -241,11 +241,6 @@ function getDataForm(idForm) {
 }
 
 
-function cambiarEstado(event, idForm) {
-}
-  
-
-
 function sortDesplegables(){
   // Obtener todos los elementos <details> con la clase "prueba"
   var detailsList = document.querySelectorAll('details.prueba');
@@ -268,3 +263,64 @@ function sortDesplegables(){
       details.querySelector('summary').textContent = summariesTextArray[index];
   });
 }
+
+
+
+
+function cerrarIns() {
+  var idInscripcion = document.getElementById('btnCierre').getAttribute('idIns');
+
+  console.log(idInscripcion)
+  queryAjaxFormCierre('/cerrar_inscripcion/'+ idInscripcion,'resCierre', 'formCierre' + idInscripcion)
+
+}
+
+function queryAjaxFormCierre(url, idDest, idForm, method = "POST") {
+  var formData = getDataForm(idForm);                     // Obtener los pares 
+
+  var xhr = conectAjax();                               // Creo el objeto AJAX   
+  if (xhr) {
+      xhr.open(method, url, true);                       // Abré la connección AJAX. false = sincro , true = asincro
+      xhr.onreadystatechange = function () {               // CARGA la función en el 'evento' del ajax onreadystatechange
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(xhr.responseText)
+            setDataIntoNodeCierre(idDest, xhr.responseText)   // CARGAR la respuesta en el html destino
+            
+        }
+    };
+      xhr.send(formData);                                // ENVIA la petición al servidor con los datos de formData (formulario) 
+  }
+  else {
+      console.log('No se pudo instanciar el objeto AJAX!'); // Falló la conección ajax
+  }
+
+function setDataIntoNodeCierre(idDest, textHTML) {
+  let oElement; // objeto
+  let sNameTag; // string
+  let elementsReadOnlyInnerHTML;                                 // array donde se almacen los tipos de nodos que no tienen innerHTML
+  elementsReadOnlyInnerHTML = ["INPUT", "COL", "COLGROUP", "FRAMESET", "HEAD", "HTML",
+      "STYLE", "TABLE", "TBODY", "TFOOT", "THEAD", "TITLE", "TR"
+  ];
+
+  if (document.getElementById(idDest)) {                          // Si existe el 'idDest'
+      oElement = document.getElementById(idDest);                // Obtener el nodo del 'idDest'
+      sNameTag = oElement.tagName.toUpperCase();                 // Pasar a mayuscula el nombre del tag, para luego hacer búsqueda en array
+      //console.log("***"+sNameTag);
+      if (elementsReadOnlyInnerHTML.indexOf(sNameTag) == -1) {    // ¿No está en el array de lo tag que no tienen innerHTML?
+          oElement.innerHTML = textHTML;                         // Asignar el contenido en el nodo de 'idDest' en la ropiedad innerHTML
+      }
+      else if (sNameTag == 'INPUT') {
+          oElement.value = textHTML;                             // Asignar el contenido en la propiedad value
+      }
+      else {
+          setAnyInnerHTML(oElement, textHTML);
+          //console.log('El elemento destino, cuyo id="'+idDest+'", no posee propiedad "innerHTML" ni "value"!');
+      }
+  }
+  else {
+      console.log('El elemento destino, cuyo id="' + idDest + '", no existe!');
+  }
+}
+
+}
+

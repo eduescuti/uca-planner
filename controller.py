@@ -543,7 +543,7 @@ def verEstado(option):
 
 def cerrarInscripcion(idIns):
     try:
-        success = cerrarIns(idIns)
+        success = cerrarIns(idIns, 'cerrada')
 
         if success:
             return 'Inscripción cerrada exitosamente'

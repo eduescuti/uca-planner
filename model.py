@@ -705,14 +705,14 @@ def verificarExiste(option):
         return False
 
 
-def cerrarIns(idIns):
+def cerrarIns(idIns, nuevoEstado):
     try:
         connection = conectarBD(BASE)
         cursor = connection.cursor()
 
         # Realizar la actualización en la base de datos
-        query = "UPDATE inscripciones SET estado = 'cerrada' WHERE id = %s"
-        cursor.execute(query, (idIns,))
+        query = "UPDATE inscripciones SET estado = %s WHERE id = %s"
+        cursor.execute(query, (nuevoEstado, idIns))
         connection.commit()
 
         # Cerrar la conexión
