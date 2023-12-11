@@ -203,7 +203,6 @@ def route(app):
     @app.route('/validar_usuario/<username>', methods=['POST','GET'])
     def verificarUsuario(username):
         try:
-            username = request.form.get('usuario', '').strip()
             if username:
                 respuesta_verificacion = verUsuario(username)
                 return respuesta_verificacion
@@ -213,6 +212,17 @@ def route(app):
             print(f"Error en la ruta /validar_usuario: {str(e)}")
             return 'Error interno del servidor', 500
 
+    @app.route('/validar_email/<email>', methods=['POST','GET'])
+    def verificarEmail(email):
+        try:
+            if email:
+                res = verEmail(email)
+                return res
+            else:
+                return 'El email no puede estar vacío.'
+        except Exception as e:
+            print(f"Error en la ruta /validar_email: {str(e)}")
+            return 'Error interno del servidor', 500
 
     @app.route('/validar_estado/<option>', methods=['POST', 'GET'])
     def verificarOpcion(option):

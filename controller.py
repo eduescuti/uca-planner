@@ -527,6 +527,12 @@ def verUsuario(username):
     else:
         return ''
     
+def verEmail(email):
+    if verificar_existe_email(email)==True:
+        return '*El email ya está en uso.'
+    else:
+        return ''
+    
 
 def verEstado(option):
     if verificarExiste(option)==True:

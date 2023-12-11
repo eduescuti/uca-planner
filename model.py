@@ -664,6 +664,26 @@ def verificar_existe(username):
     except Exception as e:
         print(f'Error verificando existencia del user: {str(e)}')
         return False
+    
+def verificar_existe_email(email):
+    try:
+        connection = conectarBD(BASE)
+        cursor = connection.cursor()
+
+        # Consulta para verificar la existencia del usuario
+        query = 'SELECT COUNT(*) FROM usuario WHERE email = %s'
+        cursor.execute(query, (email,))
+        count = cursor.fetchone()[0]
+        
+        cursor.close()
+        connection.close()
+
+        return count > 0
+        
+
+    except Exception as e:
+        print(f'Error verificando existencia del user: {str(e)}')
+        return False
 
 def verificarExiste(option):
     try:

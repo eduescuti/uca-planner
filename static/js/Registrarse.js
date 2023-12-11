@@ -180,14 +180,20 @@ function validarDatos() {
 
 
 
-
 function validarUsuario() {
     var inputUsuario = document.getElementById('usuario');
     var username = inputUsuario.value.trim(); // Toma el valor del input
-    var submitButton = document.getElementById('btnSubmit');
 
-    queryAjaxForm('/validar_usuario/' + username, 'respuesta', 'formRegistro');
+    queryAjaxForm('/validar_usuario/' + username, 'resUsuario', 'formRegistro');
 }
+
+function validarEmail() {
+    var inputEmail = document.getElementById('email');
+    var email = inputEmail.value.trim(); // Toma el valor del input
+
+    queryAjaxForm('/validar_email/' + email, 'resEmail', 'formRegistro');
+}
+
 
 function queryAjaxForm(url, idDest, idForm, method = "POST") {
     var formData = getDataForm(idForm);
@@ -200,14 +206,16 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
                 setDataIntoNode(idDest, xhr.responseText);
                 console.log(xhr.responseText);
 
-                // Después de recibir la respuesta, verifica si el usuario existe
-                var userExists = xhr.responseText.includes('El nombre de usuario ya existe.');
+                // Después de recibir la respuesta, verifica si existe
+                var userExiste = xhr.responseText.includes('El nombre de usuario ya existe.');
+                var emailExiste = xhr.responseText.includes('El email ya está en uso.');
 
-                // Obtén una referencia al botón de envío
+                // Referencia al botón de envío
                 var submitButton = document.getElementById('btnSubmit');
 
-                // Inhabilita el botón si el usuario existe
-                submitButton.disabled = userExists;
+                // Inhabilita el botón si al menos una de las cadenas existe
+                submitButton.disabled = userExiste || emailExiste
+
             } else {
                 console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
             }
@@ -292,3 +300,4 @@ function getDataForm(idForm) {
     }
     return formData;                                                              // retorna el objeto formData
 }
+
