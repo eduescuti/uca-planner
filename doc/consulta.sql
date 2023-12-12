@@ -86,3 +86,7 @@ WHERE id_inscripcion=4 and id_com_mat=12;
 SELECT DISTINCT año FROM comisiones;
 
 ALTER TABLE hora_mat_com RENAME TO cursos;
+
+SELECT COUNT(*)
+FROM usuario
+WHERE usuario="eduescuti";

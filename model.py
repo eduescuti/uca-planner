@@ -235,7 +235,6 @@ def obtenerDatosMateriaComision(id_com_mat):
     """
     val=(id_com_mat, )
     listaID = selectDB(BASE, sQuery, val)
-    print(listaID)
     id_materia = listaID[0][0]
     id_comision = listaID[0][1]
     nombre, codigo = obtenerDatosMateria(id_materia)
@@ -261,8 +260,8 @@ INTERACCION USUARIO, OBTENCION DE DATOS DE USUARIO
 
 def esUsuarioValido(value):
     checkeoMismoUsuario="""
-        SELECT COUNT(*)
-        FROM usuario
+        SELECT COUNT(*) 
+        FROM usuario 
         WHERE usuario=%s;
     """
     val=(value[1], )
@@ -270,8 +269,8 @@ def esUsuarioValido(value):
     cantidadUsuarios = usuarios[0][0]
 
     checkeoMismoMail="""
-        SELECT COUNT(*)
-        FROM usuario
+        SELECT COUNT(*) 
+        FROM usuario 
         WHERE email=%s;
     """
     val=(value[4], )
@@ -292,7 +291,7 @@ def crearUsuario(di):
         VALUES
         (%s, %s, %s, %s, %s, %s, %s);
     """
-    val=(None, di.get('usuario'), di.get('nombre'), di.get('apellido'), di.get('email'), di.get('contraseña'), di.get('rol'))
+    val=(None, di.get('usuario'), di.get('nombre'), di.get('apellido'), di.get('mail'), di.get('contraseña'), di.get('rol'))
     if (esUsuarioValido(val)):
         resul_insert=insertDB(BASE,sQuery,val)
     else:
@@ -365,9 +364,6 @@ def actualizarPerfil(di, mail):
          di.get('email'), 
          di.get('contraseña'),
          mail)
-    print(mail)
-    print(val)
-    print(di)
     
     resul_update=updateDB(BASE,sQuery,val=val)
     return resul_update==1
