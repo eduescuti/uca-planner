@@ -242,27 +242,27 @@ function getDataForm(idForm) {
 
 
 function sortDesplegables(){
-  // Obtener todos los elementos <details> con la clase "prueba"
-  var detailsList = document.querySelectorAll('details.prueba');
+     // Obtener el contenedor de inscripciones
+     var inscripcionesContainer = document.querySelector('.inscripciones');
 
-  // Convertir la NodeList (que contiene los elementos de 'prueba') a un array (lista)
-  var detailsArray = Array.from(detailsList);
-
-  // Obtener los textos de los elementos <summary>
-  // La función map devuelve un nuevo array con los resultados de aplicar la función 
-  // a cada elemento del array original, sin modificar el array original.
-  var summariesTextArray = detailsArray.map(function (details) {
-      return details.querySelector('summary').textContent;
-  });
-
-  // Ordenar el array de textos alfabeticamente usando sort
-  summariesTextArray.sort();
-
-  // Iterar sobre los elementos <details> y actualizar el contenido de <summary> sin moverlo de lugar
-  detailsArray.forEach(function (details, index) {
-      details.querySelector('summary').textContent = summariesTextArray[index];
-  });
-}
+     // Obtener todos los elementos <details> con la clase "prueba" dentro del contenedor
+     var detailsList = inscripcionesContainer.querySelectorAll('details.prueba');
+ 
+     // Convertir la NodeList a un array
+     var detailsArray = Array.from(detailsList);
+ 
+     // Ordenar los elementos <details> en función de los textos de los elementos <summary>
+     detailsArray.sort(function (a, b) {
+         var textA = a.querySelector('summary').textContent;
+         var textB = b.querySelector('summary').textContent;
+         return textA.localeCompare(textB);
+     });
+ 
+     // Mover cada elemento <details> ordenado al final del contenedor
+     detailsArray.forEach(function (details) {
+         inscripcionesContainer.appendChild(details);
+     });
+ }
 
 
 
