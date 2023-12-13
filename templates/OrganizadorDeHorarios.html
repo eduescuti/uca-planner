@@ -90,7 +90,7 @@
                     <p class="error" id="error incompleto"></p>
 
                     <input type="button" value="Mostrar Materia" onclick="mostrarMateria()"></input>
-                    <input type="submit" value="Inscribirse a Materia"></input>
+                    <input type="submit" value="Inscribirse a Materia" id="btnInscribirse"  onclick="verificarCupo()"></input>
 
                 </form>
                 <input type="button" onclick="resetearCronograma()" value="Resetear"></button>
@@ -107,6 +107,7 @@
             {% endfor %}
         </div>
     </div>
+    <div id="resCupo"></div>
 
     <div class="footer">
         <h2>Contactanos</h2>

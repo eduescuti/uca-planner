@@ -173,6 +173,7 @@ def route(app):
 
 
 
+
     
     # @app.route('/validate-username/<username>')
     # def validate_username(username):
@@ -250,3 +251,13 @@ def route(app):
     def cerrar_inscripcion(idInscripcion):
 
         return cerrarInscripcion(idInscripcion)
+    
+    @app.route('/verificar_cupo', methods=['POST','GET'])
+    def verificar_cupo():
+        inscripcion_id = request.form.get('inscripcion')
+        materia_id = request.form.get('materia')
+
+        if inscripcion_id and materia_id:
+            verCupo(inscripcion_id, materia_id)
+        else:
+            return 'Error en la solicitud. Falta información.'

@@ -94,41 +94,30 @@ function validarDatos() {
   }
 }
 
-
 function filtrarTabla() {
-  // obtiene valor del input
   var filtro = document.getElementById('inputFiltro').value.toLowerCase();
-  // obtiene todas las filas de la tabla
+  console.log(filtro)
   var filas = document.getElementById('tablaCurso').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
 
-  // recorre todas las filas de la tabla
   for (var i = 0; i < filas.length; i++) {
-    // obtiene la fila actual
     var fila = filas[i];
-    // obtiene todas las celdas de la fila
     var celdas = fila.getElementsByTagName('td');
-    // variable que indica si hay coincidencia o no
     var coincide = false;
 
-    // recorre cada celda
     for (var j = 0; j < celdas.length; j++) {
-      // toma celda actual
       var dato = celdas[j];
-      // Compara el contenido de la celda con el filtro (ignorando mayúsculas)
       if (dato.textContent.toLowerCase().includes(filtro)) {
-        coincide = true; //si la coincidencia existe cambia la variable a true
+        coincide = true;
         break;
       }
     }
 
-    fila.style.display = coincide ? '' : 'none'; //muestra u oculta la fila en caso de que coincida o no
+    fila.style.display = coincide ? '' : 'none';
   }
-
 }
 
 //coincide ? '' : 'none'    coincide ? (true) : (false)
 // si es true sera una cadena vacia si es false sera none 
-
 
 
 function validarEstado(){

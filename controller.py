@@ -49,8 +49,9 @@ def obtenerMensajes(param):
         "materia" : "",
         "comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
         "curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
-        "inscripcion" : "No se pudo cargar los datos del período de inscripciones, porfavor intente denuevo.."
-        }
+        "inscripcion" : "No se pudo cargar los datos del período de inscripciones, porfavor intente denuevo..",
+        "cupoExcedido": "Lo sentimos, el cupo para esta materia ha sido excedido."
+    }
     
     param["mensaje_registro_exitoso"] = ""
 
@@ -508,14 +509,22 @@ def inscripcion_usuario(miRequest):
     if haySesion():
 
         if (session["rol"] == "alumno"):
+            
+            insId = miRequest.get("inscripcion")
+            matId = miRequest.get("materia")
 
+            # if verCupo(insId, matId):
             if inscribirseACurso(miRequest, session["id"]):
-                res = redirect('/cronograma')
-
+                    res = redirect('/cronograma')
             else:
-                estado = "carga fallida"
-                obtenerMensajes(param, estado)
-                res = cronograma_pagina(param)
+                    estado = "carga fallida"
+                    obtenerMensajes(param)
+                    res = cronograma_pagina(param)
+            # else:
+            # #     estado = "cupo_excedido"
+            #     obtenerMensajes(param)
+            #     param["error"] = "Lo sentimos, el cupo para esta materia ha sido excedido."
+            #     return cronograma_pagina(param)
     else:
         res = redirect('/')
     return res
@@ -553,3 +562,10 @@ def cerrarInscripcion(idIns):
         # Captura cualquier excepción inesperada para evitar que la aplicación falle
         print(f'Error al cerrar la inscripción: {str(e)}')
         return 'Ocurrió un error inesperado al cerrar la inscripción.'
+    
+
+def verCupo(insId, matId):
+    cupoMaximo = obtener_cupo_maximo(matId)
+    cantIns = obtener_cantidad_inscripciones(insId, matId)
+
+    return cantIns < cupoMaximo 
