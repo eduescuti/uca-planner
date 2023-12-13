@@ -78,9 +78,6 @@ function mostrarMateria() {
 function verificarCupo(event){
 
 
-    var inscripcion = document.getElementById('inscripcion').value;
-    var materia = document.getElementById('materia').value;
-
     queryAjaxForm('/inscribirse', 'resCupo', 'formInscripcion')
 
 

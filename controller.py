@@ -528,10 +528,6 @@ def inscripcion_usuario(miRequest):
         res = redirect('/')
     return res
 
-def obtenerNom(matId):
-    split_values = matId.split('(')
-    return split_values[0].strip()
-
 
 def verUsuario(username):
     if verificar_existe(username)==True:
@@ -568,7 +564,7 @@ def cerrarInscripcion(idIns):
     
 
 def verCupo(matId):
-    cupoMaximo = obtener_cupo_maximo(matId)
+    cupoMaximo = obtenerCupo(matId)
     cantIns = obtener_cantidad_inscripciones(matId)
 
     return cantIns < cupoMaximo 

@@ -169,7 +169,7 @@ def route(app):
         miRequest={}
         getRequest(miRequest)
         return inscripcion_usuario(miRequest)
-
+       
 
 
 
