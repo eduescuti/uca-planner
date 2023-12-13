@@ -510,24 +510,27 @@ def inscripcion_usuario(miRequest):
 
         if (session["rol"] == "alumno"):
             
-            insId = miRequest.get("inscripcion")
             matId = miRequest.get("materia")
 
-            # if verCupo(insId, matId):
-            if inscribirseACurso(miRequest, session["id"]):
-                    res = redirect('/cronograma')
+            if verCupo(matId):
+                if inscribirseACurso(miRequest, session["id"]):
+                        res = redirect('/cronograma')
+                else:
+                        estado = "carga fallida"
+                        obtenerMensajes(param)
+                        res = cronograma_pagina(param)
             else:
-                    estado = "carga fallida"
-                    obtenerMensajes(param)
-                    res = cronograma_pagina(param)
-            # else:
-            # #     estado = "cupo_excedido"
-            #     obtenerMensajes(param)
-            #     param["error"] = "Lo sentimos, el cupo para esta materia ha sido excedido."
-            #     return cronograma_pagina(param)
+                estado = "cupo_excedido"
+                obtenerMensajes(param)
+                param["error"] = "Lo sentimos, el cupo para esta materia ha sido excedido."
+                return cronograma_pagina(param)
     else:
         res = redirect('/')
     return res
+
+def obtenerNom(matId):
+    split_values = matId.split('(')
+    return split_values[0].strip()
 
 
 def verUsuario(username):
@@ -564,8 +567,8 @@ def cerrarInscripcion(idIns):
         return 'Ocurrió un error inesperado al cerrar la inscripción.'
     
 
-def verCupo(insId, matId):
+def verCupo(matId):
     cupoMaximo = obtener_cupo_maximo(matId)
-    cantIns = obtener_cantidad_inscripciones(insId, matId)
+    cantIns = obtener_cantidad_inscripciones(matId)
 
     return cantIns < cupoMaximo 

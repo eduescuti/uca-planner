@@ -723,10 +723,9 @@ def cerrarIns(idIns, nuevoEstado):
 
 
 def obtener_cupo_maximo(matId):
-    sQuery = "SELECT cupo FROM materia_comision WHERE id_materia = %s"
-    val = (matId)
+    sQuery = "SELECT cupo FROM materia_comision WHERE id = %s"
+    val = (matId,)
 
-    # Establecer conexión a la base de datos
     connection = conectarBD(BASE)
     cursor = connection.cursor()
 
@@ -749,14 +748,9 @@ def obtener_cupo_maximo(matId):
         cursor.close()
         connection.close()
 
-def obtener_cantidad_inscripciones(insId, matId):
-    # Aquí deberías realizar una consulta a tu base de datos
-    # para contar la cantidad de inscripciones existentes para la inscripción y materia dadas.
-    # Asumo que estás utilizando alguna biblioteca para interactuar con la base de datos.
-
-    # Ejemplo con un cursor de base de datos (usando MySQL Connector)
-    sQuery = "SELECT COUNT(*) FROM cursos WHERE id_inscripcion = %s AND id_materia = %s;"
-    val = (insId, matId)
+def obtener_cantidad_inscripciones(matId):
+    sQuery = "SELECT COUNT(*) FROM cursos WHERE id_com_mat = %s;"
+    val = (matId,)
 
     # Ejecutar la consulta y obtener el resultado
     cantIns = 0
@@ -767,7 +761,7 @@ def obtener_cantidad_inscripciones(insId, matId):
         cursor.execute(sQuery, val)
         result = cursor.fetchone()
         if result:
-            cantidad_inscripciones = result[0]
+            cantIns = result[0]
     except Exception as e:
         print(f"Error al obtener la cantidad de inscripciones: {e}")
 
