@@ -97,14 +97,6 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 setDataIntoNode(idDest, xhr.responseText) 
                   // CARGAR la respuesta en el html destino
-                if  (response === "cupo_excedido") {
-                    alert("Lo sentimos, el cupo para esta materia ha sido excedido.");
-                } 
-                else {
-                    // Puedes realizar acciones adicionales si el cupo no está excedido
-                    // Por ejemplo, enviar el formulario o realizar otra acción.
-                    document.getElementById(idForm).submit();
-                }
             }
         }
         xhr.send(formData);                                // ENVIA la petición al servidor con los datos de formData (formulario) 
@@ -175,13 +167,7 @@ function setDataIntoNode(idDest, textHTML) {
 //         console.log('El elemento destino, cuyo id="' + idDest + '", no existe!');
 //     }
 // }
-console.log(textHTML); // Verifica la respuesta en la consola del navegador
-    if (textHTML === "Cupo excedido") {
-        document.getElementById(idDest).innerHTML = "Lo sentimos, el cupo para esta materia ha sido excedido.";
-    } else {
-        document.getElementById(idDest).innerHTML = data;
-    }
-}
+
 
 
 function conectAjax() {
@@ -195,4 +181,5 @@ function conectAjax() {
         httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
     }
     return httpRequest;                      // RETORNA el objeto AJAX
+}
 }

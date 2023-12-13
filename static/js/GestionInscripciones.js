@@ -94,10 +94,13 @@ function validarDatos() {
   }
 }
 
-function filtrarTabla() {
-  var filtro = document.getElementById('inputFiltro').value.toLowerCase();
-  console.log(filtro)
-  var filas = document.getElementById('tablaCurso').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+function filtrarTabla(inputElement) {
+  var idInscripcion = inputElement.id.replace('inputFiltro', '');
+  var filtro = inputElement.value.toLowerCase();
+  console.log(filtro);
+
+  var tablaCurso = document.getElementById('tablaCurso' + idInscripcion);
+  var filas = tablaCurso.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
 
   for (var i = 0; i < filas.length; i++) {
     var fila = filas[i];

@@ -443,7 +443,7 @@ h3{
   height: 35px;
 }
 
-#inputFiltro{
+input[type=search]{
   grid-row: 1/2;
   padding: 5px 15px;
   margin: auto;
