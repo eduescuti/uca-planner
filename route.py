@@ -134,6 +134,7 @@ def route(app):
     def cursos():
         
         param={}
+        obtenerMensajes(param)
         return cursos_pantalla(param)
     
     @app.route("/agregar_curso", methods=["GET","POST"])

@@ -35,6 +35,8 @@
         <div class="rightcolumn">
             <div class="card" id="contenedor">
                 <h2>Agregar un Curso</h2>
+                <p class="error">{{param["curso_agregado"]}}</p>
+
                 <form onsubmit="return validarDatos()" action="/agregar_curso" method="post">
 
                     <label class="inscripcion" for="inscripcion">Selecciona la Inscripción:</label>

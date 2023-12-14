@@ -144,7 +144,8 @@ def obtenerCantidadInscriptos(id_inscripcion, id_mat_com):
     """
     val = (id_inscripcion, id_mat_com)
     listaCantidad = selectDB(BASE, select, val)
-    return listaCantidad[0][0]
+    
+    return (listaCantidad[0][0] - 1)   #Le resta uno por el usuario del administrador que creó el curso
 
 def obtenerCupo(id_mat_com):
     ''' Obtiene de la base de datos (en un dicc pasado por parámetro)
@@ -370,9 +371,9 @@ def actualizarPerfil(di, mail):
 
 
 """ 
-==========================
-FUNCIONES DE ADMINISTRADOR
-==========================
+===================================
+INICIO - FUNCIONES DE ADMINISTRADOR
+===================================
 """
 
 def hayHorarioEnDia(dia, di):
@@ -385,7 +386,7 @@ def hayHorarioEnDia(dia, di):
     return (di.get(dia) != "")
 
 def seleccionarIDMateria(di):
-    """ ### Realiza un SELECT para buscar el ID de la materia
+    """ ### Realiza un SELECT para buscar el ID de la materia a través del código de la materia
     - Recibe el diccionario del form pasado por parámetro
 
     - Retorna True si realiza con existo el insert, False caso contrario.
@@ -400,7 +401,7 @@ def seleccionarIDMateria(di):
     return id_materia[0][0]
 
 def seleccionarIDComision(di):
-    """ ### Realiza un SELECT para buscar el ID de la comision
+    """ ### Realiza un SELECT para buscar el ID de la comision a través del nombre de la comisión
     - Recibe el diccionario del form pasado por parámetro
 
     - Retorna True si realiza con existo el insert, False caso contrario.
@@ -564,6 +565,18 @@ def crearComision(di):
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
+def esCursoValido(value):
+    checkeo_misma_materia_comision="""
+        SELECT COUNT(*)
+        FROM materia_comision
+        WHERE id_materia=%s and id_comision=%s;
+    """
+    val=(value[1], value[2])
+    materia_comision=selectDB(BASE,checkeo_misma_materia_comision,val)
+    cantidad_con_mismo_curso = materia_comision[0][0]
+
+    return (cantidad_con_mismo_curso == 0)
+
 def crearMateriaComision(di, id_materia, id_comision):
     """ ### Inserta una materia_comision en la base de datos 
     - Recibe un dicc con la información del form, el id_materia y id_comision
@@ -577,7 +590,10 @@ def crearMateriaComision(di, id_materia, id_comision):
         (%s,%s, %s, %s);
     """
     val=(None, id_materia, id_comision, di.get('cupo'))
-    resul_insert=insertDB(BASE,sQuery,val)
+    if esCursoValido(val):
+        resul_insert=insertDB(BASE,sQuery,val)
+    else:
+        resul_insert=0
     return resul_insert
 
 def crearCurso(di, id_admin):
@@ -587,7 +603,7 @@ def crearCurso(di, id_admin):
     id_inscripcion = di.get("inscripcion")
 
     return agregarDiasYHorarios(resul_insert, di, id_inscripcion, id_admin)
-
+    
 def crearInscripcion(di):
     """ ### Agrega una inscripcion en la base de datos 
     - Recibe un diccionario con la información del form
@@ -621,6 +637,27 @@ def obtenerDiaHora(id_inscripcion, id_com_mat):
     id_hora = lista[0][1]
     return id_dia, id_hora
 
+def usuarioEstaInscriptoACurso(value):
+    ''' 
+    '''
+    sQuery="""
+        SELECT COUNT(*)
+        FROM cursos
+        WHERE id_inscripcion=%s and id_com_mat=%s and id_usuario=%s;
+    """
+    val=(value[1], value[2], value[5])
+    cantidad = selectDB(BASE, sQuery, val)
+    return cantidad[0][0] > 0
+    
+
+def cupoDisponible(id_inscripcion, id_com_mat):
+    cupoMaximo = obtenerCupo(id_com_mat)
+    cantIns = obtenerCantidadInscriptos(id_inscripcion, id_com_mat)
+    return (cantIns < cupoMaximo)
+
+def esPosibleInscribirseACurso(value):
+    return (cupoDisponible(value[1], value[2]) and (not(usuarioEstaInscriptoACurso(value))))
+
 def inscribirseACurso(di, id_usuario):
     """ ### INSCRIBE un alumno a un curso
     - Recibe por parámetro un diccionario con el formRequest
@@ -637,7 +674,11 @@ def inscribirseACurso(di, id_usuario):
         (%s, %s, %s, %s, %s, %s);
     """
     val=(None, id_inscripcion, id_com_mat, id_dia, id_hora, id_usuario)
-    resul_insert=insertDB(BASE,sQuery,val)
+    
+    if esPosibleInscribirseACurso(val):
+        resul_insert=insertDB(BASE,sQuery,val)
+    else:
+        resul_insert=0
     return resul_insert==1
 
 def verificar_existe(campo, query):
@@ -651,7 +692,8 @@ def verificar_existe(campo, query):
 
         cursor.close()
         connection.close()
-
+        print(count)
+        print(count>0)
         return count > 0
 
     except Exception as e:
@@ -676,3 +718,9 @@ def cerrarIns(idIns, nuevoEstado):
     except Exception as e:
         # Manejar cualquier error
         return False, 'Error al cerrar la inscripción: ' + str(e)
+
+""" 
+===================================
+ FIN   - FUNCIONES DE ADMINISTRADOR
+===================================
+"""

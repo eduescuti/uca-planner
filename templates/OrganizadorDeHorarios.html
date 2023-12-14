@@ -54,6 +54,7 @@
         </div>
         <div class="rightcolumn">
             <div class="card">
+
                 <form onsubmit="return validarDatos()" action="/inscribirse" id="formInscripcion" method="POST">
 
                     <label class="titulo1" for="inscripcion">Seleccione la Inscripción:</label>
@@ -94,8 +95,10 @@
                 </form>
                 <input type="button" onclick="resetearCronograma()" value="Resetear"></button>
 
-                <p id="resCupo">{{param["inscripcion_exitosa"]}}</p>
+                <p class="error" id="resCupo">{{param["usuario_inscripto_mensaje"]}}</p>
             </div>
+
+
             {% for curso in param["cursos"] %}
             {% for rango in curso["rango"] %}
             <input name="{{curso['materia']['id_com_mat']}}" id="{{rango['id_dia']}}" value="{{rango['id_hora']}}"
@@ -106,6 +109,7 @@
             <input id="{{curso['materia']['id_com_mat']}}"
                 value="{{curso['materia']['nombre']}} ({{curso['materia']['comision']}})" hidden></input>
             {% endfor %}
+
         </div>
     </div>
 

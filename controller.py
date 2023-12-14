@@ -18,13 +18,9 @@ def obtenerInformacionPerfil(param):
     param["rol"] = session['rol']
 
 def obtenerMensajes(param):
-    param["error"] = {
-        "comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
-        "curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
-        "cupoExcedido": "Lo sentimos, el cupo para esta materia ha sido excedido."
-    }
     param["comision_agregada"] = ""
     param["materia_agregada"] = ""
+    param["curso_agregado"] = ""
     param["error_materia_agregada"] = ""
     param["inscripcion_exitosa"] = ""
     param["ingrese_usuario_valido"] = ""
@@ -398,11 +394,11 @@ def agregarCurso(miRequest):
         if (session["rol"] == "admin"):
 
             if crearCurso(miRequest, session["id"]):
-                res = redirect('/cursos')
+                param["curso_agregado"] = "*El curso se agregó con éxito!"
+                res = cursos_pantalla(param)
 
             else:
-                estado = "carga fallida"
-                obtenerMensajes(param, estado)
+                param["curso_agregado"] = "*El curso no se pudo agregar, ya existe un curso con dicha materia y comisión"
                 res = cursos_pantalla(param)
     else:
         res = redirect('/')
@@ -432,10 +428,11 @@ def inscripcion_usuario(miRequest):
         if (session["rol"] == "alumno"):
             
             if inscribirseACurso(miRequest, session["id"]):
-                param["inscripcion_exitosa"] = "Inscripción realizada con éxito!"
+                param["usuario_inscripto_mensaje"] = "Inscripción realizada con éxito!"
                 res = cronograma_pagina(param)
             else:
-                res = redirect('/cronograma')
+                param["usuario_inscripto_mensaje"] = "No fue posible inscribirse a dicho curso (puede ser motivo de cupo excedido o por ya estar inscripto a dicho curso)"
+                res = cronograma_pagina(param)
             
     else:
         res = redirect('/')
@@ -467,14 +464,12 @@ def verEstado(option):
         return ''
 
 def verCupo(inscripcionId, materiaId):
-    cupoMaximo = obtenerCupo(materiaId)
-    cantIns = obtenerCantidadInscriptos(inscripcionId, materiaId)
 
-    if (cantIns > (cupoMaximo + 1)):
+    if cupoDisponible(inscripcionId, materiaId):
 
-        return "No se puede inscribir a dicha materia, el cupo está exedido."
-    else:    
         return ""
+    else:    
+        return "No se puede inscribir a dicha materia, el cupo está exedido."
 
 def verNombreMateria(nombre):
     query = 'SELECT COUNT(*) FROM materias WHERE nombre = %s'
