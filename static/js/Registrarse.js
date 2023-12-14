@@ -150,7 +150,7 @@ function validarUsuario() {
     var inputUsuario = document.getElementById('usuario');
     var username = inputUsuario.value.trim(); // Toma el valor del input
 
-    queryAjaxForm('/validar_usuario/' + username, 'resUsuario', 'formRegistro');
+    queryAjaxForm1('/validar_usuario/' + username, 'resUsuario', 'formRegistro');
 }
 
 function validarEmail() {
@@ -174,12 +174,45 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
                 // Después de recibir la respuesta, verifica si existe
                 var userExiste = xhr.responseText.includes('El nombre de usuario ya existe.');
                 var emailExiste = xhr.responseText.includes('El email ya está en uso.');
+                console.log(emailExiste)
+                // Referencia al botón de envío
+                var submitButton = document.getElementById('btnSubmit');
+
+                // Inhabilita el botón si al menos una de las cadenas existe
+                submitButton.disabled = emailExiste
+
+            } else {
+                console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
+            }
+        }
+
+        xhr.send(formData);
+    }
+    else {
+        console.log('No se pudo instanciar el objeto AJAX!');
+    }
+}
+
+function queryAjaxForm1(url, idDest, idForm, method = "POST") {
+    var formData = getDataForm(idForm);
+    var xhr = conectAjax();
+
+    if (xhr) {
+        xhr.open(method, url, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                setDataIntoNode(idDest, xhr.responseText);
+
+                // Después de recibir la respuesta, verifica si existe
+                var userExiste = xhr.responseText.includes('El nombre de usuario ya existe.');
+                var emailExiste = xhr.responseText.includes('El email ya está en uso.');
+                console.log(userExiste)
 
                 // Referencia al botón de envío
                 var submitButton = document.getElementById('btnSubmit');
 
                 // Inhabilita el botón si al menos una de las cadenas existe
-                submitButton.disabled = userExiste || emailExiste
+                submitButton.disabled = userExiste
 
             } else {
                 console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
