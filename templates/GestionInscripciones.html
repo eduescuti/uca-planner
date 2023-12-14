@@ -22,14 +22,14 @@
   </header>
 
   <!-- DESPLEGABLES -->
-  <article class="inscripciones"> 
+  <article class="inscripciones">
     {% for inscripcion in param["inscripciones"][0:] %}
     <details class="prueba">
       <summary>INSCRIPCION {{inscripcion["año"]}} {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} CUATRIMESTRE
       </summary>
       <div class="row">
         {% if inscripcion['id'] is defined %}
-        <form class="col-1" id="formCierre{{inscripcion['id']}}" >
+        <form class="col-1" id="formCierre{{inscripcion['id']}}">
           <input type="hidden" name="idInscripcion" value="{{inscripcion['id']}}">
           <button type="button" class="cierre-ins" id="btnCierre{{inscripcion['id']}}" idIns="{{inscripcion['id']}}" onclick="cerrarIns(this)">Cerrar Inscripción</button>
           <div class="resCierre" id="resCierre{{inscripcion['id']}}"></div>
@@ -43,7 +43,7 @@
         {% endif %}
         <div class="col-2">
           <input type="search" placeholder="Filtrar por..." name="search" id="inputFiltro{{inscripcion['id']}}"
-           oninput="filtrarTabla(this)">
+            oninput="filtrarTabla(this)">
           <table id="tablaCurso{{inscripcion['id']}}">
             <thead>
               <tr>
@@ -67,7 +67,6 @@
             </tbody>
           </table>
           <!-- AGREGAR MATERIA -->
-          <!-- <button id="abrir" onclick="abrir()">Agregar Curso</button> -->
           <a id="btnAgregarCurso" href="/cursos">Agregar Curso</a>
 
         </div>
@@ -102,13 +101,7 @@
       </select>
       <div id="resAjax"></div>
 
-
-
-      {% if param["estado"] == "carga fallida" %}
-      <p class="error" id="error_carga">{{param["error"]["error inscripcion"]}}</p>
-      {% endif %}
-
-      <p class="error" id="error_incompleto"></p> 
+      <p class="error" id="error_incompleto"></p>
       <button type="submit" id="btnInscripciones">Agregar Inscripcion</button>
 
     </form>

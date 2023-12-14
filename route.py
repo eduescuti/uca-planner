@@ -27,13 +27,12 @@ def route(app):
           Carga la pagina para el registro del usuario
         '''
         param={}
-        obtenerMensajes(param)
         return register_pagina(param)
     
     @app.route("/cronograma")
     def cronograma():
         param={}
-        param["inscripcion"] = ""
+        obtenerMensajes(param)
         return cronograma_pagina(param)
     
     @app.route("/perfil")
@@ -50,11 +49,9 @@ def route(app):
           registroDeUsuario: Luego de realizar el porceso de 
           registro del usuario, retorna la pagina del login 
         '''
-        param={}
         miRequest={}
         getRequest(miRequest)
-        obtenerMensajes(param)
-        return registrarUsuario(param,miRequest)
+        return registrarUsuario(miRequest)
 
     @app.route('/signin', methods =["GET", "POST"])
     def signin(): 
@@ -108,7 +105,6 @@ def route(app):
     def comisiones():
         
         param={}
-        obtenerMensajes(param)
         return comisiones_pantalla(param)
     
     @app.route("/agregar_comision", methods=["GET","POST"])
@@ -136,7 +132,6 @@ def route(app):
     def cursos():
         
         param={}
-        obtenerMensajes(param)
         return cursos_pantalla(param)
     
     @app.route("/agregar_curso", methods=["GET","POST"])
@@ -252,12 +247,31 @@ def route(app):
 
         return cerrarInscripcion(idInscripcion)
     
-    @app.route('/verificar_cupo', methods=['POST','GET'])
-    def verificar_cupo():
-        inscripcion_id = request.form.get('inscripcion')
-        materia_id = request.form.get('materia')
+    @app.route('/verificar_cupo/<inscripcion_id>/<materia_id>', methods=['POST','GET'])
+    def verificar_cupo(inscripcion_id, materia_id):
 
         if inscripcion_id and materia_id:
-            verCupo(inscripcion_id, materia_id)
+            resCupo = verCupo(inscripcion_id, materia_id)
+            return resCupo
         else:
             return 'Error en la solicitud. Falta información.'
+
+    @app.route('/validar_nombre_materia/<nombre>', methods=['POST','GET'])
+    def validar_nombre_materia(nombre):
+        try:
+            if nombre:
+                respuesta_verificacion = verNombreMateria(nombre)
+                return respuesta_verificacion
+        except Exception as e:
+            print(f"Error en la ruta /validar_nombre_materia: {str(e)}")
+            return 'Error interno del servidor', 500
+        
+    @app.route('/validar_codigo_materia/<codigo>', methods=['POST','GET'])
+    def validar_codigo_materia(codigo):
+        try:
+            if codigo:
+                respuesta_verificacion = verCodigoMateria(codigo)
+                return respuesta_verificacion
+        except Exception as e:
+            print(f"Error en la ruta /validar_codigo_materia: {str(e)}")
+            return 'Error interno del servidor', 500

@@ -258,27 +258,6 @@ INTERACCION USUARIO, OBTENCION DE DATOS DE USUARIO
 ==================================================
 """
 
-def esUsuarioValido(value):
-    checkeoMismoUsuario="""
-        SELECT COUNT(*) 
-        FROM usuario 
-        WHERE usuario=%s;
-    """
-    val=(value[1], )
-    usuarios=selectDB(BASE,checkeoMismoUsuario,val)
-    cantidadUsuarios = usuarios[0][0]
-
-    checkeoMismoMail="""
-        SELECT COUNT(*) 
-        FROM usuario 
-        WHERE email=%s;
-    """
-    val=(value[4], )
-    mails=selectDB(BASE,checkeoMismoMail,val)
-    cantidadMail = mails[0][0]
-
-    return ((cantidadUsuarios == 0) and (cantidadMail == 0))
-
 def crearUsuario(di):
     '''### Información:
         Agrega un nuevo usuario (un registro) en la tabla usuario de la DB
@@ -292,10 +271,7 @@ def crearUsuario(di):
         (%s, %s, %s, %s, %s, %s, %s);
     """
     val=(None, di.get('usuario'), di.get('nombre'), di.get('apellido'), di.get('mail'), di.get('contraseña'), di.get('rol'))
-    if (esUsuarioValido(val)):
-        resul_insert=insertDB(BASE,sQuery,val)
-    else:
-        resul_insert=0
+    resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
 def obtenerUsuarioXEmail(param,email,clave='usuario'):
@@ -322,15 +298,17 @@ def obtenerUsuarioXEmail(param,email,clave='usuario'):
 
 def encuentraUnUsuario(result,user,password):
     '''### Información:
-       Obtiene todos los campos de la tabla usuario a partir de la clave 'usuario'
-         y del 'password'.
-       Carga la información obtenida de la BD en el dict 'result'
-       Recibe 'result' in diccionario donde se almacena la respuesta de la consulta
-       Recibe 'user' que es el usuario si se utiliza como clave en la búsqueda
-       Recibe 'password' que se utiliza en la consulta. (Para validadar al usuario)
+       Obtiene todos los campos de la tabla usuario a partir de la clave 'usuario' y del 'password' y
+       carga la información obtenida de la BD en el dict 'result' (además devuelve true si encuentra un
+       usuario con el usuario y la contraseña pasada por parametro)
+
+       Recibe 'result' in diccionario donde se almacena la respuesta de la consulta,
+       'user' que es el usuario si se utiliza como clave en la búsqueda y
+       'password' que se utiliza en la consulta. (Para validadar al usuario)
+
        Retorna:
-        True cuando se obtiene un registro de un usuario a partir del 'usuario' y el 'pass'.
-        False caso contrario.
+       True cuando se obtiene un registro de un usuario a partir del 'usuario' y el 'pass'.
+       False caso contrario.
     '''
     res=False
     sSql="""SELECT id, usuario, nombre, apellido, email, contraseña, rol 
@@ -540,11 +518,7 @@ def crearMateria(di):
         (%s,%s, %s);
     """
     val=(None, di.get('nombre'), di.get('codigo'))
-    if (esMateriaValida(val)):
-        resul_insert=insertDB(BASE,insertMateria,val)
-    else:
-        resul_insert=0
-
+    resul_insert=insertDB(BASE,insertMateria,val)
     return resul_insert==1
 
 def crearComision(di):
@@ -641,15 +615,13 @@ def inscribirseACurso(di, id_usuario):
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
-
-def verificar_existe(username):
+def verificar_existe(campo, query):
     try:
         connection = conectarBD(BASE)
         cursor = connection.cursor()
 
         # Consulta para verificar la existencia del usuario
-        query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
-        cursor.execute(query, (username,))
+        cursor.execute(query, (campo,))
         count = cursor.fetchone()[0]
 
         cursor.close()
@@ -660,46 +632,6 @@ def verificar_existe(username):
     except Exception as e:
         print(f'Error verificando existencia del user: {str(e)}')
         return False
-    
-def verificar_existe_email(email):
-    try:
-        connection = conectarBD(BASE)
-        cursor = connection.cursor()
-
-        # Consulta para verificar la existencia del usuario
-        query = 'SELECT COUNT(*) FROM usuario WHERE email = %s'
-        cursor.execute(query, (email,))
-        count = cursor.fetchone()[0]
-        
-        cursor.close()
-        connection.close()
-
-        return count > 0
-        
-
-    except Exception as e:
-        print(f'Error verificando existencia del user: {str(e)}')
-        return False
-
-def verificarExiste(option):
-    try:
-        connection = conectarBD(BASE)
-        cursor = connection.cursor()
-        
-        # Consulta para verificar la existencia del usuario
-        query = 'SELECT COUNT(*) FROM inscripciones WHERE estado = %s'
-        cursor.execute(query, (option,))
-        count = cursor.fetchone()[0]
-
-        cursor.close()
-        connection.close()
-
-        return count > 0
-
-    except Exception as e:
-        print(f'Error verificando existencia del user: {str(e)}')
-        return False
-
 
 def cerrarIns(idIns, nuevoEstado):
     try:
@@ -719,50 +651,3 @@ def cerrarIns(idIns, nuevoEstado):
     except Exception as e:
         # Manejar cualquier error
         return False, 'Error al cerrar la inscripción: ' + str(e)
-    
-
-
-def obtener_cupo_maximo(matId):
-    sQuery = "SELECT cupo FROM materia_comision WHERE id = %s"
-    val = (matId,)
-
-    connection = conectarBD(BASE)
-    cursor = connection.cursor()
-
-    try:
-        cursor.execute(sQuery, val)
-        resultado = cursor.fetchone()
-
-        if resultado:
-            # Devolver el valor del cupo máximo si hay resultados
-            return resultado[0]
-        else:
-            # Devolver un valor predeterminado si no hay resultados
-            return None
-    except Exception as e:
-        # Manejar cualquier excepción
-        print(f"Error al obtener el cupo máximo: {e}")
-        return None
-    finally:
-        # Cerrar la conexión
-        cursor.close()
-        connection.close()
-
-def obtener_cantidad_inscripciones(matId):
-    sQuery = "SELECT COUNT(*) FROM cursos WHERE id_com_mat = %s;"
-    val = (matId,)
-
-    # Ejecutar la consulta y obtener el resultado
-    cantIns = 0
-    try:
-        connection = conectarBD(BASE)
-        cursor = connection.cursor()
-
-        cursor.execute(sQuery, val)
-        result = cursor.fetchone()
-        if result:
-            cantIns = result[0]
-    except Exception as e:
-        print(f"Error al obtener la cantidad de inscripciones: {e}")
-
-    return cantIns

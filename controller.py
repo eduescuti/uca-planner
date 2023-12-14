@@ -44,15 +44,13 @@ def obtenerMenuBottom(param, idActivo="mnub01"):
 
 def obtenerMensajes(param):
     param["error"] = {
-        "registro_usuario" : "",
-        "ingrese_usuario_valido" : "",
-        "materia" : "",
         "comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
         "curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
-        "inscripcion" : "No se pudo cargar los datos del período de inscripciones, porfavor intente denuevo..",
         "cupoExcedido": "Lo sentimos, el cupo para esta materia ha sido excedido."
     }
-    
+    param["materia_agregada"] = ""
+    param["inscripcion_exitosa"] = ""
+    param["ingrese_usuario_valido"] = ""
     param["mensaje_registro_exitoso"] = ""
 
 ##########################################################################
@@ -86,58 +84,6 @@ def getRequest(diccionario):
 
 ##########################################################################
 # - - F I N - - MANEJO DE  REQUEST - - - - - - - - - - - - - - - - - - - -
-##########################################################################
-
-##########################################################################
-# + + I N I C I O + + MANEJO DE  SUBIDA DE ARCHIVOS  + + + + + + + + + + +
-##########################################################################
-
-def upload_file (diResult) :
-    UPLOAD_EXTENSIONS = ['.jpg', '.png', '.gif']
-    MAX_CONTENT_LENGTH = 1024 * 1024     
-    if request.method == 'POST' :         
-        for key in request.files.keys():  
-            diResult[key]={} 
-            diResult[key]['file_error']=False            
-            
-            f = request.files[key] 
-            if f.filename!="":     
-                #filename_secure = secure_filename(f.filename)
-                file_extension=str(os.path.splitext(f.filename)[1])
-                filename_unique = uuid4().__str__() + file_extension
-                path_filename=os.path.join( config['upload_folder'] , filename_unique)
-                # Validaciones
-                if file_extension not in UPLOAD_EXTENSIONS:
-                    diResult[key]['file_error']=True
-                    diResult[key]['file_msg']='Error: No se admite subir archivos con extension '+file_extension
-                if os.path.exists(path_filename):
-                    diResult[key]['file_error']=True
-                    diResult[key]['file_msg']='Error: el archivo ya existe.'
-                    diResult[key]['file_name']=f.filename
-                try:
-                    if not diResult[key]['file_error']:
-                        diResult[key]['file_error']=True
-                        diResult[key]['file_msg']='Se ha producido un error.'
-
-                        f.save(path_filename)   
-                        diResult[key]['file_error']=False
-                        diResult[key]['file_name_new']=filename_unique
-                        diResult[key]['file_name']=f.filename
-                        diResult[key]['file_msg']='OK. Archivo cargado exitosamente'
- 
-                except:
-                        pass
-            else:
-                diResult[key]={} # viene vacio el input del file upload
-
-    # si existe el archivo devuelve True
-    # os.path.exists(os.path.join('G:\\directorio\\....\\uploads',"agua.png"))
-
-    # borrar un archivo
-    # os.remove(os.path.join('G:\\directorio\\.....\\uploads',"agua.png"))
-            
-##########################################################################
-# - - F I N - - MANEJO DE  SUBIDA DE ARCHIVOS  - - - - - - - - - - - - - - 
 ##########################################################################
 
 
@@ -336,7 +282,7 @@ def cursos_pantalla(param):
 ##########################################################################
 
 def ingresoUsuarioValido(miRequest):
-    '''Valida el usuario y el pass contra la BD.
+    '''Valida el usuario y el pass con la BD (se utiliza para iniciar sesión).
     
     Recibe 'param' dict de parámetros y 
     'request' una solicitud http con los datos usuario y pass.
@@ -351,11 +297,11 @@ def ingresoUsuarioValido(miRequest):
         res = redirect('/')
     else:
         obtenerMensajes(param)
-        param["error"]["ingrese_usuario_valido"] = "*Ingrese un usuario válido.."
+        param["ingrese_usuario_valido"] = "*Ingrese un usuario y contraseña válidos.."
         res = login_pagina(param)
     return res
 
-def registrarUsuario(param, miRequest):
+def registrarUsuario(miRequest):
     '''info:
       Realiza el registro de un usuario en el sistema, es decir crea un nuevo usuario
       y lo registra en la base de datos.
@@ -364,14 +310,13 @@ def registrarUsuario(param, miRequest):
       retorna la pagina del login, para forzar a que el usuario realice el login con
       el usuario creado.
     '''
+    param={}
     if crearUsuario(miRequest):
         param['mensaje_registro_exitoso']="Inicie la sesión con su usuario creado:"
         cerrarSesion()           # Cierra sesion existente(si la hubiere)
         res=login_pagina(param)  # Envia al login para que vuelva a loguearse el usuario
     else:
-        param['error']['registro_usuario']="*No se ha podido crear el usuario, es probable que ya hay un usuario con los datos ingresados. Por favor, ingrese otros datos.."
         res=register_pagina(param)
-
     return res 
 
 def editarPerfil_pagina(param):
@@ -436,7 +381,7 @@ def agregarMateria(miRequest):
         if (session["rol"] == "admin"):
 
             if crearMateria(miRequest):
-                param["materia agregada"] = "*La materia fue agregada con éxito!"
+                param["materia_agregada"] = "*La materia fue agregada con éxito!"
                 res = materias_pantalla(param)
             else:
                 param["error"]["materia"] = "No se pudo cargar la materia, porfavor intente denuevo.."
@@ -510,44 +455,61 @@ def inscripcion_usuario(miRequest):
 
         if (session["rol"] == "alumno"):
             
-            matId = miRequest.get("materia")
-
-            if verCupo(matId):
-                if inscribirseACurso(miRequest, session["id"]):
-                        res = redirect('/cronograma')
-                else:
-                        estado = "carga fallida"
-                        obtenerMensajes(param)
-                        res = cronograma_pagina(param)
+            if inscribirseACurso(miRequest, session["id"]):
+                param["inscripcion_exitosa"] = "Inscripción realizada con éxito!"
+                res = cronograma_pagina(param)
             else:
-                estado = "cupo_excedido"
-                obtenerMensajes(param)
-                param["error"] = "Lo sentimos, el cupo para esta materia ha sido excedido."
-                return cronograma_pagina(param)
+                res = redirect('/cronograma')
+            
     else:
         res = redirect('/')
     return res
 
 
 def verUsuario(username):
-    if verificar_existe(username)==True:
+    query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
+    if verificar_existe(username, query)==True:
         return '*El nombre de usuario ya existe.'
     else:
         return ''
     
 def verEmail(email):
-    if verificar_existe_email(email)==True:
+    query = 'SELECT COUNT(*) FROM usuario WHERE email = %s'
+    if verificar_existe(email, query)==True:
         return '*El email ya está en uso.'
     else:
         return ''
     
-
 def verEstado(option):
-    if verificarExiste(option)==True:
+    query = 'SELECT COUNT(*) FROM inscripciones WHERE estado = %s'
+    if verificar_existe(option, query)==True:
         return '*Ya existe una inscripción abierta'
     else:
         return ''
 
+def verCupo(inscripcionId, materiaId):
+    cupoMaximo = obtenerCupo(materiaId)
+    cantIns = obtenerCantidadInscriptos(inscripcionId, materiaId)
+
+    if (cantIns > (cupoMaximo + 1)):
+
+        return "No se puede inscribir a dicha materia, el cupo está exedido."
+    else:    
+        return ""
+
+def verNombreMateria(nombre):
+    query = 'SELECT COUNT(*) FROM materias WHERE nombre = %s'
+    if verificar_existe(nombre, query)==True:
+        return '*El nombre de la materia ya existe.'
+    else:
+        return ''
+
+def verCodigoMateria(codigo):
+    query = 'SELECT COUNT(*) FROM materias WHERE codigo = %s'
+    if verificar_existe(codigo, query)==True:
+        return '*Ya hay un codigo creado con ese valor, ingrese otro.'
+    else:
+        return ''
 
 def cerrarInscripcion(idIns):
     try:
@@ -561,10 +523,4 @@ def cerrarInscripcion(idIns):
         # Captura cualquier excepción inesperada para evitar que la aplicación falle
         print(f'Error al cerrar la inscripción: {str(e)}')
         return 'Ocurrió un error inesperado al cerrar la inscripción.'
-    
 
-def verCupo(matId):
-    cupoMaximo = obtenerCupo(matId)
-    cantIns = obtener_cantidad_inscripciones(matId)
-
-    return cantIns < cupoMaximo 

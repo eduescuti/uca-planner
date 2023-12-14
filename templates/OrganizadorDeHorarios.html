@@ -49,7 +49,6 @@
 
                     </tbody>
                 </table>
-                <p id="prueba"></p>
             </div>
 
         </div>
@@ -80,7 +79,7 @@
                         <option value="" disabled selected>Seleccionar..</option>
 
                         {% for curso in param["cursos"] %}
-                        <option value="{{curso['materia']['id_com_mat']}}">
+                        <option value="{{curso['materia']['id_com_mat']}}" onchange="verificarCupo()">
                             {{curso["materia"]["nombre"]}}
                             ({{curso["materia"]["comision"]}})
                         </option>
@@ -90,10 +89,12 @@
                     <p class="error" id="error incompleto"></p>
 
                     <input type="button" value="Mostrar Materia" onclick="mostrarMateria()"></input>
-                    <input type="submit" value="Inscribirse a Materia" id="btnInscribirse"  onclick="verificarCupo()"></input>
+                    <input type="submit" id="btnInscribirse" value="Inscribirse a Materia"></input>
 
                 </form>
                 <input type="button" onclick="resetearCronograma()" value="Resetear"></button>
+
+                <p id="resCupo">{{param["inscripcion_exitosa"]}}</p>
             </div>
             {% for curso in param["cursos"] %}
             {% for rango in curso["rango"] %}
@@ -107,7 +108,6 @@
             {% endfor %}
         </div>
     </div>
-    <div id="resCupo"></div>
 
     <div class="footer">
         <h2>Contactanos</h2>
