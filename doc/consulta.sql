@@ -90,3 +90,5 @@ ALTER TABLE hora_mat_com RENAME TO cursos;
 SELECT COUNT(*)
 FROM usuario
 WHERE usuario="eduescuti";
+
+UPDATE inscripciones SET estado = 'abierta' WHERE id = 8;

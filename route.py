@@ -105,6 +105,7 @@ def route(app):
     def comisiones():
         
         param={}
+        obtenerMensajes(param)
         return comisiones_pantalla(param)
     
     @app.route("/agregar_comision", methods=["GET","POST"])
@@ -166,35 +167,8 @@ def route(app):
         return inscripcion_usuario(miRequest)
        
 
-
-
-
-    
-    # @app.route('/validate-username/<username>')
-    # def validate_username(username):
-    #     try:
-    #         # Conexión a la base de datos
-    #         connection = mysql.connector.connect(**conectarBD)
-    #         cursor = connection.cursor()
-
-    #         # Consulta para verificar la existencia del usuario
-    #         query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
-    #         cursor.execute(query, (username,))
-    #         count = cursor.fetchone()[0]
-
-    #         # Cerrar la conexión
-    #         cursor.close()
-    #         connection.close()
-
-    #         # Devolver la respuesta JSON
-    #         return jsonify({'exists': count > 0})  #cantidad de registros (que coinciden) mayor a 0
-
-    #     except Exception as e:
-    #         return jsonify({'error': str(e)})
-
-    # def verificarUsuario():
-    #       form_data = request.form
-    #       return verUsuario()
+  
+       
 
     @app.route('/validar_usuario/<username>', methods=['POST','GET'])
     def verificarUsuario(username):

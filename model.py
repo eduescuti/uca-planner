@@ -483,27 +483,6 @@ def agregarDiasYHorarios(result, di, id_inscripcion, id_admin):
 
     return result
 
-def esMateriaValida(value):
-    checkeoMismoNombre="""
-        SELECT COUNT(*)
-        FROM materias
-        WHERE nombre=%s;
-    """
-    val=(value[1], )
-    nombres=selectDB(BASE,checkeoMismoNombre,val)
-    cantidadNombresIguales = nombres[0][0]
-
-    checkeoMismoCodigo="""
-        SELECT COUNT(*)
-        FROM materias
-        WHERE codigo=%s;
-    """
-    val=(value[2], )
-    codigos=selectDB(BASE,checkeoMismoCodigo,val)
-    cantidadCodigosIguales = codigos[0][0]
-
-    return ((cantidadNombresIguales == 0) and (cantidadCodigosIguales == 0))
-
 def crearMateria(di):
     """ ### Agrega una materia en la base de datos 
     - Recibe un diccionario con la información del form

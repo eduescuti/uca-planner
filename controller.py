@@ -48,6 +48,7 @@ def obtenerMensajes(param):
         "curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
         "cupoExcedido": "Lo sentimos, el cupo para esta materia ha sido excedido."
     }
+    param["comision_agregada"] = ""
     param["materia_agregada"] = ""
     param["inscripcion_exitosa"] = ""
     param["ingrese_usuario_valido"] = ""
@@ -384,10 +385,7 @@ def agregarMateria(miRequest):
                 param["materia_agregada"] = "*La materia fue agregada con éxito!"
                 res = materias_pantalla(param)
             else:
-                param["error"]["materia"] = "No se pudo cargar la materia, porfavor intente denuevo.."
-                res = materias_pantalla(param)
-
-                """ Estas validaciones pueden ser con AJAX tambien, hasta quedarian mejor probablemente """
+                res = redirect('/materias')
     else:
         res = redirect('/')
     return res
@@ -402,12 +400,11 @@ def agregarComision(miRequest):
         if (session["rol"] == "admin"):
 
             if crearComision(miRequest):
-                res = redirect('/comisiones')
+                param["comision_agregada"] = "La comisión fue creada con éxito!"
+                res = comisiones_pantalla(param)
 
             else:
-                estado = "carga fallida"
-                obtenerMensajes(param, estado)
-                res = comisiones_pantalla(param)
+                res = redirect('/comisiones')
     else:
         res = redirect('/')
     return res

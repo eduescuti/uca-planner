@@ -38,8 +38,7 @@
                     <label for="comision">Nombre de Comisión:</label>
                     <input type="text" name="comision" id="comision" placeholder="Ingrese la comisión.."
                         onfocusout="validarNombre()" onkeyup="validar_comision()">
-                    <div id="resComision"></div>
-                    <p class="error" id="error comision"></p>
+                    <div id="resComision">{{param["comision_agregada"]}}</div>
 
                     <p class="error" id="error incompleto"></p>
 
