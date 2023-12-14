@@ -517,7 +517,7 @@ input[type=search]{
 
   #formInscripciones {
     grid-template-columns: auto; 
-    grid-template-rows: auto auto auto auto auto auto auto auto;/* Stack columns on top of each other for smaller screens */
+    grid-template-rows: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;/* Stack columns on top of each other for smaller screens */
   }
 
   input[type="text"], input[type="search"], select {
@@ -570,7 +570,7 @@ input[type=search]{
 }
 #btnInscripciones{
   grid-column: 1/3;
-  grid-row: 7/8;
+  grid-row: 7/9;
   width: 80%;
   height: 25px;
   font-size: small;
