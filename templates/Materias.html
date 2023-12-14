@@ -35,6 +35,7 @@
         <div class="rightcolumn">
             <div class="card" id="contenedor">
                 <h2>Agregar una Materia</h2>
+                <p class="error">{{param["error_materia_agregada"]}}{{param["materia_agregada"]}}</p>
                 <form onsubmit="return validarDatos()" action="/agregar_materia" method="POST" id="formMaterias">
 
                     <label for="nombre">Nombre de Materia:</label>
@@ -49,7 +50,7 @@
                     <div id="resCodigo"></div>
                     <p class="error" id="error codigo"></p>
 
-                    <p class="error" id="error incompleto">{{param["materia_agregada"]}}</p>
+                    <p class="error" id="error incompleto"></p>
 
                     <input type="submit" id="btnSubmit" value="Agregar Materia">
 

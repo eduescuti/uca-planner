@@ -1,7 +1,7 @@
 function comisionNoValida(comision) {
     var cantidadDeLetras = comision.length;
 
-    return (noEsValido(comision) || cantidadDeLetras > 2);
+    return (noEsValido(comision) || cantidadDeLetras != 2);
 }
 
 function anioNoValido(anio) {
@@ -78,7 +78,7 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
                 setDataIntoNode(idDest, xhr.responseText);
 
                 // Después de recibir la respuesta, verifica si existe
-                var nombreExiste = xhr.responseText.includes('El nombre de la comision ya existe.');
+                var nombreExiste = xhr.responseText.includes('El nombre de la comision ya existe');
 
                 // Referencia al botón de envío
                 var submitButton = document.getElementById('btnSubmit');

@@ -150,18 +150,18 @@ function validarUsuario() {
     var inputUsuario = document.getElementById('usuario');
     var username = inputUsuario.value.trim(); // Toma el valor del input
 
-    queryAjaxForm1('/validar_usuario/' + username, 'resUsuario', 'formRegistro');
+    queryAjaxFormUsuario('/validar_usuario/' + username, 'resUsuario', 'formRegistro');
 }
 
 function validarEmail() {
     var inputEmail = document.getElementById('email');
     var email = inputEmail.value.trim(); // Toma el valor del input
 
-    queryAjaxForm('/validar_email/' + email, 'resEmail', 'formRegistro');
+    queryAjaxFormMail('/validar_email/' + email, 'resEmail', 'formRegistro');
 }
 
 
-function queryAjaxForm(url, idDest, idForm, method = "POST") {
+function queryAjaxFormMail(url, idDest, idForm, method = "POST") {
     var formData = getDataForm(idForm);
     var xhr = conectAjax();
 
@@ -192,7 +192,7 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
     }
 }
 
-function queryAjaxForm1(url, idDest, idForm, method = "POST") {
+function queryAjaxFormUsuario(url, idDest, idForm, method = "POST") {
     var formData = getDataForm(idForm);
     var xhr = conectAjax();
 

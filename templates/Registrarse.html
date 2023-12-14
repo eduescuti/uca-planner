@@ -26,6 +26,7 @@
 
 
     <div class="contenedor">
+        <p class="error">{{param["error_mensaje_registro"]}}</p>
         <form onsubmit="return validarDatos()" action="/signup" method="post" id="formRegistro">
             <label for="usuario">Nombre de Usuario:</label>
             <input type="text" name="usuario" id="usuario" placeholder="Usuario.." onfocusout="esUsuarioValido()"

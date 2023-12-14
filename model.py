@@ -257,6 +257,25 @@ def obtenerCantidadDeUsuariosEn(id_inscripcion, id_mat_com):
 INTERACCION USUARIO, OBTENCION DE DATOS DE USUARIO
 ==================================================
 """
+def esUsuarioValido(value):
+    checkeoMismoUsuario="""
+        SELECT COUNT(*) 
+        FROM usuario 
+        WHERE usuario=%s;
+    """
+    val=(value[1], )
+    usuarios=selectDB(BASE,checkeoMismoUsuario,val)
+    cantidadUsuarios = usuarios[0][0]
+
+    checkeoMismoMail="""
+        SELECT COUNT(*) 
+        FROM usuario 
+        WHERE email=%s;
+    """
+    val=(value[4], )
+    mails=selectDB(BASE,checkeoMismoMail,val)
+    cantidadMail = mails[0][0]
+    return ((cantidadUsuarios == 0) and (cantidadMail == 0))
 
 def crearUsuario(di):
     '''### Información:
@@ -271,7 +290,10 @@ def crearUsuario(di):
         (%s, %s, %s, %s, %s, %s, %s);
     """
     val=(None, di.get('usuario'), di.get('nombre'), di.get('apellido'), di.get('mail'), di.get('contraseña'), di.get('rol'))
-    resul_insert=insertDB(BASE,sQuery,val)
+    if (esUsuarioValido(val)):
+        resul_insert=insertDB(BASE,sQuery,val)
+    else:
+        resul_insert=0
     return resul_insert==1
 
 def obtenerUsuarioXEmail(param,email,clave='usuario'):
@@ -483,6 +505,27 @@ def agregarDiasYHorarios(result, di, id_inscripcion, id_admin):
 
     return result
 
+def esMateriaValida(value):
+    checkeoMismoNombre="""
+        SELECT COUNT(*)
+        FROM materias
+        WHERE nombre=%s;
+    """
+    val=(value[1], )
+    nombres=selectDB(BASE,checkeoMismoNombre,val)
+    cantidadNombresIguales = nombres[0][0]
+
+    checkeoMismoCodigo="""
+        SELECT COUNT(*)
+        FROM materias
+        WHERE codigo=%s;
+    """
+    val=(value[2], )
+    codigos=selectDB(BASE,checkeoMismoCodigo,val)
+    cantidadCodigosIguales = codigos[0][0]
+
+    return ((cantidadNombresIguales == 0) and (cantidadCodigosIguales == 0))
+
 def crearMateria(di):
     """ ### Agrega una materia en la base de datos 
     - Recibe un diccionario con la información del form
@@ -497,7 +540,10 @@ def crearMateria(di):
         (%s,%s, %s);
     """
     val=(None, di.get('nombre'), di.get('codigo'))
-    resul_insert=insertDB(BASE,insertMateria,val)
+    if esMateriaValida(val):
+        resul_insert=insertDB(BASE,insertMateria,val)
+    else:
+        resul_insert=0
     return resul_insert==1
 
 def crearComision(di):

@@ -33,16 +33,19 @@
         </div>
         <div class="rightcolumn">
             <div class="card" id="contenedor">
+                <p class="error">{{param["comision_agregada"]}}</p>
+
                 <h2>Agregar una Comisión</h2>
                 <form onsubmit="return validarDatos()" action="/agregar_comision" method="post" id="formComision">
                     <label for="comision">Nombre de Comisión:</label>
                     <input type="text" name="comision" id="comision" placeholder="Ingrese la comisión.."
                         onfocusout="validarNombre()" onkeyup="validar_comision()">
-                    <div id="resComision">{{param["comision_agregada"]}}</div>
+                    <p class="error" id="resComision"></p>
+                    <p class="error" id="error comision"></p>
 
                     <p class="error" id="error incompleto"></p>
 
-                    <input type="submit" value="Agregar Comisión">
+                    <input type="submit" id="btnSubmit" value="Agregar Comisión">
 
                 </form>
             </div>
