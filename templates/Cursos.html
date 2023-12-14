@@ -140,15 +140,8 @@
                     </table>
                     <p class="error" id="errorhoras">*Recuerde que debe ingresar un rango de horas de al menos un día
                     </p>
-                    {% if param["estado"] == "carga fallida" %}
-                    <p class="error" id="error carga">{{param["error"]["error inscripcion"]["curso"]}}</p>
-                    {% endif %}
 
                     <p class="error" id="error incompleto"></p>
-
-                    {% if param["estado"] == "carga fallida" %}
-                    <p class="error" id="error carga">{{param["error"]["error ..."]}}</p>
-                    {% endif %}
 
                     <input type="submit" value="Agregar Curso">
 

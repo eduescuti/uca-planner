@@ -105,7 +105,6 @@ def route(app):
     def comisiones():
         
         param={}
-        obtenerMensajes(param)
         return comisiones_pantalla(param)
     
     @app.route("/agregar_comision", methods=["GET","POST"])
@@ -119,7 +118,6 @@ def route(app):
     def materias():
         
         param={}
-        obtenerMensajes(param)
         return materias_pantalla(param)
     
     @app.route("/agregar_materia", methods=["GET","POST"])
@@ -133,7 +131,6 @@ def route(app):
     def cursos():
         
         param={}
-        obtenerMensajes(param)
         return cursos_pantalla(param)
     
     @app.route("/agregar_curso", methods=["GET","POST"])

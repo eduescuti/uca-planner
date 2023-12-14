@@ -44,7 +44,6 @@ def obtenerMenuBottom(param, idActivo="mnub01"):
 
 def obtenerMensajes(param):
     param["error"] = {
-        "materia" : "",
         "comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
         "curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
         "inscripcion" : "No se pudo cargar los datos del período de inscripciones, porfavor intente denuevo..",
@@ -497,7 +496,7 @@ def verCupo(matId):
     cupoMaximo = obtenerCupo(matId)
     cantIns = obtener_cantidad_inscripciones(matId)
 
-    return cantIns < cupoMaximo 
+    return cantIns <= (cupoMaximo + 1) 
 
 
 def cerrarInscripcion(idIns):

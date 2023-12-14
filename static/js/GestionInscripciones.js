@@ -223,8 +223,6 @@ function sortDesplegables() {
 }
 
 
-
-
 function cerrarIns() {
   var idInscripcion = document.getElementById('btnCierre').getAttribute('idIns');
 
