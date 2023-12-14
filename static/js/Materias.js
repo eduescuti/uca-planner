@@ -145,15 +145,6 @@ function conectAjax() {
 function setDataIntoNode(idDest, response) {
     var resultDiv = document.getElementById(idDest);
     resultDiv.innerHTML = response;
-
-    var submitButton = document.getElementById('btnSubmit');
-
-    // Deshabilitar el botón si el usuario existe
-    if (response.includes('ya existe')) {
-        submitButton.disabled = true;
-    } else {
-        submitButton.disabled = false;
-    }
 }
 
 function getDataForm(idForm) {

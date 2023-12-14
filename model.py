@@ -560,7 +560,7 @@ def crearComision(di):
         VALUES
         (%s,%s);
     """
-    val=(None, di.get('comision'))
+    val=(None, (di.get('comision')).upper())     # Pone en mayúsculas la comisión
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 

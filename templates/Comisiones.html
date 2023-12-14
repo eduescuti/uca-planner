@@ -33,9 +33,11 @@
         </div>
         <div class="rightcolumn">
             <div class="card" id="contenedor">
-                <p class="error">{{param["comision_agregada"]}}</p>
 
                 <h2>Agregar una Comisión</h2>
+
+                <p class="error">{{param["comision_agregada"]}}</p>
+
                 <form onsubmit="return validarDatos()" action="/agregar_comision" method="post" id="formComision">
                     <label for="comision">Nombre de Comisión:</label>
                     <input type="text" name="comision" id="comision" placeholder="Ingrese la comisión.."
