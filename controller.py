@@ -17,31 +17,6 @@ def obtenerInformacionPerfil(param):
     param["email"] = session['email']
     param["rol"] = session['rol']
 
-def obtenerMenuBottom(param, idActivo="mnub01"):
-    '''info:
-    Carga el dict 'param' con las datos de un menu
-    que será utilizado para cargar un html.
-    Recibe  'idActivo' Es el id del diccionario de aquel item del menu que estará 
-    marcado en el html como activo.
-    Recibe 'param' el diccionario de parámetros. 
-    '''
-
-    param["page-title"]=""
-    param["page-header"]=""
-    
-    param["menubottom"]= {
-            "mnub01":{"href":"/home","content":"Home","class":" "},
-            "mnub02":{"href":"/login","content":"Log In","class":" "},
-            "mnub03":{"href":"/register","content":"Register","class":" "},
-            "mnub04":{"href":"/registerAdmin","content":"Admin Register","class":" "},
-            "mnub05":{"href":"/cronograma","content":"Cronograma","class":" "},
-            "mnub06":{"href":"/materias","content":"Materias","class":" "},
-
-            "mnub07":{"href":"/edit_user","content":"Editar Usuario","class":" "}
-        }
-    # Activar el id 
-    param["menubottom"].get(idActivo)["class"]="active"
-
 def obtenerMensajes(param):
     param["error"] = {
         "comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
@@ -462,6 +437,9 @@ def inscripcion_usuario(miRequest):
         res = redirect('/')
     return res
 
+##########################################################################
+# - - FUNCIONES DE  VERIFICACION  - - - - - - - - - - - - - - - - - - - -
+##########################################################################
 
 def verUsuario(username):
     query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
@@ -497,14 +475,14 @@ def verCupo(inscripcionId, materiaId):
 def verNombreMateria(nombre):
     query = 'SELECT COUNT(*) FROM materias WHERE nombre = %s'
     if verificar_existe(nombre, query)==True:
-        return '*El nombre de la materia ya existe, ingrese otro'
+        return '*El nombre de la materia ya existe'
     else:
         return ''
 
 def verCodigoMateria(codigo):
     query = 'SELECT COUNT(*) FROM materias WHERE codigo = %s'
     if verificar_existe(codigo, query)==True:
-        return '*Ya existe un codigo creado con ese valor, ingrese otro'
+        return '*El codigo de la materia ya existe'
     else:
         return ''
 
@@ -527,4 +505,3 @@ def cerrarInscripcion(idIns):
         # Captura cualquier excepción inesperada para evitar que la aplicación falle
         print(f'Error al cerrar la inscripción: {str(e)}')
         return 'Ocurrió un error inesperado al cerrar la inscripción.'
-

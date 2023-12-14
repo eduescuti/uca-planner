@@ -167,8 +167,8 @@ def route(app):
         return inscripcion_usuario(miRequest)
        
 
-  
-       
+
+
 
     @app.route('/validar_usuario/<username>', methods=['POST','GET'])
     def verificarUsuario(username):
@@ -209,17 +209,6 @@ def route(app):
         except Exception as e:
             print(f"Error en la ruta /validar_usuario: {str(e)}")
             return 'Error interno del servidor', 500
-
-    # @app.route('/cerrar_inscripcion', methods=['POST', 'GET'])
-    # def cerrar_inscripcion():
-    #     idInscripcion = request.form.get('idInscripcion')
-
-    #     return cerrarInscripcion(idInscripcion)
-
-    @app.route('/cerrar_inscripcion/<idInscripcion>', methods=['POST', 'GET'])
-    def cerrar_inscripcion(idInscripcion):
-
-        return cerrarInscripcion(idInscripcion)
     
     @app.route('/verificar_cupo/<inscripcion_id>/<materia_id>', methods=['POST','GET'])
     def verificar_cupo(inscripcion_id, materia_id):
@@ -259,3 +248,8 @@ def route(app):
         except Exception as e:
             print(f"Error en la ruta /validar_comision: {str(e)}")
             return 'Error interno del servidor', 500
+        
+    @app.route('/cerrar_inscripcion/<idInscripcion>', methods=['POST', 'GET'])
+    def cerrar_inscripcion(idInscripcion):
+
+        return cerrarInscripcion(idInscripcion)
