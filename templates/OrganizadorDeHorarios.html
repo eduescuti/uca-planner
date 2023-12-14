@@ -49,7 +49,6 @@
 
                     </tbody>
                 </table>
-                <p id="prueba"></p>
             </div>
 
         </div>
@@ -95,7 +94,7 @@
                 </form>
                 <input type="button" onclick="resetearCronograma()" value="Resetear"></button>
 
-                <p id="resCupo"></p>
+                <p id="resCupo">{{param["inscripcion_exitosa"]}}</p>
             </div>
             {% for curso in param["cursos"] %}
             {% for rango in curso["rango"] %}

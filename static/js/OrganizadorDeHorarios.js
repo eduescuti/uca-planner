@@ -80,8 +80,6 @@ function verificarCupo() {
     var materia_id = document.getElementById('materia');
 
     queryAjaxForm('/verificar_cupo/' + inscripcion_id + '/' + materia_id, 'resCupo', 'formInscripcion')
-
-
 }
 
 
@@ -91,7 +89,10 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
     var xhr = conectAjax();                               // Creo el objeto AJAX   
     if (xhr) {
         xhr.open(method, url, true);                       // Abré la connección AJAX. false = sincro , true = asincro
-        xhr.onreadystatechange = function () {               // CARGA la función en el 'evento' del ajax onreadystatechange
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState != 1) {
+                document.body.style.cursor = 'wait';       // Setea la espera: Poner el cursor del mouse en espera
+            }
             if (xhr.readyState == 4 && xhr.status == 200) {
                 setDataIntoNode(idDest, xhr.responseText);
                 // CARGAR la respuesta en el html destino

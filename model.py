@@ -518,11 +518,7 @@ def crearMateria(di):
         (%s,%s, %s);
     """
     val=(None, di.get('nombre'), di.get('codigo'))
-    if (esMateriaValida(val)):
-        resul_insert=insertDB(BASE,insertMateria,val)
-    else:
-        resul_insert=0
-
+    resul_insert=insertDB(BASE,insertMateria,val)
     return resul_insert==1
 
 def crearComision(di):
@@ -619,15 +615,13 @@ def inscribirseACurso(di, id_usuario):
     resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
-
-def verificar_existe(username):
+def verificar_existe(campo, query):
     try:
         connection = conectarBD(BASE)
         cursor = connection.cursor()
 
         # Consulta para verificar la existencia del usuario
-        query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
-        cursor.execute(query, (username,))
+        cursor.execute(query, (campo,))
         count = cursor.fetchone()[0]
 
         cursor.close()
@@ -638,46 +632,6 @@ def verificar_existe(username):
     except Exception as e:
         print(f'Error verificando existencia del user: {str(e)}')
         return False
-    
-def verificar_existe_email(email):
-    try:
-        connection = conectarBD(BASE)
-        cursor = connection.cursor()
-
-        # Consulta para verificar la existencia del usuario
-        query = 'SELECT COUNT(*) FROM usuario WHERE email = %s'
-        cursor.execute(query, (email,))
-        count = cursor.fetchone()[0]
-        
-        cursor.close()
-        connection.close()
-
-        return count > 0
-        
-
-    except Exception as e:
-        print(f'Error verificando existencia del user: {str(e)}')
-        return False
-
-def verificarExiste(option):
-    try:
-        connection = conectarBD(BASE)
-        cursor = connection.cursor()
-        
-        # Consulta para verificar la existencia del usuario
-        query = 'SELECT COUNT(*) FROM inscripciones WHERE estado = %s'
-        cursor.execute(query, (option,))
-        count = cursor.fetchone()[0]
-
-        cursor.close()
-        connection.close()
-
-        return count > 0
-
-    except Exception as e:
-        print(f'Error verificando existencia del user: {str(e)}')
-        return False
-
 
 def cerrarIns(idIns, nuevoEstado):
     try:

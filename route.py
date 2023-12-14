@@ -32,7 +32,7 @@ def route(app):
     @app.route("/cronograma")
     def cronograma():
         param={}
-        param["inscripcion"] = ""
+        obtenerMensajes(param)
         return cronograma_pagina(param)
     
     @app.route("/perfil")
@@ -118,6 +118,7 @@ def route(app):
     def materias():
         
         param={}
+        obtenerMensajes(param)
         return materias_pantalla(param)
     
     @app.route("/agregar_materia", methods=["GET","POST"])
@@ -250,6 +251,27 @@ def route(app):
     def verificar_cupo(inscripcion_id, materia_id):
 
         if inscripcion_id and materia_id:
-            return verCupo(inscripcion_id, materia_id)
+            resCupo = verCupo(inscripcion_id, materia_id)
+            return resCupo
         else:
             return 'Error en la solicitud. Falta información.'
+
+    @app.route('/validar_nombre_materia/<nombre>', methods=['POST','GET'])
+    def validar_nombre_materia(nombre):
+        try:
+            if nombre:
+                respuesta_verificacion = verNombreMateria(nombre)
+                return respuesta_verificacion
+        except Exception as e:
+            print(f"Error en la ruta /validar_nombre_materia: {str(e)}")
+            return 'Error interno del servidor', 500
+        
+    @app.route('/validar_codigo_materia/<codigo>', methods=['POST','GET'])
+    def validar_codigo_materia(codigo):
+        try:
+            if codigo:
+                respuesta_verificacion = verCodigoMateria(codigo)
+                return respuesta_verificacion
+        except Exception as e:
+            print(f"Error en la ruta /validar_codigo_materia: {str(e)}")
+            return 'Error interno del servidor', 500

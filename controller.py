@@ -46,10 +46,10 @@ def obtenerMensajes(param):
     param["error"] = {
         "comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
         "curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
-        "inscripcion" : "No se pudo cargar los datos del período de inscripciones, porfavor intente denuevo..",
         "cupoExcedido": "Lo sentimos, el cupo para esta materia ha sido excedido."
     }
-    
+    param["materia_agregada"] = ""
+    param["inscripcion_exitosa"] = ""
     param["ingrese_usuario_valido"] = ""
     param["mensaje_registro_exitoso"] = ""
 
@@ -381,7 +381,7 @@ def agregarMateria(miRequest):
         if (session["rol"] == "admin"):
 
             if crearMateria(miRequest):
-                param["materia agregada"] = "*La materia fue agregada con éxito!"
+                param["materia_agregada"] = "*La materia fue agregada con éxito!"
                 res = materias_pantalla(param)
             else:
                 param["error"]["materia"] = "No se pudo cargar la materia, porfavor intente denuevo.."
@@ -455,40 +455,34 @@ def inscripcion_usuario(miRequest):
 
         if (session["rol"] == "alumno"):
             
-            matId = miRequest.get("materia")
-            inscripcionId = miRequest.get("inscripcion")
-
-            if verCupo(inscripcionId, matId):
-                if inscribirseACurso(miRequest, session["id"]):
-                        res = redirect('/cronograma')
-                else:
-                        estado = "carga fallida"
-                        obtenerMensajes(param)
-                        res = cronograma_pagina(param)
+            if inscribirseACurso(miRequest, session["id"]):
+                param["inscripcion_exitosa"] = "Inscripción realizada con éxito!"
+                res = cronograma_pagina(param)
             else:
-                estado = "cupo_excedido"
-                obtenerMensajes(param)
-                param["error"] = "Lo sentimos, el cupo para esta materia ha sido excedido."
-                return cronograma_pagina(param)
+                res = redirect('/cronograma')
+            
     else:
         res = redirect('/')
     return res
 
 
 def verUsuario(username):
-    if verificar_existe(username)==True:
+    query = 'SELECT COUNT(*) FROM usuario WHERE usuario = %s'
+    if verificar_existe(username, query)==True:
         return '*El nombre de usuario ya existe.'
     else:
         return ''
     
 def verEmail(email):
-    if verificar_existe_email(email)==True:
+    query = 'SELECT COUNT(*) FROM usuario WHERE email = %s'
+    if verificar_existe(email, query)==True:
         return '*El email ya está en uso.'
     else:
         return ''
     
 def verEstado(option):
-    if verificarExiste(option)==True:
+    query = 'SELECT COUNT(*) FROM inscripciones WHERE estado = %s'
+    if verificar_existe(option, query)==True:
         return '*Ya existe una inscripción abierta'
     else:
         return ''
@@ -497,12 +491,25 @@ def verCupo(inscripcionId, materiaId):
     cupoMaximo = obtenerCupo(materiaId)
     cantIns = obtenerCantidadInscriptos(inscripcionId, materiaId)
 
-    if (cantIns <= (cupoMaximo + 1)):
+    if (cantIns > (cupoMaximo + 1)):
 
-        return ""
-    else:    
         return "No se puede inscribir a dicha materia, el cupo está exedido."
+    else:    
+        return ""
 
+def verNombreMateria(nombre):
+    query = 'SELECT COUNT(*) FROM materias WHERE nombre = %s'
+    if verificar_existe(nombre, query)==True:
+        return '*El nombre de la materia ya existe.'
+    else:
+        return ''
+
+def verCodigoMateria(codigo):
+    query = 'SELECT COUNT(*) FROM materias WHERE codigo = %s'
+    if verificar_existe(codigo, query)==True:
+        return '*Ya hay un codigo creado con ese valor, ingrese otro.'
+    else:
+        return ''
 
 def cerrarInscripcion(idIns):
     try:

@@ -35,21 +35,23 @@
         <div class="rightcolumn">
             <div class="card" id="contenedor">
                 <h2>Agregar una Materia</h2>
-                <form onsubmit="return validarDatos()" action="/agregar_materia" method="POST">
+                <form onsubmit="return validarDatos()" action="/agregar_materia" method="POST" id="formMaterias">
 
                     <label for="nombre">Nombre de Materia:</label>
                     <input type="text" name="nombre" id="nombre" placeholder="Ingrese un nombre.."
-                        onfocusout="validarNombre()">
+                        onfocusout="validarNombre()" onkeyup="validar_nombre()">
+                    <div id="resNombre"></div>
                     <p class="error" id="error nombre"></p>
 
                     <label for="codigo">Ingrese un Código para la materia:</label>
                     <input type="number" name="codigo" id="codigo" min="1" placeholder="Ingrese un código.."
-                        onfocusout="validarCodigo()">
+                        onfocusout="validarCodigo()" onkeyup="validar_codigo()">
+                    <div id="resCodigo"></div>
                     <p class="error" id="error codigo"></p>
 
-                    <p class="error" id="error incompleto"></p>
+                    <p class="error" id="error incompleto">{{param["materia_agregada"]}}</p>
 
-                    <input type="submit" value="Agregar Materia">
+                    <input type="submit" id="btnSubmit" value="Agregar Materia">
 
                 </form>
             </div>

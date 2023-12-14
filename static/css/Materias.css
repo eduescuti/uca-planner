@@ -130,8 +130,11 @@ input[type=submit]:hover {
 
 }
 
-.error {
+.error,
+#resNombre,
+#resCodigo {
     color: #dd0000;
+    font-weight: 300;
 }
 
 /* Responsive layout - cuando la pantalla tiene menos de 800 px de ancho, hace que las dos columnas se apilen una encima de la otra en lugar de una al lado de la otra */

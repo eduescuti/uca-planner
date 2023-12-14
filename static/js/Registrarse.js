@@ -170,7 +170,6 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 setDataIntoNode(idDest, xhr.responseText);
-                console.log(xhr.responseText);
 
                 // Después de recibir la respuesta, verifica si existe
                 var userExiste = xhr.responseText.includes('El nombre de usuario ya existe.');
