@@ -507,7 +507,7 @@ def verNombreMateria(nombre):
 def verCodigoMateria(codigo):
     query = 'SELECT COUNT(*) FROM materias WHERE codigo = %s'
     if verificar_existe(codigo, query)==True:
-        return '*Ya hay un codigo creado con ese valor, ingrese otro.'
+        return '*Ya existe un codigo creado con ese valor, ingrese otro.'
     else:
         return ''
 

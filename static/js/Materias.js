@@ -79,7 +79,7 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
 
                 // Después de recibir la respuesta, verifica si existe
                 var nombreExiste = xhr.responseText.includes('El nombre de la materia ya existe.');
-                var codigoExiste = xhr.responseText.includes('El email ya está en uso.');
+                var codigoExiste = xhr.responseText.includes('Ya existe un codigo creado con ese valor, ingrese otro.');
 
                 // Referencia al botón de envío
                 var submitButton = document.getElementById('btnSubmit');
