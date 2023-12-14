@@ -456,8 +456,9 @@ def inscripcion_usuario(miRequest):
         if (session["rol"] == "alumno"):
             
             matId = miRequest.get("materia")
+            inscripcionId = miRequest.get("inscripcion")
 
-            if verCupo(matId):
+            if verCupo(inscripcionId, matId):
                 if inscribirseACurso(miRequest, session["id"]):
                         res = redirect('/cronograma')
                 else:
@@ -492,11 +493,15 @@ def verEstado(option):
     else:
         return ''
 
-def verCupo(matId):
-    cupoMaximo = obtenerCupo(matId)
-    cantIns = obtener_cantidad_inscripciones(matId)
+def verCupo(inscripcionId, materiaId):
+    cupoMaximo = obtenerCupo(materiaId)
+    cantIns = obtenerCantidadInscriptos(inscripcionId, materiaId)
 
-    return cantIns <= (cupoMaximo + 1) 
+    if (cantIns <= (cupoMaximo + 1)):
+
+        return ""
+    else:    
+        return "No se puede inscribir a dicha materia, el cupo está exedido."
 
 
 def cerrarInscripcion(idIns):

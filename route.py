@@ -246,12 +246,10 @@ def route(app):
 
         return cerrarInscripcion(idInscripcion)
     
-    @app.route('/verificar_cupo', methods=['POST','GET'])
-    def verificar_cupo():
-        inscripcion_id = request.form.get('inscripcion')
-        materia_id = request.form.get('materia')
+    @app.route('/verificar_cupo/<inscripcion_id>/<materia_id>', methods=['POST','GET'])
+    def verificar_cupo(inscripcion_id, materia_id):
 
         if inscripcion_id and materia_id:
-            verCupo(inscripcion_id, materia_id)
+            return verCupo(inscripcion_id, materia_id)
         else:
             return 'Error en la solicitud. Falta información.'
