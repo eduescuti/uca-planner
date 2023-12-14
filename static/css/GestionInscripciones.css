@@ -522,6 +522,7 @@ input[type=search]{
 
   input[type="text"], input[type="search"], select {
     width: 100%; 
+    margin: auto;
     /* Take full width on smaller screens */
   }
 
@@ -568,7 +569,7 @@ input[type=search]{
   grid-column: 1/3;
 
 }
-#btnInscripciones{
+#btnInscripciones, #btnAgregarCurso{
   grid-column: 1/3;
   grid-row: 7/9;
   width: 80%;
