@@ -259,11 +259,14 @@ function sortDesplegables(){
 
 
 
-function cerrarIns() {
-  var idInscripcion = document.getElementById('btnCierre').getAttribute('idIns');
+function cerrarIns(button) {
+  // var idInscripcion = document.getElementById('btnCierre').getAttribute('idIns');
+  var idInscripcion = button.getAttribute('idIns');
+
 
   console.log(idInscripcion)
-  queryAjaxFormCierre('/cerrar_inscripcion/'+ idInscripcion,'resCierre', 'formCierre' + idInscripcion)
+  queryAjaxFormCierre('/cerrar_inscripcion/'+ idInscripcion,'resCierre' + idInscripcion, 'formCierre' + idInscripcion)
+
 
 }
 

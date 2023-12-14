@@ -554,7 +554,7 @@ def cerrarInscripcion(idIns):
         success = cerrarIns(idIns, 'cerrada')
 
         if success:
-            return 'Inscripción cerrada exitosamente'
+            return 'Inscripción cerrada exitosamente (recargue la página para ver el cambio de estado)'
         else:
             return 'Error al intentar cerrar la inscripción. Por favor, inténtalo nuevamente.'
     except Exception as e:
