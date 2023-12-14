@@ -25,9 +25,11 @@ def obtenerMensajes(param):
     }
     param["comision_agregada"] = ""
     param["materia_agregada"] = ""
+    param["error_materia_agregada"] = ""
     param["inscripcion_exitosa"] = ""
     param["ingrese_usuario_valido"] = ""
     param["mensaje_registro_exitoso"] = ""
+    param["error_mensaje_registro"] = ""
 
 ##########################################################################
 # + + I N I C I O + + MANEJO DE  REQUEST + + + + + + + + + + + + + + + + +
@@ -292,6 +294,7 @@ def registrarUsuario(miRequest):
         cerrarSesion()           # Cierra sesion existente(si la hubiere)
         res=login_pagina(param)  # Envia al login para que vuelva a loguearse el usuario
     else:
+        param['error_mensaje_registro']="Regístrese con un usuario y mail válidos:"
         res=register_pagina(param)
     return res 
 
@@ -360,7 +363,8 @@ def agregarMateria(miRequest):
                 param["materia_agregada"] = "*La materia fue agregada con éxito!"
                 res = materias_pantalla(param)
             else:
-                res = redirect('/materias')
+                param["error_materia_agregada"] = "No se puede agregar una materia con nombre/código ya creado"
+                res = materias_pantalla(param)
     else:
         res = redirect('/')
     return res
@@ -489,7 +493,7 @@ def verCodigoMateria(codigo):
 def verComision(comision):
     query = 'SELECT COUNT(*) FROM comisiones WHERE nombre = %s'
     if verificar_existe(comision, query)==True:
-        return '*El nombre de esta comision ya existe, ingrese otro'
+        return '*El nombre de la comision ya existe'
     else:
         return ''
 

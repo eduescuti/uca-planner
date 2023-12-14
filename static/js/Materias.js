@@ -57,17 +57,48 @@ function validar_nombre() {
     var inputNombre = document.getElementById('nombre');
     var nombre = inputNombre.value.trim(); // Toma el valor del input
 
-    queryAjaxForm('/validar_nombre_materia/' + nombre, 'resNombre', 'formMaterias');
+    queryAjaxFormNombre('/validar_nombre_materia/' + nombre, 'resNombre', 'formMaterias');
 }
 
 function validar_codigo() {
     var inputCodigo = document.getElementById('codigo');
     var codigo = inputCodigo.value.trim(); // Toma el valor del input
 
-    queryAjaxForm('/validar_codigo_materia/' + codigo, 'resCodigo', 'formMaterias');
+    queryAjaxFormCodigo('/validar_codigo_materia/' + codigo, 'resCodigo', 'formMaterias');
 }
 
-function queryAjaxForm(url, idDest, idForm, method = "POST") {
+function queryAjaxFormCodigo(url, idDest, idForm, method = "POST") {
+    var formData = getDataForm(idForm);
+    var xhr = conectAjax();
+
+    if (xhr) {
+        xhr.open(method, url, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                setDataIntoNode(idDest, xhr.responseText);
+
+                // Después de recibir la respuesta, verifica si existe
+                var codigoExiste = xhr.responseText.includes('El codigo de la materia ya existe');
+
+                // Referencia al botón de envío
+                var submitButton = document.getElementById('btnSubmit');
+
+                // Inhabilita el botón si al menos una de las cadenas existe
+                submitButton.disabled = codigoExiste;
+
+            } else {
+                console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
+            }
+        }
+
+        xhr.send(formData);
+    }
+    else {
+        console.log('No se pudo instanciar el objeto AJAX!');
+    }
+}
+
+function queryAjaxFormNombre(url, idDest, idForm, method = "POST") {
     var formData = getDataForm(idForm);
     var xhr = conectAjax();
 
@@ -79,13 +110,12 @@ function queryAjaxForm(url, idDest, idForm, method = "POST") {
 
                 // Después de recibir la respuesta, verifica si existe
                 var nombreExiste = xhr.responseText.includes('El nombre de la materia ya existe');
-                var codigoExiste = xhr.responseText.includes('El codigo de la materia ya existe');
 
                 // Referencia al botón de envío
                 var submitButton = document.getElementById('btnSubmit');
 
                 // Inhabilita el botón si al menos una de las cadenas existe
-                submitButton.disabled = nombreExiste && codigoExiste
+                submitButton.disabled = nombreExiste;
 
             } else {
                 console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);

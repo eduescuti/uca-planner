@@ -27,6 +27,7 @@ def route(app):
           Carga la pagina para el registro del usuario
         '''
         param={}
+        obtenerMensajes(param)
         return register_pagina(param)
     
     @app.route("/cronograma")
@@ -101,20 +102,6 @@ def route(app):
         
         return paginaNoEncontrada(name)
     
-    @app.route("/comisiones")
-    def comisiones():
-        
-        param={}
-        obtenerMensajes(param)
-        return comisiones_pantalla(param)
-    
-    @app.route("/agregar_comision", methods=["GET","POST"])
-    def agregar_comision():
-        
-        miRequest={}
-        getRequest(miRequest)
-        return agregarComision(miRequest)
-
     @app.route("/materias")
     def materias():
         
@@ -128,6 +115,20 @@ def route(app):
         miRequest={}
         getRequest(miRequest)
         return agregarMateria(miRequest)
+
+    @app.route("/comisiones")
+    def comisiones():
+        
+        param={}
+        obtenerMensajes(param)
+        return comisiones_pantalla(param)
+    
+    @app.route("/agregar_comision", methods=["GET","POST"])
+    def agregar_comision():
+        
+        miRequest={}
+        getRequest(miRequest)
+        return agregarComision(miRequest)
 
     @app.route("/cursos")
     def cursos():
