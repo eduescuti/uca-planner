@@ -173,7 +173,7 @@ function queryAjaxFormMail(url, idDest, idForm, method = "POST") {
 
                 // Después de recibir la respuesta, verifica si existe
                 var emailExiste = xhr.responseText.includes('El email ya está en uso.');
-                console.log(emailExiste)
+
                 // Referencia al botón de envío
                 var submitButton = document.getElementById('btnSubmit');
 
@@ -204,13 +204,12 @@ function queryAjaxFormUsuario(url, idDest, idForm, method = "POST") {
 
                 // Después de recibir la respuesta, verifica si existe
                 var userExiste = xhr.responseText.includes('El nombre de usuario ya existe.');
-                console.log(userExiste)
 
                 // Referencia al botón de envío
                 var submitButton = document.getElementById('btnSubmit');
 
                 // Inhabilita el botón si al menos una de las cadenas existe
-                submitButton.disabled = userExiste 
+                submitButton.disabled = userExiste
             } else {
                 console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
             }
