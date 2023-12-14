@@ -258,27 +258,6 @@ INTERACCION USUARIO, OBTENCION DE DATOS DE USUARIO
 ==================================================
 """
 
-def esUsuarioValido(value):
-    checkeoMismoUsuario="""
-        SELECT COUNT(*) 
-        FROM usuario 
-        WHERE usuario=%s;
-    """
-    val=(value[1], )
-    usuarios=selectDB(BASE,checkeoMismoUsuario,val)
-    cantidadUsuarios = usuarios[0][0]
-
-    checkeoMismoMail="""
-        SELECT COUNT(*) 
-        FROM usuario 
-        WHERE email=%s;
-    """
-    val=(value[4], )
-    mails=selectDB(BASE,checkeoMismoMail,val)
-    cantidadMail = mails[0][0]
-
-    return ((cantidadUsuarios == 0) and (cantidadMail == 0))
-
 def crearUsuario(di):
     '''### Información:
         Agrega un nuevo usuario (un registro) en la tabla usuario de la DB
@@ -292,10 +271,7 @@ def crearUsuario(di):
         (%s, %s, %s, %s, %s, %s, %s);
     """
     val=(None, di.get('usuario'), di.get('nombre'), di.get('apellido'), di.get('mail'), di.get('contraseña'), di.get('rol'))
-    if (esUsuarioValido(val)):
-        resul_insert=insertDB(BASE,sQuery,val)
-    else:
-        resul_insert=0
+    resul_insert=insertDB(BASE,sQuery,val)
     return resul_insert==1
 
 def obtenerUsuarioXEmail(param,email,clave='usuario'):
@@ -322,15 +298,17 @@ def obtenerUsuarioXEmail(param,email,clave='usuario'):
 
 def encuentraUnUsuario(result,user,password):
     '''### Información:
-       Obtiene todos los campos de la tabla usuario a partir de la clave 'usuario'
-         y del 'password'.
-       Carga la información obtenida de la BD en el dict 'result'
-       Recibe 'result' in diccionario donde se almacena la respuesta de la consulta
-       Recibe 'user' que es el usuario si se utiliza como clave en la búsqueda
-       Recibe 'password' que se utiliza en la consulta. (Para validadar al usuario)
+       Obtiene todos los campos de la tabla usuario a partir de la clave 'usuario' y del 'password' y
+       carga la información obtenida de la BD en el dict 'result' (además devuelve true si encuentra un
+       usuario con el usuario y la contraseña pasada por parametro)
+
+       Recibe 'result' in diccionario donde se almacena la respuesta de la consulta,
+       'user' que es el usuario si se utiliza como clave en la búsqueda y
+       'password' que se utiliza en la consulta. (Para validadar al usuario)
+
        Retorna:
-        True cuando se obtiene un registro de un usuario a partir del 'usuario' y el 'pass'.
-        False caso contrario.
+       True cuando se obtiene un registro de un usuario a partir del 'usuario' y el 'pass'.
+       False caso contrario.
     '''
     res=False
     sSql="""SELECT id, usuario, nombre, apellido, email, contraseña, rol 

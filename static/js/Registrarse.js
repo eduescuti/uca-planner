@@ -146,40 +146,6 @@ function validarDatos() {
     }
 }
 
-
-// function validateOnKeyUp() {
-//     const inputUsuario = $('#usuario');
-//     const username = inputUsuario.val(); //toma el valor del input
-//     const resultDiv = $('#respuesta');
-//     const submitButton = $('#btnSubmmit');
-
-
-//     // Realizar la solicitud AJAX con jQuery
-//     $.ajax({
-//         url: '/validate-username/${username}',  // url donde realiza la peticion, incluye el nombre del usuario
-//         method: 'GET', //método http que utiliza
-//         dataType: 'json', // espera respuesta de tipo json
-//         success: function (data) { 
-//             const resultDiv = $('#respuesta');
-
-//                 if (data.exists) {       // data es el parámetro que tiene la respuesta json; exist indica si existe o no en la BD
-//                     resultDiv.html('El nombre de usuario ya existe.');
-
-//                     // Deshabilitar el botón de envío si el usuario existe
-//                     submitButton.prop('disabled', true);
-//                 } else {
-//                     resultDiv.html('El nombre de usuario está disponible.');
-//                     // Habilitar el botón de envío si el usuario no existe
-//                     submitButton.prop('disabled', false);
-//                 }
-//             },
-//             error: function (error) {
-//                 console.error('Error:', error);
-//             }
-//         });
-
-
-
 function validarUsuario() {
     var inputUsuario = document.getElementById('usuario');
     var username = inputUsuario.value.trim(); // Toma el valor del input

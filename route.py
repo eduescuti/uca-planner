@@ -27,7 +27,6 @@ def route(app):
           Carga la pagina para el registro del usuario
         '''
         param={}
-        obtenerMensajes(param)
         return register_pagina(param)
     
     @app.route("/cronograma")
@@ -50,11 +49,9 @@ def route(app):
           registroDeUsuario: Luego de realizar el porceso de 
           registro del usuario, retorna la pagina del login 
         '''
-        param={}
         miRequest={}
         getRequest(miRequest)
-        obtenerMensajes(param)
-        return registrarUsuario(param,miRequest)
+        return registrarUsuario(miRequest)
 
     @app.route('/signin', methods =["GET", "POST"])
     def signin(): 

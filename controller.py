@@ -44,8 +44,6 @@ def obtenerMenuBottom(param, idActivo="mnub01"):
 
 def obtenerMensajes(param):
     param["error"] = {
-        "registro_usuario" : "",
-        "ingrese_usuario_valido" : "",
         "materia" : "",
         "comision" : "No se pudo cargar la comisión, porfavor intente denuevo..",
         "curso" : "No se pudo cargar los datos del curso, porfavor intente denuevo..",
@@ -53,6 +51,7 @@ def obtenerMensajes(param):
         "cupoExcedido": "Lo sentimos, el cupo para esta materia ha sido excedido."
     }
     
+    param["ingrese_usuario_valido"] = ""
     param["mensaje_registro_exitoso"] = ""
 
 ##########################################################################
@@ -299,11 +298,11 @@ def ingresoUsuarioValido(miRequest):
         res = redirect('/')
     else:
         obtenerMensajes(param)
-        param["error"]["ingrese_usuario_valido"] = "*Ingrese un usuario válido.."
+        param["ingrese_usuario_valido"] = "*Ingrese un usuario y contraseña válidos.."
         res = login_pagina(param)
     return res
 
-def registrarUsuario(param, miRequest):
+def registrarUsuario(miRequest):
     '''info:
       Realiza el registro de un usuario en el sistema, es decir crea un nuevo usuario
       y lo registra en la base de datos.
@@ -312,14 +311,13 @@ def registrarUsuario(param, miRequest):
       retorna la pagina del login, para forzar a que el usuario realice el login con
       el usuario creado.
     '''
+    param={}
     if crearUsuario(miRequest):
         param['mensaje_registro_exitoso']="Inicie la sesión con su usuario creado:"
         cerrarSesion()           # Cierra sesion existente(si la hubiere)
         res=login_pagina(param)  # Envia al login para que vuelva a loguearse el usuario
     else:
-        param['error']['registro_usuario']="*No se ha podido crear el usuario, es probable que ya hay un usuario con los datos ingresados. Por favor, ingrese otros datos.."
         res=register_pagina(param)
-
     return res 
 
 def editarPerfil_pagina(param):
@@ -489,12 +487,17 @@ def verEmail(email):
     else:
         return ''
     
-
 def verEstado(option):
     if verificarExiste(option)==True:
         return '*Ya existe una inscripción abierta'
     else:
         return ''
+
+def verCupo(matId):
+    cupoMaximo = obtenerCupo(matId)
+    cantIns = obtener_cantidad_inscripciones(matId)
+
+    return cantIns < cupoMaximo 
 
 
 def cerrarInscripcion(idIns):
@@ -509,10 +512,4 @@ def cerrarInscripcion(idIns):
         # Captura cualquier excepción inesperada para evitar que la aplicación falle
         print(f'Error al cerrar la inscripción: {str(e)}')
         return 'Ocurrió un error inesperado al cerrar la inscripción.'
-    
 
-def verCupo(matId):
-    cupoMaximo = obtenerCupo(matId)
-    cantIns = obtener_cantidad_inscripciones(matId)
-
-    return cantIns < cupoMaximo 

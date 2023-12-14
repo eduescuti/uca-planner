@@ -30,13 +30,14 @@
             <form action="/signin" method="post">
                 <label for="usuario">Usuario</label>
                 <input type="text" id="usuario" name="usuario" placeholder="Usuario.." required>
+                <p class="error"></p>
 
                 <label for="contraseña">Contraseña</label>
                 <input type="password" id="contrasenia" name="contraseña" placeholder="Contraseña.." required>
 
-                <p>¿No tiene una cuenta? Regístrese <a href="/register">aquí</a>.</p>
+                <p class="error">{{param["ingrese_usuario_valido"]}}</p>
 
-                <p class="error">{{param["error"]["ingrese_usuario_valido"]}}</p>
+                <p>¿No tiene una cuenta? Regístrese <a href="/register">aquí</a>.</p>
 
                 <div class="sub1">
                     <input type="submit" value="Iniciar Sesión">
@@ -50,6 +51,8 @@
         <h2>Contactanos</h2>
         <p> uca_planner@uca.edu.com | Teléfono: 15-4627-9873</p>
     </div>
+
+    <script language="javascript" type="text/javascript" src="../static/js/Registrarse.js"></script>
 
 </body>
 
