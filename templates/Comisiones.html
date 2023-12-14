@@ -34,10 +34,11 @@
         <div class="rightcolumn">
             <div class="card" id="contenedor">
                 <h2>Agregar una Comisión</h2>
-                <form onsubmit="return validarDatos()" action="/agregar_comision" method="post">
+                <form onsubmit="return validarDatos()" action="/agregar_comision" method="post" id="formComision">
                     <label for="comision">Nombre de Comisión:</label>
                     <input type="text" name="comision" id="comision" placeholder="Ingrese la comisión.."
-                        onfocusout="validarNombre()">
+                        onfocusout="validarNombre()" onkeyup="validar_comision()">
+                    <div id="resComision"></div>
                     <p class="error" id="error comision"></p>
 
                     <p class="error" id="error incompleto"></p>

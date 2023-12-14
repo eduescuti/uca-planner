@@ -500,14 +500,21 @@ def verCupo(inscripcionId, materiaId):
 def verNombreMateria(nombre):
     query = 'SELECT COUNT(*) FROM materias WHERE nombre = %s'
     if verificar_existe(nombre, query)==True:
-        return '*El nombre de la materia ya existe.'
+        return '*El nombre de la materia ya existe, ingrese otro'
     else:
         return ''
 
 def verCodigoMateria(codigo):
     query = 'SELECT COUNT(*) FROM materias WHERE codigo = %s'
     if verificar_existe(codigo, query)==True:
-        return '*Ya existe un codigo creado con ese valor, ingrese otro.'
+        return '*Ya existe un codigo creado con ese valor, ingrese otro'
+    else:
+        return ''
+
+def verComision(comision):
+    query = 'SELECT COUNT(*) FROM comisiones WHERE nombre = %s'
+    if verificar_existe(comision, query)==True:
+        return '*El nombre de esta comision ya existe, ingrese otro'
     else:
         return ''
 

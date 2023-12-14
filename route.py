@@ -275,3 +275,13 @@ def route(app):
         except Exception as e:
             print(f"Error en la ruta /validar_codigo_materia: {str(e)}")
             return 'Error interno del servidor', 500
+        
+    @app.route('/validar_comision/<comision>', methods=['POST','GET'])
+    def validar_comision(comision):
+        try:
+            if comision:
+                respuesta_verificacion = verComision(comision)
+                return respuesta_verificacion
+        except Exception as e:
+            print(f"Error en la ruta /validar_comision: {str(e)}")
+            return 'Error interno del servidor', 500
