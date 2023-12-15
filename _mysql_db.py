@@ -147,9 +147,4 @@ def deleteDB(configDB=None,sql="",val=None):
 BASE={ "host":"localhost",
         "user":"root",
         "pass":"",
-        "dbname":"base_prueba"}
-
-""" PUSE EN "dbname" una base_prueba para realizar pruebas de la base de datos
-
-    (Basicamente copie y pegue la base de datos que tenia antes)
-"""
+        "dbname":"baseuca"}

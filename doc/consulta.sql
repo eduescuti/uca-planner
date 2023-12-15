@@ -14,6 +14,8 @@ SELECT * FROM cursos;
 
 /* -------------------- */
 
+INSERT INTO usuario VALUES (None, "mariano", "Mariano", "Trigila", "mariano_trigila@uca.edu.ar", "mariano", "admin");
+
 
 SELECT id, usuario, nombre, apellido, email, contraseña, rol 
 FROM  usuario WHERE  email="eduescuti99@gmail.com" and contraseña="10101999";
