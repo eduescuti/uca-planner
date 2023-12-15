@@ -185,17 +185,6 @@ def perfil_pagina(param):
     
     return redirect('/')
 
-def inscripciones_pantalla(param):
-    
-    obtenerInscripciones(param)
-
-    if haySesion():
-
-        if (session["rol"] == "admin"):
-            return render_template("Inscripciones.html", param=param)
-        
-    return redirect('/')
-
 def gestion_inscripciones_pantalla(param):
 
     obtenerInscripciones(param)
@@ -403,7 +392,7 @@ def agregarCurso(miRequest):
     return res
 
 def agregarInscripcion(miRequest):
-    param={}
+    
     if haySesion():
 
         if (session["rol"] == "admin"):
@@ -411,10 +400,6 @@ def agregarInscripcion(miRequest):
             if crearInscripcion(miRequest):
                 res = redirect('/gestion_inscripciones')
 
-            else:
-                estado = "carga fallida"
-                obtenerMensajes(param, estado)
-                res = gestion_inscripciones_pantalla(param)
     else:
         res = redirect('/')
     return res

@@ -143,12 +143,6 @@ def route(app):
         miRequest={}
         getRequest(miRequest)
         return agregarCurso(miRequest)
-
-    @app.route("/inscripciones")
-    def inscripciones():
-        param = {}
-        obtenerMensajes(param)
-        return inscripciones_pantalla(param)
     
     @app.route("/agregar_inscripcion", methods=["GET","POST"])
     def agregar_inscripciones():
