@@ -70,7 +70,7 @@ SELECT COUNT(*) AS cantidad FROM materias WHERE codigo=100 and nombre='Seminario
 
 SELECT COUNT(DISTINCT id_usuario) AS cant_usuarios 
 FROM cursos 
-WHERE id_inscripcion=4 and id_com_mat=11;
+WHERE id_inscripcion=8 and id_com_mat=14;
 
 SELECT id_dia, id_hora 
 FROM cursos 

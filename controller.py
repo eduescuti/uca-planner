@@ -245,7 +245,6 @@ def cursos_pantalla(param):
         
     return redirect('/')
 
-
 ##########################################################################
 # - - F I N - - PAGINA home, main y login  - - - - - - - - - - - - - - - -
 ##########################################################################
@@ -321,7 +320,6 @@ def editarPerfil(miRequest):
         session['contraseña'] = miRequest.get('contraseña')
     
     return redirect('/perfil')
-
 
 ##########################################################################
 # - - F I N - - USUARIO: registro, edicion, actualizacion  - - - - - - - -
