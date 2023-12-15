@@ -147,4 +147,4 @@ def deleteDB(configDB=None,sql="",val=None):
 BASE={ "host":"localhost",
         "user":"root",
         "pass":"",
-        "dbname":"baseuca"}
+        "dbname":"base_prueba"}
