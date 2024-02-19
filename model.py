@@ -632,6 +632,9 @@ def crearInscripcion(di):
     """
     val=(None, di.get('estado'), di.get('anio'), di.get('cuatrimestre'))
     resul_insert=insertDB(BASE,sQuery,val)
+    print(resul_insert)
+    print(resul_insert)
+    print(resul_insert)
     return resul_insert==1
 
 def cerrarIns(idIns, nuevoEstado):

@@ -399,6 +399,10 @@ def agregarInscripcion(miRequest):
 
             if crearInscripcion(miRequest):
                 res = redirect('/gestion_inscripciones')
+            else:
+                res = redirect('/')
+        else:
+            res = redirect('/')
 
     else:
         res = redirect('/')
