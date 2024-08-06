@@ -147,4 +147,4 @@ def deleteDB(configDB=None,sql="",val=None):
 BASE={ "host":"localhost",
         "user":"root",
         "pass":"",
-        "dbname":"base_prueba"}
+        "dbname":"ucaplanner_base"}
