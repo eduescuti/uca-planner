@@ -18,7 +18,7 @@ body {
 
 .header h1 {
     font-size: 60px;
-    font-family: 'Lucida Sans';
+    font-family: 'Inter';
     color: rgb(255, 255, 255);
 }
 
@@ -194,7 +194,8 @@ input[type=submit]:hover {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }
 
-#resUsuario, #resEmail{
+#resUsuario,
+#resEmail {
     color: #dd0000;
     font-weight: 300;
 }
