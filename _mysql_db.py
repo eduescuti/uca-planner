@@ -1,5 +1,6 @@
 
 #from mysql.connector import connect, Error
+import os
 import mysql.connector
 
 ################### FUNCIONES PRINCIPALES ###################################
@@ -9,15 +10,22 @@ def conectarBD(configDB=None):
      Retorna la conexión """
     mydb=None
     if configDB!=None:
-        try:        
-            mydb = mysql.connector.connect(
+        try:
+            params = dict(
                     host=configDB.get("host"),
+                    port=configDB.get("port", 3306),
                     user=configDB.get("user"),
                     password=configDB.get("pass"),
-                    database=configDB.get("dbname")
+                    database=configDB.get("dbname"),
                    )
+            # TiDB Cloud (y cualquier MySQL gestionado) exige conexión TLS.
+            if configDB.get("ssl"):
+                import certifi
+                params["ssl_ca"] = certifi.where()
+                params["ssl_verify_identity"] = True
+            mydb = mysql.connector.connect(**params)
         except mysql.connector.Error as e:
-            print("ERROR ->",e)        
+            print("ERROR ->",e)
     return mydb
 
 def cerrarBD(mydb):
@@ -144,7 +152,9 @@ def deleteDB(configDB=None,sql="",val=None):
 ## DICCIONARIO con los datos de la conexión
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-BASE={ "host":"localhost",
-        "user":"root",
-        "pass":"",
-        "dbname":"ucaplanner_base"}
+BASE={ "host":   os.environ.get("DB_HOST", "localhost"),
+        "port":   int(os.environ.get("DB_PORT", "3306")),
+        "user":   os.environ.get("DB_USER", "root"),
+        "pass":   os.environ.get("DB_PASS", ""),
+        "dbname": os.environ.get("DB_NAME", "ucaplanner_base"),
+        "ssl":    os.environ.get("DB_SSL", "false").lower() == "true"}
