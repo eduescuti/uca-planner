@@ -1,99 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Para que se active el modo responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Relaciona o enlaza este archivo html con el 03.css-->
-    <link rel="stylesheet" href="../static/css/Registrarse.css">
+    <!-- theme.css (skin) → shell.css (layout base) → auth.css (esta vista) -->
     <link rel="stylesheet" href="../static/css/theme.css">
+    <link rel="stylesheet" href="../static/css/shell.css">
+    <link rel="stylesheet" href="../static/css/auth.css">
     <link rel="icon" type="image/svg+xml" href="../static/img/favicon.svg">
     <title>UCA Planner | Registrarse</title>
 </head>
 
-<body>
-    <div class="header">
-        <h1>UCA Planner</h1>
-    </div>
-    <div class="topnav">
+<body class="app-page auth-page">
+    <nav class="topnav" aria-label="Navegación principal">
         <a href="/home">Información</a>
         <a href="/cronograma">Organizador de Horarios</a>
         <div class="topnav_right">
-            <a href="/register">Registrarse</a>
+            <a href="/register" class="is-active" aria-current="page">Registrarse</a>
             <a href="/login">Iniciar Sesión</a>
         </div>
-    </div>
+    </nav>
 
+    <main class="app-shell">
+        <!-- ---------- Panel de marca ---------- -->
+        <aside class="brand-panel brand-panel--optional">
+            <div class="brand-panel__inner">
+                <p class="brand-wordmark">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="17" rx="3"></rect>
+                            <path d="M8 2v4M16 2v4M3 10h18"></path>
+                            <path d="M8.5 15.5l2 2 4-4.5"></path>
+                        </svg>
+                    </span>
+                    UCA Planner
+                </p>
 
-    <div class="contenedor">
-        <p class="error">{{param["error_mensaje_registro"]}}</p>
-        <form onsubmit="return validarDatos()" action="/signup" method="post" id="formRegistro">
-            <label for="usuario">Nombre de Usuario:</label>
-            <input type="text" name="usuario" id="usuario" placeholder="Usuario.." onfocusout="esUsuarioValido()"
-                onkeyup="validarUsuario()">
-            <div id="resUsuario"> </div>
-            <p class="error" id="error usuario"></p>
+                <h2 class="brand-title">Armá tu cursada en minutos, no en tardes enteras.</h2>
+                <p class="brand-text">
+                    Creá tu cuenta y accedé al organizador de horarios, a las materias
+                    disponibles y a tus inscripciones desde un solo lugar.
+                </p>
 
-            <label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre" placeholder="Nombre.." onfocusout="validarNombre()">
-            <p class="error" id="error nombre"></p>
+                <ul class="brand-features">
+                    <li>
+                        <span class="brand-features__icon" aria-hidden="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="17" rx="2"></rect>
+                                <path d="M3 10h18M8 2v4M16 2v4M8 14h3M8 18h6"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-features__text">
+                            <strong>Horarios sin superposiciones</strong>
+                            <span>Visualizá tu semana completa antes de confirmar.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="brand-features__icon" aria-hidden="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16H6a2 2 0 0 1-2-2z"></path>
+                                <path d="M8 7h6M8 11h6"></path>
+                                <path d="M18 8h1a1 1 0 0 1 1 1v12"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-features__text">
+                            <strong>Materias y comisiones al día</strong>
+                            <span>Toda la oferta académica actualizada por la facultad.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="brand-features__icon" aria-hidden="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M18 8v6M21 11h-6"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-features__text">
+                            <strong>Inscripciones en un clic</strong>
+                            <span>Gestioná tu inscripción cuando el período esté abierto.</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
 
-            <label for="apellido">Apellido:</label>
-            <input type="text" name="apellido" id="apellido" placeholder="Apellido.." onfocusout="validarApellido()">
-            <p class="error" id="error apellido"></p>
+        <!-- ---------- Formulario ---------- -->
+        <section class="app-main">
+            <div class="contenedor">
+                <header class="auth-card__head">
+                    <h1>Crear cuenta</h1>
+                    <p>Completá tus datos para empezar a planificar tu cursada.</p>
+                </header>
 
-            <label for="email">Mail</label>
-            <input type="email" id="email" name="mail" placeholder="Ingrese un mail.." onfocusout="validarMail()"
-                onkeyup="validarEmail()">
-            <div id="resEmail"></div>
-            <p class="error" id="error email"></p>
+                <p class="error auth-alert" role="alert">{{param["error_mensaje_registro"]}}</p>
 
-            <label for="contrasena">Contraseña</label>
-            <input type="password" id="contraseña" name="contraseña" placeholder="Ingrese contraseña.."
-                onfocusout="validarContra()">
-            <p class="error" id="error contra"></p>
+                <form onsubmit="return validarDatos()" action="/signup" method="post" id="formRegistro">
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" name="nombre" id="nombre" placeholder="Nombre.." autocomplete="given-name"
+                                onfocusout="validarNombre()">
+                            <p class="error" id="error nombre"></p>
+                        </div>
 
-            <fieldset>
-                <legend class="rol">Rol en UCA Planner:</legend>
-                <label for="rolAlumno">Alumno</label>
-                <input type="radio" id="rolAlumno" name="rol" value="alumno">
-                <label for="sede2">Administrador</label>
-                <input type="radio" id="rolAdmin" name="rol" value="admin">
-            </fieldset>
+                        <div class="field">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" name="apellido" id="apellido" placeholder="Apellido.."
+                                autocomplete="family-name" onfocusout="validarApellido()">
+                            <p class="error" id="error apellido"></p>
+                        </div>
 
-            <!-- <label for="carrera">Carrera:</label>
-            <select id="carrera" name="localidad" title="Seleccione...">
-                <option value="0" disabled selected>Seleccionar..</option>
-                <option value="1">Ingeniería en Informática (01)</option>
-            </select>
+                        <div class="field">
+                            <label for="usuario">Nombre de usuario</label>
+                            <input type="text" name="usuario" id="usuario" placeholder="Usuario.."
+                                autocomplete="username" onfocusout="esUsuarioValido()" onkeyup="validarUsuario()">
+                            <div id="resUsuario"></div>
+                            <p class="error" id="error usuario"></p>
+                        </div>
 
-            <fieldset>
-                <legend class="sede">Sedes UCA:</legend>
-                <label for="sede1">Buenos Aires</label>
-                <input type="radio" id="sede1" name="unaSede">
-                <label for="sede2">Mendoza</label>
-                <input type="radio" id="sede2" name="unaSede" value="Mendoza">
-                <label for="sede3">Paraná</label>
-                <input type="radio" id="sede3" name="unaSede" value="Paraná">
-                <label for="sede4">Rosario</label>
-                <input type="radio" id="sede4" name="unaSede" value="Rosario">
-            </fieldset> 
-        
-            Esto seria un agregado, pero de momento no cumple una funcionalidad
-        -->
+                        <div class="field">
+                            <label for="email">Mail</label>
+                            <input type="email" id="email" name="mail" placeholder="Ingrese un mail.."
+                                autocomplete="email" onfocusout="validarMail()" onkeyup="validarEmail()">
+                            <div id="resEmail"></div>
+                            <p class="error" id="error email"></p>
+                        </div>
 
-            <p class="error" id="error incompleto"></p>
+                        <div class="field field--full">
+                            <label for="contraseña">Contraseña</label>
+                            <span class="input-wrap">
+                                <input type="password" id="contraseña" name="contraseña"
+                                    placeholder="Mínimo 6 caracteres.." autocomplete="new-password"
+                                    onfocusout="validarContra()">
+                                <button type="button" class="pw-toggle" data-target="contraseña" aria-pressed="false"
+                                    aria-label="Mostrar contraseña">
+                                    <svg class="pw-toggle__on" width="19" height="19" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="pw-toggle__off" width="19" height="19" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M1 1l22 22">
+                                        </path>
+                                        <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"></path>
+                                    </svg>
+                                </button>
+                            </span>
+                            <p class="error" id="error contra"></p>
+                        </div>
+                    </div>
 
-            <input type="submit" value="Registrarse" id="btnSubmit">
+                    <fieldset class="rol-group">
+                        <legend class="rol">Rol en UCA Planner</legend>
+                        <div class="rol-options">
+                            <input type="radio" id="rolAlumno" name="rol" value="alumno">
+                            <label for="rolAlumno" class="rol-option">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 10L12 5 2 10l10 5 10-5z"></path>
+                                    <path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"></path>
+                                </svg>
+                                Alumno
+                            </label>
 
+                            <input type="radio" id="rolAdmin" name="rol" value="admin">
+                            <label for="rolAdmin" class="rol-option">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="M9.5 12l1.8 1.8L15 10"></path>
+                                </svg>
+                                Administrador
+                            </label>
+                        </div>
+                    </fieldset>
 
-        </form>
-    </div>
+                    <p class="error" id="error incompleto"></p>
 
+                    <input type="submit" value="Registrarse" id="btnSubmit">
+
+                    <p class="auth-alt">¿Ya tenés una cuenta? <a href="/login">Iniciá sesión</a>.</p>
+                </form>
+            </div>
+        </section>
+    </main>
 
     <script language="javascript" type="text/javascript" src="../static/js/Registrarse.js"></script>
+    <script src="../static/js/auth.js"></script>
 
     <!-- Motion (motion.dev) + micro-interacciones UCA Planner -->
     <script src="https://cdn.jsdelivr.net/npm/motion@11/dist/motion.js"></script>

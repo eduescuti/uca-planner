@@ -4,3 +4,4 @@ uploads/
 .venv/
 .vercel/
 .env
+.env.example

@@ -3,6 +3,14 @@
 import os
 import mysql.connector
 
+# En local los datos de conexion se leen del archivo .env (no versionado).
+# En Vercel las variables ya vienen del entorno, y load_dotenv() no las pisa.
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 ################### FUNCIONES PRINCIPALES ###################################
 
 def conectarBD(configDB=None):
@@ -25,7 +33,21 @@ def conectarBD(configDB=None):
                 params["ssl_verify_identity"] = True
             mydb = mysql.connector.connect(**params)
         except mysql.connector.Error as e:
-            print("ERROR ->",e)
+            # Sin conexion no hay nada que devolver: si se retorna None el error
+            # aparece mucho despues y disfrazado (p.ej. 'NoneType' is not subscriptable).
+            raise RuntimeError(
+                "No se pudo conectar a la base de datos "
+                "{user}@{host}:{port}/{dbname} (ssl={ssl}). "
+                "Revisa las variables DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME y DB_SSL. "
+                "Detalle: {err}".format(
+                    user=configDB.get("user"),
+                    host=configDB.get("host"),
+                    port=configDB.get("port", 3306),
+                    dbname=configDB.get("dbname"),
+                    ssl=bool(configDB.get("ssl")),
+                    err=e,
+                )
+            ) from e
     return mydb
 
 def cerrarBD(mydb):
@@ -59,7 +81,7 @@ def consultarDB(mydb,sQuery="",val=None,title=False):
             if title:
                 myresult.insert(0,mycursor.column_names)
     except mysql.connector.Error as e:
-        print("ERROR ->",e)   
+        raise RuntimeError("Error al ejecutar la consulta: {err}\nSQL: {sql}".format(err=e, sql=sQuery.strip())) from e
     return myresult
 
 def ejecutarDB(mydb,sQuery="",val=None):
@@ -81,6 +103,8 @@ def ejecutarDB(mydb,sQuery="",val=None):
         res=mycursor.rowcount        # filas afectadas
     except mysql.connector.Error as e:
         mydb.rollback()
+        # Aca no se relanza: las vistas ya interpretan res!=1 como "no se pudo guardar"
+        # y muestran el mensaje de error correspondiente al usuario.
         print("ERROR ->",e)
     return res
     

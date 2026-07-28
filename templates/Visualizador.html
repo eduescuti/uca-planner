@@ -1,139 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/css/Visualizador.css">
+  <!-- theme.css (skin) → shell.css (layout base) → Visualizador.css (esta vista) -->
   <link rel="stylesheet" href="../static/css/theme.css">
+  <link rel="stylesheet" href="../static/css/shell.css">
+  <link rel="stylesheet" href="../static/css/Visualizador.css">
   <link rel="icon" type="image/svg+xml" href="../static/img/favicon.svg">
   <title>UCA Planner | Organizador de Horarios</title>
 </head>
 
-<body>
-  <div class="header">
-    <h1>UCA Planner</h1>
-  </div>
-
-  <div class="topnav">
+<body class="app-page cronograma-page">
+  <nav class="topnav" aria-label="Navegación principal">
     <a href="/home">Información</a>
-    <a href="/cronograma">Organizador de Horarios</a>
+    <a href="/cronograma" class="is-active" aria-current="page">Organizador de Horarios</a>
     <div class="topnav_right">
       <a href="/register">Registrarse</a>
       <a href="/login">Iniciar Sesión</a>
     </div>
-  </div>
+  </nav>
 
-  <div class="titulo">
-    <h1>Esto es un visualizador del Organizador de Horarios</h1>
-    <h2>Debe <a href="/login">iniciar sesión</a> para poder usar UCA Planner</h2>
-  </div>
+  <main class="app-shell app-shell--rail">
+    <!-- ---------- Riel: contexto, aviso y leyenda ---------- -->
+    <aside class="brand-panel">
+      <div class="brand-panel__inner">
+        <p class="brand-wordmark brand-wordmark--sm">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="17" rx="3"></rect>
+              <path d="M8 2v4M16 2v4M3 10h18"></path>
+              <path d="M8.5 15.5l2 2 4-4.5"></path>
+            </svg>
+          </span>
+          UCA Planner
+        </p>
 
-  <div class="tabla">
-    <table>
-      <thead>
-        <th>HORA</th>
-        <th>LUNES</th>
-        <th>MARTES</th>
-        <th>MIERCOLES</th>
-        <th>JUEVES</th>
-        <th>VIERNES</th>
-      </thead>
-      <tbody class="tabla1">
-        <tr>
-          <td class="col1">7:45 - 8:30</td>
-          <td>-</td>
-          <td class="s13">Representación Gráfica</td>
-          <td class="s13">Informática General</td>
-          <td class="s13">Complementos de Matemática</td>
-          <td class="s13">Introducción a la Ingeniería</td>
-        </tr>
-        <tr>
-          <td class="col1">8:30 - 9:15</td>
-          <td>-</td>
-          <td class="s13">Representación Gráfica</td>
-          <td class="s13">Informática General</td>
-          <td class="s13">Complementos de Matemática</td>
-          <td class="s13">Introducción a la Ingeniería</td>
-        </tr>
-        <tr>
-          <td class="col1">9:30 - 10:15</td>
-          <td>-</td>
-          <td class="s13">Representación Gráfica</td>
-          <td class="s13">Informática General</td>
-          <td class="s13">Complementos de Matemática</td>
-          <td class="s13">Introducción a la Ingeniería</td>
-        </tr>
-        <tr>
-          <td class="col1">10:15 - 11:00</td>
-          <td class="s13">Representación Gráfica</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td class="col1">11:30 - 12:15</td>
-          <td class="s13">Representación Gráfica</td>
-          <td>-</td>
-          <td>-</td>
-          <td class="s13">Informática General</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td class="col1">12:15 - 13:00</td>
-          <td class="s13">Representación Gráfica</td>
-          <td>-</td>
-          <td>-</td>
-          <td class="s13">Informática General</td>
-          <td>-</td>
-        <tr>
-          <td class="col1">13:00- 14:15</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td class="s13">Informática General</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td class="col1">14:15 - 16:00</td>
-          <td class="s13">Filosofía</td>
-        </tr>
-        <tr>
-          <td class="col1">16:00- 18:45</td>
-          <td class="s13">Cálculo Elemental</td>
-          <td>-</td>
-          <td class="s13">Cálculo Elemental</td>
-          <td>-</td>
-          <td class="s13">Cálculo Elemental</td>
-        </tr>
-        <tr>
-          <td class="col1">18:45- 19:30</td>
-          <td class="s13">Cálculo Elemental</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td class="s13">Cálculo Elemental</td>
-        </tr>
-        <tr>
-          <td class="col1">19:30- 20:30</td>
-          <td class="s13">Cálculo Elemental</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td class="pie" colspan="6"> HORARIOS DE COMISIÓN AM </td>
-        </tr>
-      </tfoot>
-    </table>
-    </article>
+        <h1 class="brand-title">Organizador de Horarios</h1>
+        <p class="brand-text">
+          Así se ve una semana armada con UCA Planner. Este es un cronograma de
+          ejemplo de la <strong>Comisión AM</strong>.
+        </p>
+
+        <p class="brand-note">
+          Debe <a href="/login">iniciar sesión</a> para armar tu propio cronograma
+          con las materias que elijas.
+        </p>
+
+        <div class="cta-row">
+          <a href="/login" class="cta cta--primary">
+            Iniciar sesión
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h13M13 6l6 6-6 6"></path>
+            </svg>
+          </a>
+          <a href="/register" class="cta cta--ghost">Crear cuenta</a>
+        </div>
+
+        <!-- Leyenda de materias -->
+        <div class="leyenda">
+          <p class="leyenda__titulo">Materias del ejemplo</p>
+          <ul class="leyenda__list">
+            <li><span class="chip m-rg" aria-hidden="true"></span>Representación Gráfica</li>
+            <li><span class="chip m-ig" aria-hidden="true"></span>Informática General</li>
+            <li><span class="chip m-cm" aria-hidden="true"></span>Complementos de Matemática</li>
+            <li><span class="chip m-ii" aria-hidden="true"></span>Introducción a la Ingeniería</li>
+            <li><span class="chip m-fi" aria-hidden="true"></span>Filosofía</li>
+            <li><span class="chip m-ce" aria-hidden="true"></span>Cálculo Elemental</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ---------- Cronograma ---------- -->
+    <section class="app-main">
+      <div class="panel panel--flush cronograma">
+        <header class="cronograma__head">
+          <h2 class="panel__title">Semana de cursada</h2>
+          <span class="badge">Comisión AM</span>
+        </header>
+
+        <div class="cronograma__scroll">
+          <table class="cronograma__tabla">
+            <caption class="sr-only">Cronograma de horarios de ejemplo de la Comisión AM</caption>
+            <thead>
+              <tr>
+                <th scope="col">Hora</th>
+                <th scope="col">Lunes</th>
+                <th scope="col">Martes</th>
+                <th scope="col">Miércoles</th>
+                <th scope="col">Jueves</th>
+                <th scope="col">Viernes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" class="hora">7:45 – 8:30</th>
+                <td class="libre"></td>
+                <td class="slot m-rg" rowspan="3"><span>Representación Gráfica</span></td>
+                <td class="slot m-ig" rowspan="3"><span>Informática General</span></td>
+                <td class="slot m-cm" rowspan="3"><span>Complementos de Matemática</span></td>
+                <td class="slot m-ii" rowspan="3"><span>Introducción a la Ingeniería</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">8:30 – 9:15</th>
+                <td class="libre"></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">9:30 – 10:15</th>
+                <td class="libre"></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">10:15 – 11:00</th>
+                <td class="slot m-rg" rowspan="3"><span>Representación Gráfica</span></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">11:30 – 12:15</th>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="slot m-ig" rowspan="3"><span>Informática General</span></td>
+                <td class="libre"></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">12:15 – 13:00</th>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">13:00 – 14:15</th>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">14:15 – 16:00</th>
+                <td class="slot m-fi"><span>Filosofía</span></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">16:00 – 18:45</th>
+                <td class="slot m-ce" rowspan="3"><span>Cálculo Elemental</span></td>
+                <td class="libre"></td>
+                <td class="slot m-ce"><span>Cálculo Elemental</span></td>
+                <td class="libre"></td>
+                <td class="slot m-ce" rowspan="2"><span>Cálculo Elemental</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">18:45 – 19:30</th>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+              </tr>
+              <tr>
+                <th scope="row" class="hora">19:30 – 20:30</th>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+                <td class="libre"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
-
-
+  </main>
 
   <!-- Motion (motion.dev) + micro-interacciones UCA Planner -->
   <script src="https://cdn.jsdelivr.net/npm/motion@11/dist/motion.js"></script>

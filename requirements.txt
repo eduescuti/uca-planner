@@ -2,3 +2,4 @@ Flask>=3.0
 mysql-connector-python>=8.0
 Werkzeug>=3.0
 certifi>=2024.2.2
+python-dotenv>=1.0

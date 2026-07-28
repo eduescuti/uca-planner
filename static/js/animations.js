@@ -30,7 +30,7 @@
 
         /* ---- 1. Reveal al entrar en viewport (tarjetas, filas, paneles) ---- */
         var revealables = all(
-            ".card, .contenedor, #contenedor, details.prueba, .tabla, .titulo"
+            ".card, .panel, .contenedor, #contenedor, details.prueba, .tabla, .titulo"
         );
         revealables.forEach(function (el) {
             el.style.opacity = "0";
@@ -67,7 +67,7 @@
 
         /* ---- 3. Física de resorte al pasar el mouse / presionar ---- */
         var interactive = all(
-            ".boton, input[type=submit], input[type=button], button, " +
+            ".boton, .cta, input[type=submit], input[type=button], button, " +
             "#btnInscripciones, #btnOrden, #btnAgregarCurso, #volver, " +
             ".cierre-ins, .agr-curso"
         );

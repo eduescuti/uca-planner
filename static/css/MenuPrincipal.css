@@ -1,132 +1,66 @@
-* {
-    box-sizing: border-box;
+/* ============================================================
+   UCA Planner · Información / Home (MenuPrincipal.css)
+   Específico de la vista. El layout general (topnav, grilla,
+   panel de marca, paneles) vive en shell.css, enlazado antes.
+   ============================================================ */
+
+.home-page {
+    /* Columna derecha algo más ancha: acá va contenido, no un formulario */
+    --main-w: 620px;
 }
 
-body {
-    font-family: Arial;
-    padding: 10px;
-    background: white;
+/* El hero puede respirar un poco más que en las pantallas de auth */
+.home-page .brand-panel__inner {
+    max-width: 520px;
 }
 
-/* HEADER */
-.header {
-    padding: 10px;
-    text-align: center;
-    background: rgb(5, 17, 82);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+.home-page .brand-title {
+    font-size: clamp(1.4rem, 2.2vw, 2rem);
+    margin-bottom: 12px;
 }
 
-.header h1 {
-    font-size: 60px;
-    font-family: 'Inter';
-    color: rgb(255, 255, 255);
+.home-page .brand-text strong {
+    color: #fff;
+    font-weight: 600;
 }
 
-/* ARTICLE */
-/* Crea dos columnas desiguales que floten una al lado de la otra. */
-/* Columna izquierda */
-.leftcolumn {
-    float: left;
-    width: 75%;
-    margin-top: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+/* ============================================================
+   PANELES DE CONTENIDO
+   Reparten el alto disponible (regla .app-main--stack de shell.css)
+   y centran su contenido para que el espacio sobrante quede
+   distribuido, no acumulado abajo.
+   ============================================================ */
+.home-page .panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: safe center;
 }
 
-/* Columna derecha */
-.rightcolumn {
-    float: right;
-    width: 24%;
-    margin-top: 20px;
-    background-color: #f1f1f1;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+/* ============================================================
+   TARJETA DE CONTACTO
+   (los estilos base de .contacto-* vienen de theme.css)
+   ============================================================ */
+.home-page .contacto-list {
+    margin-top: 12px;
+    gap: 10px;
 }
 
-.imagen {
-    width: 100%;
-    padding: 0px;
+.home-page .contacto-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
 }
 
-.titulo {
-    color: rgb(5, 17, 82);
-}
-
-/* Agregar un efecto de tarjeta para artículos */
-.card {
-    background-color: white;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-    /*
-    La propiedad CSS clear especifica si un elemento puede estar al lado 
-    de elementos flotantes que lo preceden o si debe ser movido (cleared) 
-    debajo de ellos.
-    
-    */
-}
-
-/* FOOTER */
-.footer {
-    padding: 20px;
-    color: #ffffff;
-    text-align: center;
-    background: #a9a9a9;
-    margin-top: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-/* Responsive layout - cuando la pantalla tiene menos de 800 px de ancho, hace que las dos columnas se apilen una encima de la otra en lugar de una al lado de la otra */
-@media screen and (max-width: 800px) {
-
-    .leftcolumn,
-    .rightcolumn {
-        width: 100%;
-        padding: 0;
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 980px) {
+    .home-page .brand-panel__inner {
+        max-width: none;
     }
-}
 
-/* Responsive layout - cuando la pantalla tiene menos de 400 px de ancho, hace que los enlaces de navegación se apilen uno encima del otro en lugar de uno al lado del otro */
-@media screen and (max-width: 600px) {
-
-    .topnav a,
-    .topnav_right {
-        float: none;
-        width: 100%;
+    .home-page .panel {
+        justify-content: flex-start;
     }
-}
-
-/* ******   M E N U   ********* */
-/* Aplicar estilo a la barra de navegación superior */
-/* Cambiar de color al pasar el mouse */
-.topnav a:hover {
-    background-color: rgb(13, 1, 50);
-    color: rgb(255, 255, 255);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-.topnav {
-    overflow: hidden;
-    background-color: #1a228e;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-.topnav_right {
-    float: right;
-}
-
-/* Aplicar estilo a los enlaces de topnav */
-.topnav a {
-    float: left;
-    display: block;
-    color: #ffffff;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }

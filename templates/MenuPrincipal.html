@@ -1,64 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Para que se active el modo responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Relaciona o enlaza este archivo html con el 03.css-->
-    <link rel="stylesheet" href="../static/css/MenuPrincipal.css">
+    <!-- theme.css (skin) → shell.css (layout base) → MenuPrincipal.css (esta vista) -->
     <link rel="stylesheet" href="../static/css/theme.css">
+    <link rel="stylesheet" href="../static/css/shell.css">
+    <link rel="stylesheet" href="../static/css/MenuPrincipal.css">
     <link rel="icon" type="image/svg+xml" href="../static/img/favicon.svg">
-    <title>UCA Planner</title>
+    <title>UCA Planner | Información</title>
 </head>
 
-<body>
-    <div class="header">
-        <h1>UCA Planner</h1>
-    </div>
-    <div class="topnav">
-        <a href="/home">Información</a>
+<body class="app-page home-page">
+    <nav class="topnav" aria-label="Navegación principal">
+        <a href="/home" class="is-active" aria-current="page">Información</a>
         <a href="/cronograma">Organizador de Horarios</a>
         <div class="topnav_right">
             <a href="/register">Registrarse</a>
             <a href="/login">Iniciar Sesión</a>
         </div>
-    </div>
+    </nav>
 
-    <div class="row">
-        <div class="leftcolumn">
-            <div class="card">
-                <h1 class="titulo">¿Qué es UCA Planner?</h1>
-                <img src="../static/img/uca1.jpg" class="imagen"></img>
-                <p>
-                    UCA Planner es tu organizador de horarios favorito de la UCA, para
-                    poder tener un cronograma de horarios con las materias que el alumno
-                    eliga, para poder observar cómo quedarían sus materias en las que se
-                    anotaría.
+    <main class="app-shell">
+        <!-- ---------- Panel de marca / hero ---------- -->
+        <aside class="brand-panel">
+            <div class="brand-panel__inner">
+                <p class="brand-wordmark">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="17" rx="3"></rect>
+                            <path d="M8 2v4M16 2v4M3 10h18"></path>
+                            <path d="M8.5 15.5l2 2 4-4.5"></path>
+                        </svg>
+                    </span>
+                    UCA Planner
                 </p>
-            </div>
-            <div class="card">
-                <h1 class="titulo">¿Qué función cumple?</h1>
-                <p>
-                    UCA Planner tiene como objetivo que el alumno pueda observar con
-                    mayor claridad las opciónes de cronogramas de horarios de las materias
-                    que dispone, pudiendo elegir así cualquier materia y cualquier
-                    horario.
+
+                <h1 class="brand-title">Tu organizador de horarios de la UCA.</h1>
+                <p class="brand-text">
+                    UCA Planner te arma un cronograma con las materias que elijas, para que
+                    veas cómo te quedaría la semana <strong>antes</strong> de anotarte.
                 </p>
+
+                <ul class="brand-features">
+                    <li>
+                        <span class="brand-features__icon" aria-hidden="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="17" rx="2"></rect>
+                                <path d="M3 10h18M8 2v4M16 2v4M8 14h3M8 18h6"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-features__text">
+                            <strong>Horarios sin superposiciones</strong>
+                            <span>Visualizá tu semana completa antes de confirmar.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="brand-features__icon" aria-hidden="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16H6a2 2 0 0 1-2-2z"></path>
+                                <path d="M8 7h6M8 11h6"></path>
+                                <path d="M18 8h1a1 1 0 0 1 1 1v12"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-features__text">
+                            <strong>Materias y comisiones al día</strong>
+                            <span>Toda la oferta académica actualizada por la facultad.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="brand-features__icon" aria-hidden="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M18 8v6M21 11h-6"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-features__text">
+                            <strong>Inscripciones en un clic</strong>
+                            <span>Gestioná tu inscripción cuando el período esté abierto.</span>
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="cta-row">
+                    <a href="/register" class="cta cta--primary">
+                        Crear cuenta
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h13M13 6l6 6-6 6"></path>
+                        </svg>
+                    </a>
+                    <a href="/cronograma" class="cta cta--ghost">Ver el organizador</a>
+                </div>
             </div>
-        </div>
-        <div class="rightcolumn">
-            <div class="card">
-                <h2 class="titulo">Sobre nosotros</h2>
-                <p>
-                    Somos un grupo de estudiantes de la facultad que intenta
-                    solucionar los problemas de los alumnos y facilitarle la cursada.
-                    En este caso, ayudando en la inscripción de las materias.
+        </aside>
+
+        <!-- ---------- Contenido ---------- -->
+        <section class="app-main app-main--stack">
+            <article class="panel">
+                <h2 class="panel__title">¿Qué función cumple?</h2>
+                <p class="panel__text">
+                    UCA Planner tiene como objetivo que el alumno pueda observar con mayor
+                    claridad las opciones de cronogramas de horarios de las materias que
+                    dispone, pudiendo elegir así cualquier materia y cualquier horario.
                 </p>
-            </div>
-            <div class="card">
-                <h3 class="titulo">Contacto</h3>
+            </article>
+
+            <article class="panel">
+                <h2 class="panel__title">Sobre nosotros</h2>
+                <p class="panel__text">
+                    Somos un grupo de estudiantes de la facultad que intenta solucionar los
+                    problemas de los alumnos y facilitarle la cursada. En este caso,
+                    ayudando en la inscripción de las materias.
+                </p>
+            </article>
+
+            <article class="panel">
+                <h2 class="panel__title">Contacto</h2>
                 <ul class="contacto-list">
                     <li class="contacto-item">
                         <span class="contacto-icon">
@@ -92,10 +158,9 @@
                         <div class="contacto-text"><strong>Teléfono</strong><span>15-4627-9873</span></div>
                     </li>
                 </ul>
-            </div>
-        </div>
-    </div>
-
+            </article>
+        </section>
+    </main>
 
     <!-- Motion (motion.dev) + micro-interacciones UCA Planner -->
     <script src="https://cdn.jsdelivr.net/npm/motion@11/dist/motion.js"></script>
