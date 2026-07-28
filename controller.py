@@ -175,14 +175,16 @@ def perfil_pagina(param):
     del usuario o administrador (en caso de estar iniciado sesión) o devuelve
     una página no encontrada como mensaje.
     """
-    obtenerInformacionPerfil(param)
-
+    # El chequeo de sesion va primero: obtenerInformacionPerfil lee session["id"]
+    # y sin sesion iniciada rompe con un 500 en vez de redirigir al home.
     if haySesion():
+        obtenerInformacionPerfil(param)
+
         if (session['rol'] == 'alumno'):
             return render_template("Usuario.html", param=param)
         else:
             return render_template("Administrador.html", param=param)
-    
+
     return redirect('/')
 
 def gestion_inscripciones_pantalla(param):

@@ -28,8 +28,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `comisiones` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(3) NOT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(3) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -39,12 +40,13 @@ CREATE TABLE `comisiones` (
 --
 
 CREATE TABLE `cursos` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_inscripcion` int(11) NOT NULL,
   `id_com_mat` int(30) NOT NULL,
   `id_dia` int(30) NOT NULL,
   `id_hora` int(30) NOT NULL,
-  `id_usuario` int(11) NOT NULL
+  `id_usuario` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -54,8 +56,9 @@ CREATE TABLE `cursos` (
 --
 
 CREATE TABLE `dias` (
-  `id` int(11) NOT NULL,
-  `dia` varchar(30) NOT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dia` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -65,8 +68,9 @@ CREATE TABLE `dias` (
 --
 
 CREATE TABLE `horas` (
-  `id` int(11) NOT NULL,
-  `hora` varchar(30) NOT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hora` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -76,10 +80,11 @@ CREATE TABLE `horas` (
 --
 
 CREATE TABLE `inscripciones` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `estado` varchar(10) NOT NULL,
   `año` int(10) NOT NULL,
-  `cuatrimestre` int(2) NOT NULL
+  `cuatrimestre` int(2) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -89,9 +94,10 @@ CREATE TABLE `inscripciones` (
 --
 
 CREATE TABLE `materias` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(30) NOT NULL,
-  `codigo` int(11) NOT NULL
+  `codigo` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -101,10 +107,11 @@ CREATE TABLE `materias` (
 --
 
 CREATE TABLE `materia_comision` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_materia` int(11) NOT NULL,
   `id_comision` int(11) NOT NULL,
-  `cupo` int(11) NOT NULL
+  `cupo` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -114,30 +121,28 @@ CREATE TABLE `materia_comision` (
 --
 
 CREATE TABLE `usuario` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `usuario` varchar(30) NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `apellido` varchar(30) NOT NULL,
   `email` varchar(30) NOT NULL,
   `contraseña` varchar(30) NOT NULL,
-  `rol` varchar(30) NOT NULL
+  `rol` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `comisiones`
---
-ALTER TABLE `comisiones`
-  ADD PRIMARY KEY (`id`);
+-- NOTA: las PRIMARY KEY y el AUTO_INCREMENT se declaran dentro de cada CREATE TABLE.
+-- phpMyAdmin los agregaba despues con `ALTER TABLE ... MODIFY id ... AUTO_INCREMENT`,
+-- pero TiDB no soporta agregar AUTO_INCREMENT a una columna ya creada (error 8200) y
+-- esas sentencias fallaban en silencio, dejando el id sin autoincremento.
 
 --
 -- Indices de la tabla `cursos`
 --
 ALTER TABLE `cursos`
-  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_inscripcion` (`id_inscripcion`,`id_com_mat`,`id_dia`,`id_hora`,`id_usuario`),
   ADD KEY `id_com_mat` (`id_com_mat`),
   ADD KEY `id_usuario` (`id_usuario`),
@@ -145,94 +150,11 @@ ALTER TABLE `cursos`
   ADD KEY `id_hora` (`id_hora`);
 
 --
--- Indices de la tabla `dias`
---
-ALTER TABLE `dias`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `horas`
---
-ALTER TABLE `horas`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `inscripciones`
---
-ALTER TABLE `inscripciones`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `materias`
---
-ALTER TABLE `materias`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `materia_comision`
 --
 ALTER TABLE `materia_comision`
-  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_materia` (`id_materia`,`id_comision`),
   ADD KEY `id_comision` (`id_comision`);
-
---
--- Indices de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `comisiones`
---
-ALTER TABLE `comisiones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `cursos`
---
-ALTER TABLE `cursos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `dias`
---
-ALTER TABLE `dias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `horas`
---
-ALTER TABLE `horas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `inscripciones`
---
-ALTER TABLE `inscripciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `materias`
---
-ALTER TABLE `materias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `materia_comision`
---
-ALTER TABLE `materia_comision`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -254,6 +176,31 @@ ALTER TABLE `cursos`
 ALTER TABLE `materia_comision`
   ADD CONSTRAINT `materia_comision_ibfk_1` FOREIGN KEY (`id_comision`) REFERENCES `comisiones` (`id`),
   ADD CONSTRAINT `materia_comision_ibfk_2` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id`);
+
+--
+-- Datos de referencia
+--
+-- `dias` y `horas` son tablas fijas: la app las da por cargadas. Sin ellas,
+-- `seleccionarIDDia`/`seleccionarIDHora` (model.py) fallan al armar un curso y
+-- los selects de horarios de Cursos.html salen vacios.
+--
+
+INSERT INTO `dias` (`id`, `dia`) VALUES
+(1, 'lunes'),
+(2, 'martes'),
+(3, 'miercoles'),
+(4, 'jueves'),
+(5, 'viernes');
+
+INSERT INTO `horas` (`id`, `hora`) VALUES
+(1, '07:45hs - 10:15hs'),
+(2, '10:15hs - 12:15hs'),
+(3, '11:30hs - 15:15hs'),
+(4, '13:00hs - 15:15hs'),
+(5, '14:00hs - 16:00hs'),
+(6, '15:15hs - 17:15hs'),
+(7, '17:15hs - 19:00hs'),
+(8, '19:00hs - 21:00hs');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

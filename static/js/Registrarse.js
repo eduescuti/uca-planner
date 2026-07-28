@@ -146,18 +146,47 @@ function validarDatos() {
     }
 }
 
+/* Estado de los chequeos AJAX. Se lleva por separado porque el usuario y el
+   mail se validan en dos peticiones distintas: si cada una escribiera
+   directamente en btnSubmit, la segunda respuesta pisaría a la primera y
+   habilitaría el botón aunque el otro campo estuviera duplicado. */
+var duplicados = { usuario: false, email: false };
+
+function actualizarBotonSubmit() {
+    var submitButton = document.getElementById('btnSubmit');
+    if (submitButton) {
+        submitButton.disabled = duplicados.usuario || duplicados.email;
+    }
+}
+
 function validarUsuario() {
     var inputUsuario = document.getElementById('usuario');
     var username = inputUsuario.value.trim(); // Toma el valor del input
 
-    queryAjaxFormUsuario('/validar_usuario/' + username, 'resUsuario', 'formRegistro');
+    // Con el campo vacío la url queda en '/validar_usuario/' y el servidor
+    // responde 404: no hay nada que validar todavía.
+    if (username === '') {
+        setDataIntoNode('resUsuario', '');
+        duplicados.usuario = false;
+        actualizarBotonSubmit();
+        return;
+    }
+
+    queryAjaxFormUsuario('/validar_usuario/' + encodeURIComponent(username), 'resUsuario', 'formRegistro');
 }
 
 function validarEmail() {
     var inputEmail = document.getElementById('email');
     var email = inputEmail.value.trim(); // Toma el valor del input
 
-    queryAjaxFormMail('/validar_email/' + email, 'resEmail', 'formRegistro');
+    if (email === '') {
+        setDataIntoNode('resEmail', '');
+        duplicados.email = false;
+        actualizarBotonSubmit();
+        return;
+    }
+
+    queryAjaxFormMail('/validar_email/' + encodeURIComponent(email), 'resEmail', 'formRegistro');
 }
 
 
@@ -172,15 +201,12 @@ function queryAjaxFormMail(url, idDest, idForm, method = "POST") {
                 setDataIntoNode(idDest, xhr.responseText);
 
                 // Después de recibir la respuesta, verifica si existe
-                var emailExiste = xhr.responseText.includes('El email ya está en uso.');
+                duplicados.email = xhr.responseText.includes('El email ya está en uso.');
 
-                // Referencia al botón de envío
-                var submitButton = document.getElementById('btnSubmit');
+                // Inhabilita el botón si el mail o el usuario ya están tomados
+                actualizarBotonSubmit();
 
-                // Inhabilita el botón si al menos una de las cadenas existe
-                submitButton.disabled = emailExiste
-
-            } else {
+            } else if (xhr.readyState == 4) {
                 console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
             }
         }
@@ -203,14 +229,11 @@ function queryAjaxFormUsuario(url, idDest, idForm, method = "POST") {
                 setDataIntoNode(idDest, xhr.responseText);
 
                 // Después de recibir la respuesta, verifica si existe
-                var userExiste = xhr.responseText.includes('El nombre de usuario ya existe.');
+                duplicados.usuario = xhr.responseText.includes('El nombre de usuario ya existe.');
 
-                // Referencia al botón de envío
-                var submitButton = document.getElementById('btnSubmit');
-
-                // Inhabilita el botón si al menos una de las cadenas existe
-                submitButton.disabled = userExiste
-            } else {
+                // Inhabilita el botón si el usuario o el mail ya están tomados
+                actualizarBotonSubmit();
+            } else if (xhr.readyState == 4) {
                 console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
             }
         }
