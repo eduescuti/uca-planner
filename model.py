@@ -281,18 +281,23 @@ def esUsuarioValido(value):
     cantidadMail = mails[0][0]
     return ((cantidadUsuarios == 0) and (cantidadMail == 0))
 
+ROL_POR_REGISTRO = "alumno"
+
 def crearUsuario(di):
     '''### Crea el usuario y devuelve un booleano de si se pudo crear correctamente
     - Recibe el diccionario del request del form (y con esto crea el usuario)
     - Devuelve True si se pudo crear el usuario y False en caso contrario
+
+    El rol NO se toma del form: todo registro público crea un alumno. Los
+    administradores se dan de alta a mano en la base de datos.
     '''
-    sQuery=""" 
+    sQuery="""
         INSERT INTO usuario
         (id, usuario, nombre, apellido, email, contraseña, rol)
         VALUES
         (%s, %s, %s, %s, %s, %s, %s);
     """
-    val=(None, di.get('usuario'), di.get('nombre'), di.get('apellido'), di.get('mail'), di.get('contraseña'), di.get('rol'))
+    val=(None, di.get('usuario'), di.get('nombre'), di.get('apellido'), di.get('mail'), di.get('contraseña'), ROL_POR_REGISTRO)
     if (esUsuarioValido(val)):
         resul_insert=insertDB(BASE,sQuery,val)
     else:

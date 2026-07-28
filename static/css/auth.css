@@ -146,82 +146,6 @@
 }
 
 /* ============================================================
-   SELECTOR DE ROL (radios como tarjetas)
-   ============================================================ */
-.rol-group {
-    min-width: 0;
-    max-width: none;
-    margin: clamp(12px, 2vh, 18px) 0 0;
-    padding: 0;
-    background: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-}
-
-.rol-group>legend {
-    padding: 0;
-    margin-bottom: 8px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    color: var(--ink-soft);
-}
-
-.rol-options {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-}
-
-/* El radio real queda accesible pero fuera de la vista */
-.rol-options input[type=radio] {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.rol-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 11px 13px;
-    font-size: 0.92rem;
-    font-weight: 500;
-    color: var(--ink);
-    background: #fff;
-    border: 2px solid var(--line);
-    border-radius: var(--r-sm);
-    cursor: pointer;
-    transition: border-color 0.22s var(--ease), background-color 0.22s var(--ease),
-        box-shadow 0.22s var(--ease), transform 0.22s var(--ease);
-}
-
-.rol-option svg {
-    flex: 0 0 auto;
-    color: var(--uca-500);
-    transition: color 0.22s var(--ease);
-}
-
-.rol-option:hover {
-    border-color: var(--uca-accent-2);
-    transform: translateY(-1px);
-}
-
-.rol-options input[type=radio]:checked+.rol-option {
-    color: var(--uca-800);
-    background: #f1f5ff;
-    border-color: var(--uca-500);
-    box-shadow: 0 0 0 3px rgba(42, 55, 184, 0.12);
-}
-
-.rol-options input[type=radio]:focus-visible+.rol-option {
-    border-color: var(--uca-accent);
-    box-shadow: var(--shadow-glow);
-}
-
-/* ============================================================
    BOTÓN PRINCIPAL
    ============================================================ */
 .auth-page input[type=submit] {
@@ -327,10 +251,6 @@
     .auth-page input[type=password] {
         padding: 10px 13px;
     }
-
-    .rol-option {
-        padding: 9px 12px;
-    }
 }
 
 /* ============================================================
@@ -347,8 +267,7 @@
 
 @media (max-width: 560px) {
 
-    .field-grid,
-    .rol-options {
+    .field-grid {
         grid-template-columns: minmax(0, 1fr);
     }
 

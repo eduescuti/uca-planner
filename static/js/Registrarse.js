@@ -9,21 +9,6 @@ function campoIncompleto(campo) {
     return false;
 }
 
-function rolIncompleto() {
-    // Asegura que se haya seleccionado alguna de las Sedes de la UCA
-
-    var rolAlumno = document.getElementById("rolAlumno");
-    var rolAdmin = document.getElementById("rolAdmin");
-
-    var completoElRol = (rolAlumno.checked || rolAdmin.checked);
-
-    if (completoElRol) {
-        return false;
-    }
-    return true;
-
-}
-
 function noEsValido(nom) {
     // Expresión regular para permitir solo letras y espacios
     var patron = /^[A-Za-z\s]+$/;
@@ -109,7 +94,6 @@ function validarDatos() {
     // - Valida que el nombre, apellido no tengan numeros ni sea un espacio en blanco.
     // - Valida que el mail sea un mail.
     // - Valida que la contraseña sea mayor que 6 digitos por lo menos.
-    // - Valida que la carrera del usuario y la sede, estén seleccionadas.
 
     var usuario = document.getElementById("usuario").value;
     var nombre = document.getElementById("nombre").value;
@@ -136,10 +120,6 @@ function validarDatos() {
     } else if (noEsContraseniaValida(contra)) {
         indicarQueFaltanCompletarCampos();
         return false; // Evitar el envío del formulario
-
-    } else if (rolIncompleto()) {
-        indicarQueFaltanCompletarCampos();
-        return false;
 
     } else {
         return true; // Enviar el envío del formulario
