@@ -1,158 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- theme.css → shell.css → Gestion.css (base de gestión) → Cursos.css (esta vista) -->
+    <link rel="stylesheet" href="../static/css/theme.css">
+    <link rel="stylesheet" href="../static/css/shell.css">
+    <link rel="stylesheet" href="../static/css/Gestion.css">
+    <link rel="stylesheet" href="../static/css/Cursos.css">
     <link rel="icon" type="image/svg+xml" href="../static/img/favicon.svg">
     <title>UCA Planner | Cursos</title>
-    <link rel="stylesheet" href="../static/css/Cursos.css">
-    <link rel="stylesheet" href="../static/css/theme.css">
 </head>
 
-<body>
-    <!-- HEADER -->
-    <div class="header">
-        <img src="../static/img/logo-uca.jfif" class="imagen1">
-        <h2 class="titulo">Gestión de Cursos</h2>
-    </div>
+<body class="app-page gestion-page cursos-page">
+    {% include 'TopNav.html' %}
 
+    <main class="app-shell app-shell--rail">
+        <!-- ---------- Riel de contexto ---------- -->
+        <aside class="brand-panel">
+            <div class="brand-panel__inner">
+                <p class="brand-wordmark brand-wordmark--sm">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="17" rx="3"></rect>
+                            <path d="M8 2v4M16 2v4M3 10h18"></path>
+                        </svg>
+                    </span>
+                    UCA Planner
+                </p>
 
-    <div class="row">
-        <div class="leftcolumn">
-            <div class="card">
-                <h4 class="titulo">Cursos Cargados</h4>
-                <select id="cursos" multiple>
-                    {% for curso in param["cursos"] %}
-                    <option value="{{curso['id']}}">{{curso["materia"]["nombre"]}} ({{curso["materia"]["comision"]}})
-                    </option>
-                    {% endfor %}
-                </select>
+                <h1 class="brand-title">Gestión de cursos</h1>
+                <p class="brand-text">
+                    Un curso es una <strong>materia</strong> dictada por una
+                    <strong>comisión</strong> en un período de inscripción, con su cupo y
+                    sus horarios.
+                </p>
+
+                <p class="brand-note">
+                    Solo podés cargar cursos sobre inscripciones <strong>abiertas</strong>.
+                    Hay que definir el horario de al menos un día.
+                </p>
+
+                <ul class="rail-stats">
+                    <li>
+                        <span>Cursos cargados</span>
+                        <span class="rail-stats__valor">{{ param["cursos"]|length }}</span>
+                    </li>
+                    <li>
+                        <span>Materias disponibles</span>
+                        <span class="rail-stats__valor">{{ param["materias"]|length }}</span>
+                    </li>
+                    <li>
+                        <span>Comisiones</span>
+                        <span class="rail-stats__valor">{{ param["comisiones"]|length }}</span>
+                    </li>
+                </ul>
+
+                <div class="cta-row">
+                    <a href="/home" class="cta cta--ghost">Volver al inicio</a>
+                </div>
             </div>
-            <div class="card">
-                <a href="/cursos" class="boton">Agregar Curso</a>
-                <a href="/" class="boton">Volver</a>
+        </aside>
+
+        <!-- ---------- Contenido ---------- -->
+        <section class="app-main app-main--split">
+            <!-- Listado -->
+            <div class="panel">
+                <header class="panel__head">
+                    <h2 class="panel__title">Cursos cargados</h2>
+                    <span class="count-badge">{{ param["cursos"]|length }} en total</span>
+                </header>
+                <div class="panel__body">
+                    {% if param["cursos"] %}
+                    <ul class="lista-datos">
+                        {% for curso in param["cursos"] %}
+                        <li>
+                            <span class="lista-datos__num" aria-hidden="true">{{ loop.index }}</span>
+                            <span class="lista-datos__text">
+                                <span class="lista-datos__nombre">{{ curso["materia"]["nombre"] }}</span>
+                                <span class="lista-datos__meta">
+                                    Comisión {{ curso["materia"]["comision"] }} ·
+                                    {{ curso["inscriptos"] }}/{{ curso["cupo"] }} inscriptos
+                                </span>
+                            </span>
+                            <span class="lista-datos__tag">#{{ curso["materia"]["codigo"] }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="vacio">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="3" y="4" width="18" height="17" rx="3"></rect>
+                            <path d="M8 2v4M16 2v4M3 10h18"></path>
+                        </svg>
+                        <p>Todavía no hay cursos cargados. Creá el primero con el formulario de al lado.</p>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-        <div class="rightcolumn">
-            <div class="card" id="contenedor">
-                <h2>Agregar un Curso</h2>
-                <p class="error">{{param["curso_agregado"]}}</p>
 
-                <form onsubmit="return validarDatos()" action="/agregar_curso" method="post">
+            <!-- Formulario -->
+            <div class="panel" id="contenedor">
+                <header class="panel__head">
+                    <h2 class="panel__title">Agregar un curso</h2>
+                </header>
+                <div class="panel__body">
+                    <p class="error app-alert">{{param["curso_agregado"]}}</p>
 
-                    <label class="inscripcion" for="inscripcion">Seleccione el período de Inscripción:</label>
-                    <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
-                        <option value="" disabled selected>Seleccionar..</option>
+                    <form onsubmit="return validarDatos()" action="/agregar_curso" method="post" id="formCursos">
+                        <div class="field-grid field-grid--2">
+                            <div class="field field--full">
+                                <label for="inscripcion">Período de inscripción</label>
+                                <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
+                                    <option value="" disabled selected>Seleccionar..</option>
+                                    {% for inscripcion in param["inscripciones"] %}
+                                    {% if inscripcion["estado"] == "cerrada" %}
+                                    <option disabled>Inscripciones {{inscripcion["año"]}}
+                                        {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} Cuatri. (cerrada)
+                                    </option>
+                                    {% else %}
+                                    <option value="{{inscripcion['id']}}">Inscripciones {{inscripcion["año"]}}
+                                        {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} Cuatri.
+                                    </option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <p class="error" id="error inscripcion"></p>
+                            </div>
 
-                        {% for inscripcion in param["inscripciones"] %}
-                        {% if inscripcion["estado"] == "cerrada" %}
-                        <option disabled>Inscripciones {{inscripcion["año"]}}
-                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
-                        </option>
-                        {% else %}
-                        <option value="{{inscripcion['id']}}">Inscripciones {{inscripcion["año"]}}
-                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
-                        </option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                    <p class="error" id="error inscripcion"></p>
+                            <div class="field">
+                                <label for="mat">Materia</label>
+                                <select class="materiaSelect" name="mat" id="mat">
+                                    <option value="" disabled selected>Seleccionar..</option>
+                                    {% for mat in param["materias"] %}
+                                    <option value="{{mat['codigo']}}">{{mat["nombre"]}} ({{mat["codigo"]}})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-                    <label for="mat" class="materia">Seleccione la Materia:</label>
-                    <select class="materiaSelect" name="mat" id="mat">
-                        <option value="" disabled selected>Seleccionar..</option>
+                            <div class="field">
+                                <label for="comi">Comisión</label>
+                                <select class="comisionSelect" name="comi" id="comi">
+                                    <option value="" disabled selected>Seleccionar..</option>
+                                    {% for comision in param["comisiones"] %}
+                                    <option value="{{comision['nombre']}}">{{comision["nombre"]}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-                        {% for mat in param["materias"][0:] %}
-                        <option value="{{mat['codigo']}}">{{mat["nombre"]}} ({{mat["codigo"]}})</option>
-                        {% endfor %}
-                    </select>
+                            <div class="field field--full">
+                                <label for="cupo">Cupo máximo</label>
+                                <input type="number" name="cupo" id="cupo" min="1" max="100"
+                                    placeholder="Ingrese un cupo.." onfocusout="validarCupo()">
+                                <p class="error" id="errorcupo"></p>
+                            </div>
+                        </div>
 
-                    <label for="comi" class="com">Seleccione la Comision de la materia:</label>
-                    <select class="comisionSelect" name="comi" id="comi">
-                        <option value="" disabled selected>Seleccionar..</option>
+                        <!-- Horarios: un select por día -->
+                        <fieldset class="horarios">
+                            <legend>Horarios del curso</legend>
+                            <p class="horarios__ayuda">
+                                Elegí la franja de cada día en el que se dicta. Dejá
+                                "Sin horario" en los días que no corresponda.
+                            </p>
 
-                        {% for comision in param["comisiones"][0:] %}
-                        <option value="{{comision['nombre']}}">{{comision["nombre"]}}</option>
-                        {% endfor %}
-                    </select>
-
-                    <label for="cupo" class="cup">Ingrese un cupo máximo para el Curso:</label>
-                    <input type="number" name="cupo" id="cupo" min=1 placeholder="Ingrese un cupo.."
-                        onfocusout="validarCupo()">
-                    <p class="error" id="errorcupo"></p>
-
-
-                    <h4 class="hor">Seleccione las horas del Curso:</h4>
-                    <table class="tablaHora">
-                        <thead class="tablaHoraHead">
-                            <tr class="tablatr">
-                                <th class="tablath">Hora</th>
-                                <th class="tablath">Lunes</th>
-                                <th class="tablath">Martes</th>
-                                <th class="tablath">Miércoles</th>
-                                <th class="tablath">Jueves</th>
-                                <th class="tablath">Viernes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Aquí se mostrará la tabla de horarios -->
-                            <tr id="horas" class="tablatr">
-                                <th id="hora" class="tablath">Definir Horas:</th>
-                                <th id="hora" class="tablath">
+                            <div class="horarios__grid">
+                                <div class="dia">
+                                    <label for="horas-lun">Lunes</label>
                                     <select id="horas-lun" name="lunes" onfocusout="eliminarError()">
-                                        <option value="">Sin Horario</option>
-                                        {% for hora in param["horas"][0:] %}
+                                        <option value="">Sin horario</option>
+                                        {% for hora in param["horas"] %}
                                         <option value="{{hora['id']}}">{{hora["hora"]}}</option>
                                         {% endfor %}
                                     </select>
-                                </th>
-                                <th id="hora" class="tablath">
+                                </div>
+                                <div class="dia">
+                                    <label for="horas-mar">Martes</label>
                                     <select id="horas-mar" name="martes" onfocusout="eliminarError()">
-                                        <option value="">Sin Horario</option>
-                                        {% for hora in param["horas"][0:] %}
+                                        <option value="">Sin horario</option>
+                                        {% for hora in param["horas"] %}
                                         <option value="{{hora['id']}}">{{hora["hora"]}}</option>
                                         {% endfor %}
                                     </select>
-                                </th>
-                                <th id="hora" class="tablath">
+                                </div>
+                                <div class="dia">
+                                    <label for="horas-mie">Miércoles</label>
                                     <select id="horas-mie" name="miercoles" onfocusout="eliminarError()">
-                                        <option value="">Sin Horario</option>
-                                        {% for hora in param["horas"][0:] %}
+                                        <option value="">Sin horario</option>
+                                        {% for hora in param["horas"] %}
                                         <option value="{{hora['id']}}">{{hora["hora"]}}</option>
                                         {% endfor %}
                                     </select>
-                                </th>
-                                <th id="hora" class="tablath">
+                                </div>
+                                <div class="dia">
+                                    <label for="horas-jue">Jueves</label>
                                     <select id="horas-jue" name="jueves" onfocusout="eliminarError()">
-                                        <option value="">Sin Horario</option>
-                                        {% for hora in param["horas"][0:] %}
+                                        <option value="">Sin horario</option>
+                                        {% for hora in param["horas"] %}
                                         <option value="{{hora['id']}}">{{hora["hora"]}}</option>
                                         {% endfor %}
                                     </select>
-                                </th>
-                                <th id="hora" class="tablath">
+                                </div>
+                                <div class="dia">
+                                    <label for="horas-vie">Viernes</label>
                                     <select id="horas-vie" name="viernes" onfocusout="eliminarError()">
-                                        <option value="">Sin Horario</option>
-                                        {% for hora in param["horas"][0:] %}
+                                        <option value="">Sin horario</option>
+                                        {% for hora in param["horas"] %}
                                         <option value="{{hora['id']}}">{{hora["hora"]}}</option>
                                         {% endfor %}
                                     </select>
-                                </th>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p class="error" id="errorhoras">*Recuerde que debe ingresar un rango de horas de al menos un día
-                    </p>
+                                </div>
+                            </div>
 
-                    <p class="error" id="error incompleto"></p>
+                            <p class="error" id="errorhoras"></p>
+                        </fieldset>
 
-                    <input type="submit" value="Agregar Curso">
+                        <p class="error" id="error incompleto"></p>
 
-                </form>
+                        <input type="submit" class="btn-block" value="Agregar curso">
+                    </form>
+                </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script language="javascript" type="text/javascript" src="../static/js/Cursos.js"></script>
 

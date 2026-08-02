@@ -1,135 +1,289 @@
-* {
-    box-sizing: border-box;
+/* ============================================================
+   UCA Planner · Perfil (Usuario.css)
+   Compartido por:
+     · Usuario.html           (perfil del alumno)
+     · Administrador.html     (perfil del admin)
+     · EditarPerfil.html      (edición, alumno)
+     · EditarPerfilAdmin.html (edición, admin)
+   El layout general vive en shell.css, enlazado antes.
+   ============================================================ */
+
+.perfil-page {
+    --main-w: 520px;
 }
 
-body {
-    font-family: Arial;
-    padding: 10px;
-    background: white;
+/* ============================================================
+   TARJETA
+   Ocupa todo el alto de la fila (igual que el panel de marca) y
+   centra su contenido, como en las pantallas de auth.
+   ============================================================ */
+.perfil-page .app-main {
+    justify-content: center;
 }
 
-/* HEADER */
-.header {
-    padding: 10px;
-    text-align: center;
-    background: rgb(5, 17, 82);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-.header h1 {
-    font-size: 60px;
-    font-family: 'Inter';
-    color: rgb(255, 255, 255);
-}
-
-/* NAVEGADOR */
-/* Aplicar estilo a la barra de navegación superior */
-/* Cambiar de color al pasar el mouse */
-.topnav a:hover {
-    background-color: rgb(13, 1, 50);
-    color: rgb(255, 255, 255);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-.topnav {
-    overflow: hidden;
-    background-color: #1a228e;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-.topnav_right {
-    float: right;
-}
-
-/* Aplicar estilo a los enlaces de topnav */
-.topnav a {
-    float: left;
-    display: block;
-    color: #ffffff;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-/* Responsive layout - cuando la pantalla tiene menos de 400 px de ancho, hace que los enlaces de navegación se apilen uno encima del otro en lugar de uno al lado del otro */
-@media screen and (max-width: 500px) {
-
-    .topnav a,
-    .topnav_right {
-        float: none;
-        width: 100%;
-    }
-}
-
-/* ARTICLE */
-.contenedor {
+.perfil-page .panel {
     width: 100%;
-    max-width: 600px;
-    margin: auto;
-    margin-top: 20px;
-    line-height: 1;
-    font-size: large;
-    border-radius: 40px;
-    background-color: #c7e3fd;
-    padding: 40px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: safe center;
+    overflow-y: auto;
+    padding: clamp(24px, 2.6vw, 40px) clamp(22px, 2.4vw, 36px);
 }
 
-.perfil {
-    text-align: left;
-    font-family: 'Lucida Sans';
-    color: rgb(22, 0, 56);
+.perfil-page .panel>* {
+    flex: 0 0 auto;
 }
 
-.informacion {
-    padding-top: 20px;
-    padding-bottom: 30px;
-    margin: 5px;
-    color: rgb(36, 0, 90);
+.perfil-card__head {
+    margin-bottom: clamp(16px, 2.4vh, 24px);
 }
 
-.botones {
-    width: 265px;
-    text-align: center;
+.perfil-card__head h1 {
+    margin: 0 0 6px;
+    font-size: clamp(1.35rem, 2.1vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--uca-800);
+    letter-spacing: -0.2px;
+}
+
+.perfil-card__head p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+}
+
+/* ============================================================
+   IDENTIDAD (avatar + nombre + rol)
+   ============================================================ */
+.identidad {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: clamp(16px, 2.2vh, 22px);
+    margin-bottom: clamp(16px, 2.2vh, 22px);
+    border-bottom: 1px solid var(--line);
+}
+
+.avatar {
+    flex: 0 0 auto;
+    width: 66px;
+    height: 66px;
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--grad-header);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+}
+
+.identidad__datos {
+    min-width: 0;
+}
+
+.identidad__nombre {
+    margin: 0 0 2px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--uca-800);
+    word-break: break-word;
+}
+
+.identidad__usuario {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    word-break: break-all;
+}
+
+.chip-rol {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 11px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--grad-btn);
+    border-radius: var(--r-pill);
+}
+
+.chip-rol--admin {
+    background: linear-gradient(120deg, #5b21b6 0%, #7c3aed 100%);
+}
+
+/* ============================================================
+   LISTA DE DATOS
+   ============================================================ */
+.datos-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.datos-list li {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 11px 14px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    transition: border-color 0.22s var(--ease), box-shadow 0.22s var(--ease);
+}
+
+.datos-list li:hover {
+    border-color: var(--uca-accent-2);
+    box-shadow: var(--shadow-sm);
+}
+
+.datos-list__icon {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: var(--uca-600);
+    background: var(--surface-2);
+    border-radius: 10px;
+}
+
+.datos-list__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.datos-list__label {
+    font-size: 0.73rem;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.datos-list__value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    word-break: break-word;
+}
+
+/* ============================================================
+   ACCIONES
+   ============================================================ */
+.perfil-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: clamp(18px, 2.6vh, 26px);
+}
+
+/* .boton ya trae el gradiente de theme.css; acá solo el layout */
+.perfil-page .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1 1 160px;
+    padding: 12px 20px;
+    font-size: 0.93rem;
     text-decoration: none;
-    margin: auto;
 }
 
-.boton {
-    display: block;
-    text-decoration: none;
-    background-color: #152087;
-    color: white;
-    padding: 14px 20px;
-    margin: 30px 0;
-    border: none;
-    cursor: pointer;
-    border-radius: 15px;
+/* Acción secundaria: sobria, no compite con "Editar perfil" */
+.perfil-page .boton--secundario {
+    color: var(--uca-800) !important;
+    background: #fff !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: none !important;
 }
 
-.boton:hover {
-    background-color: #3d77aa;
+.perfil-page .boton--secundario:hover {
+    color: #9f1239 !important;
+    background: #fff1f3 !important;
+    border-color: #fecdd3 !important;
+    box-shadow: none !important;
 }
 
-@media screen and (max-width: 400px) {
-    .botones {
+/* ============================================================
+   EDICIÓN DE PERFIL
+   ============================================================ */
+.editar-nota {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--uca-800);
+    background: #eef4ff;
+    border: 1px solid #d7e3ff;
+    border-left: 3px solid var(--uca-500);
+    border-radius: var(--r-sm);
+}
+
+.perfil-page .field-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+/* ============================================================
+   PANTALLAS BAJAS
+   ============================================================ */
+@media (max-height: 800px) {
+    .perfil-page .panel {
+        padding: 22px 24px;
+    }
+
+    .avatar {
+        width: 56px;
+        height: 56px;
+        font-size: 1.3rem;
+        border-radius: 17px;
+    }
+
+    .datos-list li {
+        padding: 9px 12px;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 980px) {
+
+    /* Mismo criterio que en las pantallas de auth: sin panel de marca,
+       la tarjeta llena el alto disponible en lugar de flotar en el medio. */
+    .perfil-page .app-main {
+        justify-content: flex-start;
+    }
+
+    .perfil-page .panel {
+        flex: 1 1 auto;
         width: 100%;
-        font-size: medium;
-        text-align: center;
-    }
-
-    .boton:hover {
-        background-color: #3d77aa;
+        height: auto;
+        max-width: 560px;
+        margin: 0 auto;
+        overflow: visible;
     }
 }
 
-/* FOOTER */
-.footer {
-    margin-top: 20px;
-    padding: 20px;
-    color: #ffffff;
-    text-align: center;
-    background: #a9a9a9;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+@media (max-width: 560px) {
+    .perfil-page .panel {
+        padding: 20px 18px;
+    }
+
+    .perfil-acciones .boton {
+        flex-basis: 100%;
+    }
 }

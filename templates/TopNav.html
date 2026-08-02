@@ -1,0 +1,76 @@
+{#
+  ============================================================
+  UCA Planner · Barra de navegación global
+  ============================================================
+  Uso:  {% include 'TopNav.html' %}
+
+  No recibe parámetros: se adapta sola leyendo `session` y
+  `request`, que Flask ya expone en el contexto de Jinja. Por eso
+  no hace falta tocar route.py ni controller.py.
+
+  Muestra tres variantes según el rol de la sesión:
+    · admin      → gestión (inscripciones, cursos, comisiones, materias)
+    · alumno     → información y organizador de horarios
+    · sin sesión → información, organizador, registro e ingreso
+
+  En pantallas chicas (≤860px) los enlaces se pliegan detrás del
+  botón "Menú". El desplegable es CSS puro (checkbox + label), así
+  no depende de ningún script: si el JS falla, la navegación sigue.
+  ============================================================
+#}
+{%- macro navlink(href, label, active=none) -%}
+{%- set esActivo = (request.path == href) if active is none else active -%}
+<a href="{{ href }}"{% if esActivo %} class="is-active" aria-current="page"{% endif %}>{{ label }}</a>
+{%- endmacro -%}
+
+{%- macro logout() -%}
+<a href="/logout" class="topnav__logout">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 17l5-5-5-5M20 12H9M11 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5"></path>
+    </svg>
+    Cerrar sesión
+</a>
+{%- endmacro -%}
+
+{%- set rol = session['rol'] -%}
+{%- set enPerfil = request.path in ['/perfil', '/editar_perfil'] -%}
+
+<nav class="topnav" aria-label="Navegación principal">
+    <!-- Control del desplegable en pantallas chicas -->
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-input">
+    <label for="nav-toggle" class="nav-toggle">
+        <span class="nav-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="nav-toggle__texto">Menú</span>
+    </label>
+
+    <div class="nav-links">
+        {% if rol == 'admin' %}
+        {{ navlink('/home', 'Información') }}
+        {{ navlink('/gestion_inscripciones', 'Inscripciones') }}
+        {{ navlink('/cursos', 'Cursos') }}
+        {{ navlink('/comisiones', 'Comisiones') }}
+        {{ navlink('/materias', 'Materias') }}
+        <div class="topnav_right">
+            {{ navlink('/perfil', 'Mi perfil', enPerfil) }}
+            {{ logout() }}
+        </div>
+
+        {% elif rol %}
+        {{ navlink('/home', 'Información') }}
+        {{ navlink('/cronograma', 'Organizador de Horarios') }}
+        <div class="topnav_right">
+            {{ navlink('/perfil', 'Mi perfil', enPerfil) }}
+            {{ logout() }}
+        </div>
+
+        {% else %}
+        {{ navlink('/home', 'Información') }}
+        {{ navlink('/cronograma', 'Organizador de Horarios') }}
+        <div class="topnav_right">
+            {{ navlink('/register', 'Registrarse') }}
+            {{ navlink('/login', 'Iniciar Sesión') }}
+        </div>
+        {% endif %}
+    </div>
+</nav>

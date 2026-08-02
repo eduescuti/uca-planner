@@ -1,145 +1,112 @@
-* {
-    box-sizing: border-box;
+/* ============================================================
+   UCA Planner · Gestión de cursos (Cursos.css)
+   Solo lo propio de esta vista. La base de las pantallas de
+   gestión está en Gestion.css, enlazado antes.
+   ============================================================ */
+
+.cursos-page {
+    /* El formulario es largo: se lleva algo más de ancho que el listado */
+    --split-a: 0.85fr;
+    --split-b: 1.15fr;
 }
 
-body {
-    font-family: Arial;
-    padding: 10px;
-    background: white;
+/* Materia y comisión entran de a dos por fila */
+.cursos-page .field-grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.titulo {
-    width: auto;
+/* ============================================================
+   HORARIOS POR DÍA
+   ============================================================ */
+.horarios {
+    min-width: 0;
+    margin: clamp(14px, 2vh, 20px) 0 0;
+    padding: 16px;
+    background: var(--surface-2) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: var(--r-md) !important;
 }
 
-
-.leftcolumn {
-    float: left;
-    width: 24%;
-    margin-top: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+.horarios>legend {
+    padding: 0 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: var(--uca-800);
 }
 
-/* Columna derecha */
-.rightcolumn {
-    float: right;
-    width: 75%;
-    margin-top: 20px;
-    background-color: #f1f1f1;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+.horarios__ayuda {
+    margin: 0 0 14px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
 }
 
-.card {
-    background-color: white;
-    padding: 20px;
+.horarios__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px 12px;
 }
 
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-    /*
-    La propiedad CSS clear especifica si un elemento puede estar al lado 
-    de elementos flotantes que lo preceden o si debe ser movido (cleared) 
-    debajo de ellos.
-    
-    */
+.dia {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
 }
 
-.boton {
-    display: block;
-    width: 80%;
-    margin-top: 10px;
-    background-color: #152087;
-    color: white;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    padding: 14px 20px;
-    margin: 20px;
-    text-decoration: none;
-    text-align: center;
-
+.dia>label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
 }
 
-/* TABLA */
-table {
-    width: 100%;
+.cursos-page .dia select {
+    padding: 9px 11px;
+    font-size: 0.86rem;
 }
 
-
-
-thead {
-    background-color: rgb(23, 0, 90);
-    color: #ffffff;
-    padding: 8px;
+.horarios #errorhoras {
+    margin-top: 12px;
 }
 
-th,
-tr {
-    padding: 8px 15px;
-    border-bottom: 1px solid #b2b2b2;
-}
+/* ============================================================
+   PANTALLAS BAJAS
+   ============================================================ */
+@media (max-height: 800px) {
+    .horarios {
+        padding: 13px;
+        margin-top: 12px;
+    }
 
-#hora {
-    width: 150px;
-}
+    .horarios__ayuda {
+        margin-bottom: 10px;
+        font-size: 0.79rem;
+    }
 
-/* Responsive - scrolleo horizontal */
-@media screen and (max-width: 800px) {
-    table {
-        display: block;
-        overflow-x: auto;
+    .horarios__grid {
+        gap: 8px 10px;
     }
 }
 
-#contenedor {
-    line-height: 3;
-    /* background-color: #c7e3fd; */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1180px) {
+    .cursos-page {
+        --split-a: 1fr;
+        --split-b: 1fr;
+    }
 }
 
-input[type=number],
-#inscripcion,
-#mat,
-#comi,
-#cupo {
-    width: 40%;
-    padding: 10px;
-    display: block;
-    font-size: large;
-    border: 2px solid #ccc;
-    border-radius: 15px;
-    box-sizing: border-box;
-}
+@media (max-width: 560px) {
+    .cursos-page .field-grid--2 {
+        grid-template-columns: minmax(0, 1fr);
+    }
 
-input[type=submit] {
-    width: 50%;
-    background-color: #152087;
-    color: white;
-    padding: 14px 20px;
-    margin: 50px 0;
-    font-size: large;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-}
-
-input[type=submit]:hover {
-    background-color: #3d77aa;
-}
-
-.error {
-    color: #dd0000;
-}
-
-/* Responsive layout - cuando la pantalla tiene menos de 800 px de ancho, hace que las dos columnas se apilen una encima de la otra en lugar de una al lado de la otra */
-@media screen and (max-width: 500px) {
-
-    .leftcolumn,
-    .rightcolumn {
-        width: 100%;
-        padding: 0;
+    .horarios__grid {
+        grid-template-columns: minmax(0, 1fr);
     }
 }

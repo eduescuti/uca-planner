@@ -1,175 +1,193 @@
-* {
-    box-sizing: border-box;
+/* ============================================================
+   UCA Planner · Organizador de Horarios (OrganizadorDeHorarios.css)
+   Vista del alumno con sesión iniciada.
+
+   Reutiliza el skin del previsualizador público: la grilla, los
+   colores por materia y el panel vienen de Visualizador.css, que
+   se enlaza antes. Acá solo van los controles del riel izquierdo.
+   ============================================================ */
+
+.organizador-page {
+    /* Riel algo más ancho que el del previsualizador: acá hay controles */
+    --rail-w: 356px;
 }
 
-body {
-    font-family: Arial;
-    padding: 10px;
-    background: white;
+/* ============================================================
+   FORMULARIO DENTRO DEL RIEL NAVY
+   ============================================================ */
+.rail-form {
+    margin-top: clamp(16px, 2.4vh, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
-/* HEADER */
-.header {
-    padding: 10px;
-    text-align: center;
-    background: rgb(5, 17, 82);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+.rail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
 }
 
-.header h1 {
-    font-size: 60px;
-    font-family: 'Inter';
-    color: rgb(255, 255, 255);
+.rail-field>label,
+.organizador-page .titulo1 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: rgba(219, 229, 255, 0.72);
 }
 
-/* NAVEGADOR */
-/* Aplicar estilo a la barra de navegación superior */
-/* Cambiar de color al pasar el mouse */
-.topnav a:hover {
-    background-color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-.topnav {
-    overflow: hidden;
-    background-color: #1a228e;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-.topnav_right {
-    float: right;
-}
-
-/* Aplicar estilo a los enlaces de topnav */
-.topnav a {
-    float: left;
-    display: block;
-    color: #ffffff;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-/* Responsive layout - cuando la pantalla tiene menos de 400 px de ancho, hace que los enlaces de navegación se apilen uno encima del otro en lugar de uno al lado del otro */
-@media screen and (max-width: 446px) {
-
-    .topnav a,
-    .topnav_right {
-        float: none;
-        width: 100%;
-    }
-}
-
-/* TABLA */
-table {
+.organizador-page .rail-field select {
     width: 100%;
+    padding: 11px 13px;
+    font-size: 0.89rem;
+    color: var(--ink);
+    background: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.18) !important;
 }
 
-thead {
-    background-color: rgb(13, 1, 50);
-    color: #ffffff;
-    padding: 8px;
+.organizador-page .rail-field select:focus {
+    border-color: var(--uca-accent) !important;
 }
 
-th {
-    padding: 8px 15px;
+/* Materia queda deshabilitada hasta elegir el período */
+.organizador-page .rail-field select:disabled {
+    color: #8d97b5;
+    background: rgba(255, 255, 255, 0.55);
+    cursor: not-allowed;
 }
 
-@media screen and (max-width: 894px) {
-
-    #hora {
-        display: block;
-    }
+/* ---- Errores sobre fondo navy ---- */
+.organizador-page .brand-panel .error {
+    margin: 0;
+    font-size: 0.79rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #ffc2cf;
 }
 
-#hora {
-    width: 150px;
+.organizador-page .brand-panel .error:empty {
+    display: none;
 }
 
-
-#materia,
-#inscripcion,
-button {
-    font-size: medium;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    display: block;
+#resCupo {
+    margin-top: 12px !important;
 }
 
-.titulo1 {
-    color: rgb(5, 17, 82);
+/* ============================================================
+   ACCIONES
+   ============================================================ */
+.rail-acciones {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 4px;
 }
 
-.error {
-    color: #dd0000;
+.organizador-page .rail-acciones input {
     width: 100%;
+    padding: 11px 18px;
+    font-size: 0.9rem;
 }
 
-/* Responsive - scrolleo horizontal */
-@media screen and (max-width: 800px) {
-    table {
-        display: block;
-        overflow-x: auto;
-    }
+/* Acción secundaria: previsualizar no es lo mismo que inscribirse */
+.organizador-page .btn-ver {
+    color: #eaf1ff !important;
+    background: rgba(255, 255, 255, 0.10) !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
+    box-shadow: none !important;
 }
 
-.card {
-    background-color: white;
-    padding: 20px;
-    margin-top: 20px;
+.organizador-page .btn-ver:hover {
+    background: rgba(255, 255, 255, 0.18) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: none !important;
 }
 
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-    /*
-    La propiedad CSS clear especifica si un elemento puede estar al lado 
-    de elementos flotantes que lo preceden o si debe ser movido (cleared) 
-    debajo de ellos.
-    
-    */
+/* Acción principal: destaca en claro sobre el navy */
+.organizador-page #btnInscribirse {
+    color: #08163f !important;
+    background: linear-gradient(135deg, #ffffff 0%, #dbeafe 100%) !important;
+    box-shadow: 0 8px 20px rgba(4, 12, 46, 0.35) !important;
 }
 
-.leftcolumn {
-    float: left;
-    width: 75%;
-    margin-top: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+.organizador-page #btnInscribirse:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #c7dcff 100%) !important;
 }
 
-/* Columna derecha */
-.rightcolumn {
-    float: right;
-    width: 24%;
-    margin-top: 20px;
-    background-color: #f1f1f1;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-/* Responsive layout - cuando la pantalla tiene menos de 800 px de ancho, hace que las dos columnas se apilen una encima de la otra en lugar de una al lado de la otra */
-@media screen and (max-width: 900px) {
-
-    .leftcolumn,
-    .rightcolumn {
-        width: 100%;
-        padding: 0;
-    }
-}
-
-select {
+/* Limpiar: acción destructiva menor, discreta */
+.organizador-page .btn-reset {
     width: 100%;
+    margin-top: 9px;
+    padding: 9px 18px;
+    font-size: 0.84rem;
+    color: rgba(219, 229, 255, 0.85) !important;
+    background: transparent !important;
+    border: 1px dashed rgba(255, 255, 255, 0.28) !important;
+    box-shadow: none !important;
 }
 
-/* FOOTER */
-.footer {
-    margin-top: 150px;
-    padding: 20px;
-    color: #ffffff;
-    text-align: center;
-    background: #a9a9a9;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+.organizador-page .btn-reset:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-style: solid !important;
+    box-shadow: none !important;
+}
+
+/* ============================================================
+   GRILLA
+   El grueso del estilo viene de Visualizador.css. Acá solo se
+   ajusta lo que cambia por ser una grilla que se llena por JS.
+   ============================================================ */
+.organizador-page .cronograma__tabla {
+    min-height: 480px;
+}
+
+/* Las franjas vienen de la base con formato "07:45hs - 10:15hs":
+   necesitan más ancho que las del previsualizador. */
+.organizador-page .cronograma__tabla thead th:first-child,
+.organizador-page .cronograma__tabla .hora {
+    width: 132px;
+}
+
+/* Las celdas arrancan vacías y las llena mostrarMateria() */
+.organizador-page .cronograma__tabla td.slot {
+    cursor: default;
+}
+
+.organizador-page .badge {
+    text-transform: none;
+    letter-spacing: 0.3px;
+}
+
+/* ============================================================
+   PANTALLAS BAJAS
+   ============================================================ */
+@media (max-height: 800px) {
+    .rail-form {
+        margin-top: 14px;
+        gap: 11px;
+    }
+
+    .organizador-page .cronograma__tabla {
+        min-height: 400px;
+    }
+
+    .organizador-page .rail-field select {
+        padding: 9px 12px;
+    }
+
+    .organizador-page .rail-acciones input {
+        padding: 9px 16px;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 980px) {
+    .organizador-page .cronograma__tabla {
+        min-height: 0;
+    }
 }

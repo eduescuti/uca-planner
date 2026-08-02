@@ -1,63 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Para que se active el modo responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Relaciona o enlaza este archivo html con el 03.css-->
-    <link rel="stylesheet" href="../static/css/EditarPerfil.css">
+    <!-- theme.css (skin) → shell.css (layout base) → Usuario.css (esta vista) -->
     <link rel="stylesheet" href="../static/css/theme.css">
+    <link rel="stylesheet" href="../static/css/shell.css">
+    <link rel="stylesheet" href="../static/css/Usuario.css">
     <link rel="icon" type="image/svg+xml" href="../static/img/favicon.svg">
-    <title>UCA Planner | Administrador</title>
+    <title>UCA Planner | Editar perfil</title>
 </head>
 
-<body>
-    <div class="header">
-        <h1>UCA Planner</h1>
-    </div>
+<body class="app-page perfil-page">
+    {% include 'TopNav.html' %}
 
-    <div class="topnav">
-        <a href="/home">Información</a>
-        <a href="/gestion_inscripciones">Inscripciones</a>
-        <a href="/cursos">Cursos</a>
-        <a href="/comisiones">Comisiones</a>
-        <a href="/materias">Materias</a>
+    <main class="app-shell">
+        <!-- ---------- Panel de marca ---------- -->
+        <aside class="brand-panel">
+            <div class="brand-panel__inner">
+                <p class="brand-wordmark">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="17" rx="3"></rect>
+                            <path d="M8 2v4M16 2v4M3 10h18"></path>
+                            <path d="M8.5 15.5l2 2 4-4.5"></path>
+                        </svg>
+                    </span>
+                    UCA Planner
+                </p>
 
-        <div class="topnav_right">
-            <a href="/perfil">Administrador</a>
-        </div>
-    </div>
+                <h1 class="brand-title">Actualizá tus datos.</h1>
+                <p class="brand-text">
+                    Cambiá tu nombre de usuario, tu mail o tu contraseña. Los campos que
+                    dejes <strong>vacíos</strong> se mantienen como están.
+                </p>
 
-    <div class="contenedor">
-        <h1>Editar Perfil</h1>
+                <ul class="brand-features">
+                    <li>
+                        <span class="brand-features__icon" aria-hidden="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <path d="M9.5 12l1.8 1.8L15 10"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-features__text">
+                            <strong>Es una cuenta con permisos</strong>
+                            <span>Un cambio acá afecta el acceso a toda la gestión.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="brand-features__icon" aria-hidden="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-features__text">
+                            <strong>Contraseña de 6 caracteres o más</strong>
+                            <span>Usá una que no repitas en otros sitios.</span>
+                        </span>
+                    </li>
+                </ul>
 
-        <form onsubmit="return validarDatos()" action="/_editar_perfil" method="get">
+                <div class="cta-row">
+                    <a href="/perfil" class="cta cta--ghost">Volver a mi perfil</a>
+                </div>
+            </div>
+        </aside>
 
-            <label for="usuario">Cambiar Usuario:</label>
-            <input type="text" name="usuario" id="usuario" placeholder="@{{param['usuario']}}"
-                onfocusout="validarUsuario()">
-            <p class="error" id="error usuario"></p>
+        <!-- ---------- Formulario ---------- -->
+        <section class="app-main">
+            <div class="panel">
+                <header class="perfil-card__head">
+                    <h1>Editar perfil</h1>
+                    <p>Modificá solo lo que necesites cambiar.</p>
+                </header>
 
-            <label for="mail">Cambiar Mail</label>
-            <input type="email" id="mail" name="email" placeholder="{{param['email']}}." onfocusout="validarMail()">
-            <p class="error" id="error mail"></p>
+                <p class="editar-nota">
+                    Los campos muestran tus datos actuales como referencia. Dejá vacío el
+                    que no quieras modificar.
+                </p>
 
-            <label for="contrasena">Cambiar Contraseña</label>
-            <input type="password" id="contra" name="contraseña" placeholder="Ingrese una Nueva Contraseña.."
-                onfocusout="validarContra()">
-            <p class="error" id="error contra"></p>
+                <form onsubmit="return validarDatos()" action="/_editar_perfil" method="get" id="formEditarPerfil">
+                    <div class="field-grid">
+                        <div class="field field--full">
+                            <label for="usuario">Cambiar usuario</label>
+                            <input type="text" name="usuario" id="usuario" placeholder="@{{param['usuario']}}"
+                                autocomplete="username" onfocusout="validarUsuario()">
+                            <p class="error" id="error usuario"></p>
+                        </div>
 
-            <p class="error" id="error incompleto"></p>
+                        <div class="field field--full">
+                            <label for="mail">Cambiar mail</label>
+                            <input type="email" id="mail" name="email" placeholder="{{param['email']}}"
+                                autocomplete="email" onfocusout="validarMail()">
+                            <p class="error" id="error mail"></p>
+                        </div>
 
-            <input type="submit" value="Guardar Cambios">
+                        <div class="field field--full">
+                            <label for="contra">Cambiar contraseña</label>
+                            <span class="input-wrap">
+                                <input type="password" id="contra" name="contraseña"
+                                    placeholder="Ingrese una nueva contraseña.." autocomplete="new-password"
+                                    onfocusout="validarContra()">
+                                <button type="button" class="pw-toggle" data-target="contra" aria-pressed="false"
+                                    aria-label="Mostrar contraseña">
+                                    <svg class="pw-toggle__on" width="19" height="19" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="pw-toggle__off" width="19" height="19" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M1 1l22 22">
+                                        </path>
+                                        <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"></path>
+                                    </svg>
+                                </button>
+                            </span>
+                            <p class="error" id="error contra"></p>
+                        </div>
+                    </div>
 
-        </form>
-    </div>
+                    <p class="error" id="error incompleto"></p>
 
+                    <input type="submit" class="btn-block" value="Guardar cambios">
+                </form>
+            </div>
+        </section>
+    </main>
 
     <script language="javascript" type="text/javascript" src="../static/js/EditarPerfil.js"></script>
+    <script src="../static/js/auth.js"></script>
 
     <!-- Motion (motion.dev) + micro-interacciones UCA Planner -->
     <script src="https://cdn.jsdelivr.net/npm/motion@11/dist/motion.js"></script>

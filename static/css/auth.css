@@ -257,7 +257,18 @@
    RESPONSIVE
    ============================================================ */
 @media (max-width: 980px) {
+
+    /* Sin panel de marca, la tarjeta ocupa todo el alto disponible en vez
+       de quedar flotando en el medio. `flex: 1 1 auto` la hace crecer; si el
+       formulario es más alto que la pantalla, crece de más y scrollea la
+       página (no la tarjeta), que es lo esperable en un teléfono. */
+    .auth-page .app-main {
+        justify-content: flex-start;
+    }
+
     .auth-page .contenedor {
+        flex: 1 1 auto;
+        width: 100%;
         height: auto;
         max-width: 560px;
         margin: 0 auto;

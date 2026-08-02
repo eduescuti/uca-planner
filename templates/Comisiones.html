@@ -1,60 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- theme.css (skin) → shell.css (layout base) → Gestion.css (pantallas de gestión) -->
+    <link rel="stylesheet" href="../static/css/theme.css">
+    <link rel="stylesheet" href="../static/css/shell.css">
+    <link rel="stylesheet" href="../static/css/Gestion.css">
     <link rel="icon" type="image/svg+xml" href="../static/img/favicon.svg">
     <title>UCA Planner | Comisiones</title>
-    <link rel="stylesheet" href="../static/css/Materias.css">
-    <link rel="stylesheet" href="../static/css/theme.css">
 </head>
 
-<body>
-    <!-- HEADER -->
-    <div class="header">
-        <img src="../static/img/logo-uca.jfif" class="imagen1">
-        <h2 class="titulo">Gestión de Comisiones</h2>
-    </div>
+<body class="app-page gestion-page">
+    {% include 'TopNav.html' %}
 
+    <main class="app-shell app-shell--rail">
+        <!-- ---------- Riel de contexto ---------- -->
+        <aside class="brand-panel">
+            <div class="brand-panel__inner">
+                <p class="brand-wordmark brand-wordmark--sm">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9.5" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                        </svg>
+                    </span>
+                    UCA Planner
+                </p>
 
-    <div class="row">
-        <div class="leftcolumn">
-            <div class="card">
-                <h4 class="titulo">Comisiones Cargadas</h4>
-                <select name="com" class="comisionSelect" multiple>
-                    {% for comision in param["comisiones"][0:] %}
-                    <option value="{{comision['nombre']}}">{{comision["nombre"]}}</option>
-                    {% endfor %}
-                </select>
+                <h1 class="brand-title">Gestión de comisiones</h1>
+                <p class="brand-text">
+                    Una comisión agrupa a los alumnos en una franja de cursada. Se combina
+                    con una materia para dar de alta un <strong>curso</strong>.
+                </p>
+
+                <p class="brand-note">
+                    El nombre de la comisión son <strong>dos letras</strong> (por ejemplo
+                    AM o PM) y no puede repetirse.
+                </p>
+
+                <ul class="rail-stats">
+                    <li>
+                        <span>Comisiones cargadas</span>
+                        <span class="rail-stats__valor">{{ param["comisiones"]|length }}</span>
+                    </li>
+                </ul>
+
+                <div class="cta-row">
+                    <a href="/home" class="cta cta--ghost">Volver al inicio</a>
+                </div>
             </div>
-            <div class="card">
-                <a href="/comisiones" class="boton">Agregar Comisión</a>
-                <a href="/home" class="boton">Volver</a>
+        </aside>
+
+        <!-- ---------- Contenido ---------- -->
+        <section class="app-main app-main--split">
+            <!-- Listado -->
+            <div class="panel">
+                <header class="panel__head">
+                    <h2 class="panel__title">Comisiones cargadas</h2>
+                    <span class="count-badge">{{ param["comisiones"]|length }} en total</span>
+                </header>
+                <div class="panel__body">
+                    {% if param["comisiones"] %}
+                    <ul class="lista-datos">
+                        {% for comision in param["comisiones"] %}
+                        <li>
+                            <span class="lista-datos__num" aria-hidden="true">{{ loop.index }}</span>
+                            <span class="lista-datos__text">
+                                <span class="lista-datos__nombre">Comisión {{ comision["nombre"] }}</span>
+                            </span>
+                            <span class="lista-datos__tag">{{ comision["nombre"] }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="vacio">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9.5" cy="7" r="4"></circle>
+                        </svg>
+                        <p>Todavía no hay comisiones cargadas. Agregá la primera con el formulario de al lado.</p>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-        <div class="rightcolumn">
-            <div class="card" id="contenedor">
 
-                <h2>Agregar una Comisión</h2>
+            <!-- Formulario -->
+            <div class="panel" id="contenedor">
+                <header class="panel__head">
+                    <h2 class="panel__title">Agregar una comisión</h2>
+                </header>
+                <div class="panel__body">
+                    <p class="error app-alert">{{param["comision_agregada"]}}</p>
 
-                <p class="error">{{param["comision_agregada"]}}</p>
+                    <form onsubmit="return validarDatos()" action="/agregar_comision" method="post" id="formComision">
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="comision">Nombre de la comisión</label>
+                                <input type="text" name="comision" id="comision"
+                                    placeholder="Ingrese la comisión.." onfocusout="validarNombre()"
+                                    onkeyup="validar_comision()">
+                                <p class="error" id="resComision"></p>
+                                <p class="error" id="error comision"></p>
+                            </div>
+                        </div>
 
-                <form onsubmit="return validarDatos()" action="/agregar_comision" method="post" id="formComision">
-                    <label for="comision">Nombre de Comisión:</label>
-                    <input type="text" name="comision" id="comision" placeholder="Ingrese la comisión.."
-                        onfocusout="validarNombre()" onkeyup="validar_comision()">
-                    <p class="error" id="resComision"></p>
-                    <p class="error" id="error comision"></p>
+                        <p class="error" id="error incompleto"></p>
 
-                    <p class="error" id="error incompleto"></p>
-
-                    <input type="submit" id="btnSubmit" value="Agregar Comisión">
-
-                </form>
+                        <input type="submit" id="btnSubmit" class="btn-block" value="Agregar comisión">
+                    </form>
+                </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script language="javascript" type="text/javascript" src="../static/js/Comisiones.js"></script>
 

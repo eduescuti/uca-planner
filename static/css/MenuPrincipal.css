@@ -1,7 +1,10 @@
 /* ============================================================
-   UCA Planner · Información / Home (MenuPrincipal.css)
-   Específico de la vista. El layout general (topnav, grilla,
-   panel de marca, paneles) vive en shell.css, enlazado antes.
+   UCA Planner · Home / Información (MenuPrincipal.css)
+   Compartido por las tres variantes del home:
+     · MenuPrincipal.html        (sin sesión)
+     · MenuPrincipalUsuario.html (alumno)
+     · MenuPrincipalAdmin.html   (admin)
+   El layout general vive en shell.css, enlazado antes.
    ============================================================ */
 
 .home-page {
@@ -24,6 +27,23 @@
     font-weight: 600;
 }
 
+/* Etiqueta de rol sobre el título del hero */
+.rol-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 0 12px;
+    padding: 6px 14px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    color: #04122c;
+    background: linear-gradient(140deg, #7dd3fc 0%, #38bdf8 100%);
+    border-radius: var(--r-pill);
+    box-shadow: 0 6px 16px rgba(56, 189, 248, 0.3);
+}
+
 /* ============================================================
    PANELES DE CONTENIDO
    Reparten el alto disponible (regla .app-main--stack de shell.css)
@@ -35,6 +55,55 @@
     flex-direction: column;
     justify-content: center;
     justify-content: safe center;
+}
+
+/* ============================================================
+   ACCESOS RÁPIDOS (home del administrador)
+   ============================================================ */
+.quick-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.quick-link {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--uca-800);
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    transition: transform 0.22s var(--ease), border-color 0.22s var(--ease),
+        box-shadow 0.22s var(--ease), background-color 0.22s var(--ease);
+}
+
+.quick-link__icon {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: var(--grad-btn);
+    border-radius: 10px;
+    transition: transform 0.28s var(--ease-back);
+}
+
+.quick-link:hover {
+    transform: translateY(-2px);
+    background: #f6f9ff;
+    border-color: var(--uca-accent-2);
+    box-shadow: var(--shadow-sm);
+}
+
+.quick-link:hover .quick-link__icon {
+    transform: rotate(-6deg) scale(1.05);
 }
 
 /* ============================================================
@@ -52,6 +121,41 @@
     border-radius: 11px;
 }
 
+/* Separador cuando "Sobre nosotros" y "Contacto" comparten panel */
+.panel__divider {
+    margin: 16px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+}
+
+.panel__subtitle {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+/* ============================================================
+   PANTALLAS BAJAS
+   ============================================================ */
+@media (max-height: 800px) {
+    .home-page .panel {
+        padding: 18px 22px;
+    }
+
+    .quick-links {
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .quick-link {
+        padding: 10px 12px;
+        font-size: 0.87rem;
+    }
+}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -62,5 +166,11 @@
 
     .home-page .panel {
         justify-content: flex-start;
+    }
+}
+
+@media (max-width: 560px) {
+    .quick-links {
+        grid-template-columns: minmax(0, 1fr);
     }
 }

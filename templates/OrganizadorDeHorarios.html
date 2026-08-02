@@ -1,120 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Para que se active el modo responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Relaciona o enlaza este archivo html con el 03.css-->
-    <link rel="stylesheet" href="../static/css/OrganizadorDeHorarios.css">
+    <!-- theme.css → shell.css → Visualizador.css (skin del cronograma)
+         → OrganizadorDeHorarios.css (controles de esta vista) -->
     <link rel="stylesheet" href="../static/css/theme.css">
+    <link rel="stylesheet" href="../static/css/shell.css">
+    <link rel="stylesheet" href="../static/css/Visualizador.css">
+    <link rel="stylesheet" href="../static/css/OrganizadorDeHorarios.css">
     <link rel="icon" type="image/svg+xml" href="../static/img/favicon.svg">
     <title>UCA Planner | Organizador de Horarios</title>
-
 </head>
 
-<body>
-    <div class="header">
-        <h1>UCA Planner</h1>
-    </div>
-    <div class="topnav">
-        <a href="/home">Información</a>
-        <a href="/cronograma">Organizador de Horarios</a>
-        <div class="topnav_right">
-            <a href="/perfil">Usuario</a>
-        </div>
-    </div>
+<body class="app-page cronograma-page organizador-page">
+    {% include 'TopNav.html' %}
 
-    <div class="row">
-        <div class="leftcolumn">
-            <div class="card">
-                <table id="cronograma">
-                    <thead>
-                        <tr>
-                            <th id="hora">Hora</th>
-                            {% for dias in param["dias"] %}
-                            <th>{{dias["dia"]}}</th>
+    <main class="app-shell app-shell--rail">
+        <!-- ---------- Riel: controles ---------- -->
+        <aside class="brand-panel">
+            <div class="brand-panel__inner">
+                <p class="brand-wordmark brand-wordmark--sm">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="17" rx="3"></rect>
+                            <path d="M8 2v4M16 2v4M3 10h18"></path>
+                            <path d="M8.5 15.5l2 2 4-4.5"></path>
+                        </svg>
+                    </span>
+                    UCA Planner
+                </p>
+
+                <h1 class="brand-title">Armá tu semana</h1>
+                <p class="brand-text">
+                    Elegí una materia y tocá <strong>Ver en el cronograma</strong> para
+                    ubicarla en la grilla. Cuando estés conforme, inscribite.
+                </p>
+
+                <!-- Controles -->
+                <form onsubmit="return validarDatos()" action="/inscribirse" id="formInscripcion" method="POST"
+                    class="rail-form">
+                    <div class="rail-field">
+                        <label class="titulo1" for="inscripcion">Período de inscripción</label>
+                        <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
+                            <option value="" disabled selected>Seleccionar..</option>
+                            {% for inscripcion in param["inscripciones"] %}
+                            {% if inscripcion["estado"] == "cerrada" %}
+                            <option disabled>Inscripciones {{inscripcion["año"]}}
+                                {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} Cuatri. (cerrada)
+                            </option>
+                            {% else %}
+                            <option value="{{inscripcion['id']}}">Inscripciones {{inscripcion["año"]}}
+                                {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} Cuatri.
+                            </option>
+                            {% endif %}
                             {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Aquí se mostrará la tabla de horarios -->
-                        {% for horas in param["horas"] %}
-                        <tr id="hora{{horas['id']}}">
-                            <th id="hora">{{horas['hora']}}</th>
-                            {% for dias in param["dias"] %}
-                            <th id="{{dias['id']}}-{{horas['id']}}"></th>
+                        </select>
+                        <p class="error" id="error inscripcion"></p>
+                    </div>
+
+                    <div class="rail-field">
+                        <label class="titulo1" for="materia">Materia</label>
+                        <select id="materia" name="materia" disabled>
+                            <option value="" disabled selected>Seleccionar..</option>
+                            {% for curso in param["cursos"] %}
+                            <option value="{{curso['materia']['id_com_mat']}}" onchange="verificarCupo()">
+                                {{curso["materia"]["nombre"]}} ({{curso["materia"]["comision"]}})
+                            </option>
                             {% endfor %}
-                        </tr>
-                        {% endfor %}
-
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-        <div class="rightcolumn">
-            <div class="card">
-
-                <form onsubmit="return validarDatos()" action="/inscribirse" id="formInscripcion" method="POST">
-
-                    <label class="titulo1" for="inscripcion">Seleccione la Inscripción:</label>
-                    <select id="inscripcion" name="inscripcion" onfocusout="validarInscripcion()">
-                        <option value="" disabled selected>Seleccionar..</option>
-
-                        {% for inscripcion in param["inscripciones"] %}
-                        {% if inscripcion["estado"] == "cerrada" %}
-                        <option disabled>Inscripciones {{inscripcion["año"]}}
-                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}}Cuatri.
-                        </option>
-                        {% else %}
-                        <option value="{{inscripcion['id']}}">Inscripciones {{inscripcion["año"]}}
-                            {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} Cuatri.
-                        </option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                    <p class="error" id="error inscripcion"></p>
-
-                    <label class="titulo1" for="materia">Selecciona una materia:</label>
-                    <select id="materia" name="materia" disabled>
-                        <option value="" disabled selected>Seleccionar..</option>
-
-                        {% for curso in param["cursos"] %}
-                        <option value="{{curso['materia']['id_com_mat']}}" onchange="verificarCupo()">
-                            {{curso["materia"]["nombre"]}}
-                            ({{curso["materia"]["comision"]}})
-                        </option>
-                        {% endfor %}
-                    </select>
+                        </select>
+                    </div>
 
                     <p class="error" id="error incompleto"></p>
 
-                    <input type="button" value="Mostrar Materia" onclick="mostrarMateria()"></input>
-                    <input type="submit" id="btnInscribirse" value="Inscribirse a Materia"></input>
-
+                    <div class="rail-acciones">
+                        <input type="button" class="btn-ver" value="Ver en el cronograma"
+                            onclick="mostrarMateria()">
+                        <input type="submit" id="btnInscribirse" value="Inscribirme a la materia">
+                    </div>
                 </form>
-                <input type="button" onclick="resetearCronograma()" value="Resetear"></button>
+
+                <input type="button" class="btn-reset" onclick="resetearCronograma()" value="Limpiar cronograma">
 
                 <p class="error" id="resCupo">{{param["usuario_inscripto_mensaje"]}}</p>
+
+                <p class="brand-note">
+                    La grilla es una <strong>previsualización</strong>: recién quedás
+                    anotado cuando confirmás con "Inscribirme a la materia".
+                </p>
             </div>
+        </aside>
 
+        <!-- ---------- Cronograma ---------- -->
+        <section class="app-main">
+            <div class="panel panel--flush cronograma">
+                <header class="cronograma__head">
+                    <h2 class="panel__title">Mi semana de cursada</h2>
+                    <span class="badge">{{ session['usuario'] }}</span>
+                </header>
 
-            {% for curso in param["cursos"] %}
-            {% for rango in curso["rango"] %}
-            <input name="{{curso['materia']['id_com_mat']}}" id="{{rango['id_dia']}}" value="{{rango['id_hora']}}"
-                hidden></input>
-            {% endfor %}
-            {% endfor %}
-            {% for curso in param["cursos"] %}
-            <input id="{{curso['materia']['id_com_mat']}}"
-                value="{{curso['materia']['nombre']}} ({{curso['materia']['comision']}})" hidden></input>
-            {% endfor %}
+                <div class="cronograma__scroll">
+                    <table id="cronograma" class="cronograma__tabla">
+                        <caption class="sr-only">Cronograma de horarios armado con las materias seleccionadas</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Hora</th>
+                                {% for dias in param["dias"] %}
+                                <th scope="col">{{ dias["dia"]|replace("miercoles", "miércoles")|capitalize }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for horas in param["horas"] %}
+                            <tr>
+                                <th scope="row" class="hora">{{ horas['hora'] }}</th>
+                                {% for dias in param["dias"] %}
+                                <td class="libre" id="{{dias['id']}}-{{horas['id']}}"></td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
 
-        </div>
-    </div>
-
+    <!-- Datos que OrganizadorDeHorarios.js lee para pintar la grilla.
+         NO tocar los name/id/value: son el contrato con el script. -->
+    {% for curso in param["cursos"] %}
+    {% for rango in curso["rango"] %}
+    <input name="{{curso['materia']['id_com_mat']}}" id="{{rango['id_dia']}}" value="{{rango['id_hora']}}" hidden>
+    {% endfor %}
+    {% endfor %}
+    {% for curso in param["cursos"] %}
+    <input id="{{curso['materia']['id_com_mat']}}"
+        value="{{curso['materia']['nombre']}} ({{curso['materia']['comision']}})" hidden>
+    {% endfor %}
 
     <script language="javascript" type="text/javascript" src="../static/js/OrganizadorDeHorarios.js"></script>
 

@@ -1,115 +1,209 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- theme.css → shell.css → Gestion.css (base) → GestionInscripciones.css (esta vista) -->
+  <link rel="stylesheet" href="../static/css/theme.css">
+  <link rel="stylesheet" href="../static/css/shell.css">
+  <link rel="stylesheet" href="../static/css/Gestion.css">
+  <link rel="stylesheet" href="../static/css/GestionInscripciones.css">
   <link rel="icon" type="image/svg+xml" href="../static/img/favicon.svg">
   <title>UCA Planner | Inscripciones</title>
-  <link rel="stylesheet" href="../static/css/GestionInscripciones.css">
-  <link rel="stylesheet" href="../static/css/theme.css">
 </head>
 
-<body>
-  <script language="javascript" type="text/javascript" src="../static/js/GestionInscripciones.js"></script>
+<body class="app-page gestion-page inscripciones-page">
+  {% include 'TopNav.html' %}
 
+  <main class="app-shell app-shell--rail">
+    <!-- ---------- Riel de contexto ---------- -->
+    <aside class="brand-panel">
+      <div class="brand-panel__inner">
+        <p class="brand-wordmark brand-wordmark--sm">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3 5-6"></path>
+              <path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path>
+            </svg>
+          </span>
+          UCA Planner
+        </p>
 
-  <!-- HEADER -->
-  <header>
-    <img src="../static/img/logo-uca.jfif" class="imagen1">
-    <h2 class="titulo">Gestión de Inscripciones</h2>
-    <button type="button" id="volver">
-      <a href="/home">Volver a Inicio</a>
-    </button>
-  </header>
+        <h1 class="brand-title">Gestión de inscripciones</h1>
+        <p class="brand-text">
+          Cada período de inscripción agrupa los cursos de un cuatrimestre. Los
+          alumnos solo pueden anotarse a los que estén <strong>abiertos</strong>.
+        </p>
 
-  <!-- DESPLEGABLES -->
-  <article class="inscripciones">
-    {% for inscripcion in param["inscripciones"][0:] %}
-    <details class="prueba">
-      <summary>INSCRIPCION {{inscripcion["año"]}} {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} CUATRIMESTRE
-      </summary>
-      <div class="row">
+        <p class="brand-note">
+          Solo puede haber <strong>una inscripción abierta</strong> a la vez.
+          Cerrar una es definitivo desde la interfaz.
+        </p>
 
-        <form class="col-1" id="formCierre{{inscripcion['id']}}">
-          <input type="hidden" name="idInscripcion" value="{{inscripcion['id']}}">
-          <button type="button" class="cierre-ins" id="btnCierre{{inscripcion['id']}}" idIns="{{inscripcion['id']}}"
-            onclick="cerrarIns(this)">Cerrar Inscripción</button>
-          <div class="resCierre" id="resCierre{{inscripcion['id']}}"></div>
+        <ul class="rail-stats">
+          <li>
+            <span>Períodos</span>
+            <span class="rail-stats__valor">{{ param["inscripciones"]|length }}</span>
+          </li>
+          <li>
+            <span>Cursos cargados</span>
+            <span class="rail-stats__valor">{{ param["cursos"]|length }}</span>
+          </li>
+        </ul>
 
-          <p class="texto">ESTADO:</p>
-          {% if inscripcion["estado"] == "cerrada" %}
-          <p class="cerrada">{{inscripcion["estado"]}}</p>
-          {% else %}
-          <p class="abierta">{{inscripcion["estado"]}}</p>
-          {% endif %}
-        </form>
-
-        <div class="col-2">
-          <input type="search" placeholder="Filtrar por..." name="search" id="inputFiltro{{inscripcion['id']}}"
-            oninput="filtrarTabla(this)">
-          <table id="tablaCurso{{inscripcion['id']}}">
-            <thead>
-              <tr>
-                <th>Cantidad de Inscriptos </th>
-                <th>Comisión</th>
-                <th>Materia</th>
-                <th>Código</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for curso in param["cursos"][0:] %}
-              {% if curso["id_inscripcion"] == inscripcion["id"] %}
-              <tr>
-                <td>{{curso["inscriptos"]}}/{{curso["cupo"]}}</td>
-                <td>{{curso["materia"]["comision"]}}</td>
-                <td>{{curso["materia"]["nombre"]}}</td>
-                <td>{{curso["materia"]["codigo"]}}</td>
-              </tr>
-              {% endif %}
-              {% endfor %}
-            </tbody>
-          </table>
-          <!-- AGREGAR MATERIA -->
-          <a id="btnAgregarCurso" href="/cursos">Agregar Curso</a>
-
+        <div class="cta-row">
+          <a href="/cursos" class="cta cta--primary">
+            Agregar curso
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h13M13 6l6 6-6 6"></path>
+            </svg>
+          </a>
+          <a href="/home" class="cta cta--ghost">Volver al inicio</a>
         </div>
       </div>
-    </details>
-    {% endfor %}
-  </article>
-  <button type="button" onclick="sortDesplegables()" id="btnOrden">Ordenar por año</button>
+    </aside>
 
+    <!-- ---------- Contenido ---------- -->
+    <section class="app-main app-main--split">
+      <!-- Listado de períodos -->
+      <div class="panel">
+        <header class="panel__head">
+          <h2 class="panel__title">Períodos de inscripción</h2>
+          <button type="button" onclick="sortDesplegables()" id="btnOrden">Ordenar por año</button>
+        </header>
 
-  <div class="card" id="contenedor">
-    <h3>Agregar una Inscripción</h3>
-    <form onsubmit="return validarDatos()" action="/agregar_inscripcion" method="post" id="formInscripciones">
+        <div class="panel__body">
+          <article class="inscripciones">
+            {% for inscripcion in param["inscripciones"] %}
+            <details class="prueba">
+              <summary>
+                <span class="summary__texto">
+                  Inscripción {{inscripcion["año"]}} · {{inscripcion["cuatri"]}}{{inscripcion["tipo"]}} cuatrimestre
+                </span>
+                {% if inscripcion["estado"] == "cerrada" %}
+                <span class="estado-pill cerrada">Cerrada</span>
+                {% else %}
+                <span class="estado-pill abierta">Abierta</span>
+                {% endif %}
+              </summary>
 
-      <label for="anio" id="labelaño">Ingrese el año del período de Inscripciones:</label>
-      <input type="text" name="anio" id="anio" placeholder="Ingrese el año.." onclick="insertarAnioActual()"
-        onfocusout="validarAnio()">
-      <p class="error" id="error_anio"></p>
+              <div class="ins-body">
+                <!-- Acciones del período -->
+                <form class="col-1" id="formCierre{{inscripcion['id']}}">
+                  <input type="hidden" name="idInscripcion" value="{{inscripcion['id']}}">
 
-      <label for="cuatrimestre" id="labelCuatri">Asigne el cuatrimestre del período de Inscripciones:</label>
-      <select id="cuatrimestre" name="cuatrimestre" title="Seleccionar...">
-        <option value="0" disabled selected>Seleccionar..</option>
-        <option value="1">Primer Cuatrimestre (1C)</option>
-        <option value="2">Segundo Cuatrimestre (2C)</option>
-      </select>
+                  <div class="ins-estado">
+                    <span class="ins-estado__label">Estado</span>
+                    {% if inscripcion["estado"] == "cerrada" %}
+                    <span class="cerrada">{{inscripcion["estado"]}}</span>
+                    {% else %}
+                    <span class="abierta">{{inscripcion["estado"]}}</span>
+                    {% endif %}
+                  </div>
 
-      <label for="estado" id="labelEstado">Asigne el estado del período de Inscripciones:</label>
-      <select id="estado" name="estado" title="Seleccionar..." onchange="validarEstado()">
-        <option value="0" disabled selected>Seleccionar..</option>
-        <option value="abierta">Abierta</option>
-        <option value="cerrada">Cerrada</option>
-      </select>
-      <div id="resAjax"></div>
+                  <button type="button" class="cierre-ins" id="btnCierre{{inscripcion['id']}}"
+                    idIns="{{inscripcion['id']}}" onclick="cerrarIns(this)">Cerrar inscripción</button>
+                  <div class="resCierre" id="resCierre{{inscripcion['id']}}"></div>
+                </form>
 
-      <p class="error" id="error_incompleto"></p>
-      <button type="submit" id="btnInscripciones">Agregar Inscripcion</button>
+                <!-- Cursos del período -->
+                <div class="col-2">
+                  <input type="search" placeholder="Filtrar por materia, comisión o código..." name="search"
+                    id="inputFiltro{{inscripcion['id']}}" oninput="filtrarTabla(this)">
 
-    </form>
-  </div>
+                  <div class="tabla-scroll">
+                    <table id="tablaCurso{{inscripcion['id']}}">
+                      <thead>
+                        <tr>
+                          <th scope="col">Inscriptos</th>
+                          <th scope="col">Comisión</th>
+                          <th scope="col">Materia</th>
+                          <th scope="col">Código</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for curso in param["cursos"] %}
+                        {% if curso["id_inscripcion"] == inscripcion["id"] %}
+                        <tr>
+                          <td>{{curso["inscriptos"]}}/{{curso["cupo"]}}</td>
+                          <td>{{curso["materia"]["comision"]}}</td>
+                          <td>{{curso["materia"]["nombre"]}}</td>
+                          <td>{{curso["materia"]["codigo"]}}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <a id="btnAgregarCurso" href="/cursos">Agregar curso</a>
+                </div>
+              </div>
+            </details>
+            {% endfor %}
+
+            {% if not param["inscripciones"] %}
+            <div class="vacio">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 11l3 3 5-6"></path>
+                <path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path>
+              </svg>
+              <p>Todavía no hay períodos de inscripción. Creá el primero con el formulario de al lado.</p>
+            </div>
+            {% endif %}
+          </article>
+        </div>
+      </div>
+
+      <!-- Formulario de alta -->
+      <div class="panel" id="contenedor">
+        <header class="panel__head">
+          <h2 class="panel__title">Agregar una inscripción</h2>
+        </header>
+
+        <div class="panel__body">
+          <form onsubmit="return validarDatos()" action="/agregar_inscripcion" method="post" id="formInscripciones">
+            <div class="field-grid">
+              <div class="field">
+                <label for="anio" id="labelaño">Año del período</label>
+                <input type="text" name="anio" id="anio" placeholder="Ingrese el año.." onclick="insertarAnioActual()"
+                  onfocusout="validarAnio()">
+                <p class="error" id="error_anio"></p>
+              </div>
+
+              <div class="field">
+                <label for="cuatrimestre" id="labelCuatri">Cuatrimestre</label>
+                <select id="cuatrimestre" name="cuatrimestre" title="Seleccionar...">
+                  <option value="0" disabled selected>Seleccionar..</option>
+                  <option value="1">Primer cuatrimestre (1C)</option>
+                  <option value="2">Segundo cuatrimestre (2C)</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="estado" id="labelEstado">Estado</label>
+                <select id="estado" name="estado" title="Seleccionar..." onchange="validarEstado()">
+                  <option value="0" disabled selected>Seleccionar..</option>
+                  <option value="abierta">Abierta</option>
+                  <option value="cerrada">Cerrada</option>
+                </select>
+                <div id="resAjax"></div>
+              </div>
+            </div>
+
+            <p class="error" id="error_incompleto"></p>
+
+            <button type="submit" id="btnInscripciones" class="btn-block">Agregar inscripción</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script language="javascript" type="text/javascript" src="../static/js/GestionInscripciones.js"></script>
 

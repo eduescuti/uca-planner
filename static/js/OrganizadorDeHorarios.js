@@ -1,3 +1,17 @@
+/* Paleta de bloques del cronograma. Las clases m-1..m-6 estan definidas
+   en Visualizador.css, que es el mismo skin que usa el previsualizador
+   publico de /cronograma. */
+var PALETA_MATERIAS = ["m-1", "m-2", "m-3", "m-4", "m-5", "m-6"];
+
+function claseDeMateria(nombre) {
+    // Color estable por materia: siempre le toca el mismo.
+    var suma = 0;
+    for (var i = 0; i < nombre.length; i++) {
+        suma += nombre.charCodeAt(i);
+    }
+    return PALETA_MATERIAS[suma % PALETA_MATERIAS.length];
+}
+
 function resetearCronograma() {
     document.getElementById("materia").value = "";
 
@@ -12,9 +26,10 @@ function resetearCronograma() {
 function eliminarMateriasDelCronograma(dia, hora) {
 
     var celda = document.getElementById(dia + "-" + hora);
+    if (!celda) return;
 
     celda.textContent = "";
-    celda.style.background = "white";
+    celda.className = "libre";
 }
 
 function validarInscripcion() {
@@ -65,10 +80,11 @@ function mostrarMateria() {
             id_dia = elemento.id;
             id_hora = elemento.value;
             var celda = document.getElementById(id_dia + "-" + id_hora);
-            celda.innerHTML = nombreMateria;
-            celda.style.background = "grey";
-            celda.style.color = "white";
+            if (!celda) continue;
 
+            celda.innerHTML = "<span></span>";
+            celda.firstChild.textContent = nombreMateria;
+            celda.className = "slot " + claseDeMateria(nombreMateria);
         }
     }
 
